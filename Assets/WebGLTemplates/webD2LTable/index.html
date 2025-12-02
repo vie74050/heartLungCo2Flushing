@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>BCIT | %UNITY_WEB_NAME%</title>
+     <link rel="stylesheet" href="https://learn.bcit.ca/shared/scripts/interactive/UnityModelViewerTemplateData/style.css">
+    <link rel="shortcut icon" href="https://learn.bcit.ca/shared/scripts/interactive/UnityModelViewerTemplateData/favicon.ico" />
+   
+    <!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<!-- jquery UI -->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://learn.bcit.ca/shared/scripts/jquery/jquery-ui-touch-punch.min.js"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://learn.bcit.ca/shared/scripts/bootstrap-3.1.1/css/bootstrap.min.css" >
+	
+	<!-- Unity webpage handlers -->
+	<script src="https://learn.bcit.ca/shared/scripts/interactive/UnityModelViewerTemplateData/UnityProgress.js"></script>
+    <script src="https://learn.bcit.ca/shared/scripts/interactive/UnityModelViewerTemplateData/FromToUnityHandlers.js" type="text/javascript"></script>
+    
+    <!-- point to local Unity model package -->
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+    
+    <script>
+    var gameInstance = UnityLoader.instantiate("gameContainer", "%UNITY_WEBGL_BUILD_URL%", {onProgress: UnityProgress});
+    
+    </script>
+      
+  </head>
+  <body class="d2l-edittable">
+   	<!-- content table that can be filled out in D2L web editor: Part name must match target part name in model -->
+   	
+   	<table>
+   		<thead>
+   			<tr>
+   				<th>Name: must match part name on model</th>
+   				<th>Content</th>
+   			</tr>
+   		</thead>
+   		
+   		<tbody>
+   			
+   			<tr>
+   				<td>Combustion Outter Case</td>
+   				<td>
+   					<p>Replace this text with content for pop up.</p>
+   				</td>
+   			</tr>
+   		
+   			
+   		</tbody>
+   		
+   	</table>
+   
+  </body>
+</html>
+

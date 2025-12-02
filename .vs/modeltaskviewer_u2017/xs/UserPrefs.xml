@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{2ACC01B7-808F-64AD-D5BF-3043809D5223}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Standard Assets/CrossPlatformInput/Scripts/TouchPad.cs">
+    <Files>
+      <File FileName="Assets/Plugins/myscripts/SelectableObject.cs" Line="200" Column="1" />
+      <File FileName="Assets/Plugins/myscripts/ListItem.cs" Line="5" Column="1" />
+      <File FileName="Assets/Plugins/myscripts/ActivityController.cs" Line="4" Column="1" />
+      <File FileName="Assets/Standard Assets/CrossPlatformInput/Scripts/AxisTouchButton.cs" Line="7" Column="1" />
+      <File FileName="Assets/Standard Assets/CrossPlatformInput/Scripts/Joystick.cs" Line="3" Column="1" />
+      <File FileName="Assets/Standard Assets/CrossPlatformInput/Scripts/TouchPad.cs" Line="140" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.modeltaskviewer__u2017.Editor PreferredExecutionTarget="Unity.Editor" />
+</Properties>

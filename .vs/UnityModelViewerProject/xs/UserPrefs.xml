@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{3B61F0B0-805E-9336-102B-1464E3FF6E8F}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Plugins/myscripts/ActivityController.cs">
+    <Files>
+      <File FileName="Assets/Plugins/myscripts/SelectableObject.cs" Line="72" Column="37" />
+      <File FileName="Assets/Plugins/myscripts/SO_linkedObject.cs" Line="41" Column="1" />
+      <File FileName="Assets/Plugins/myscripts/ActivityController.cs" Line="517" Column="5" />
+      <File FileName="Assets/Plugins/myscripts/ListItem.cs" Line="65" Column="26" />
+      <File FileName="Assets/Plugins/myscripts/Activity.cs" Line="21" Column="30" />
+      <File FileName="Assets/Editor/ActivityInspector.cs" Line="82" Column="34" />
+      <File FileName="Assets/Plugins/myscripts/animationOverride.cs" Line="11" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.UnityModelViewerProject.Editor PreferredExecutionTarget="Unity.Editor" />
+  <MultiItemStartupConfigurations />
+</Properties>
