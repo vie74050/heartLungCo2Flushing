@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
@@ -1487,7 +1488,7 @@ MonoBehaviour:
     m_StretchHeight: 0
   - m_Name: toggle_button_1
     m_Normal:
-      m_Background: {fileID: 2800000, guid: 1e8478ea487afa04595408cc0d4ab980, type: 3}
+      m_Background: {fileID: 2800000, guid: 19840a0959537d24f972eceda1015249, type: 3}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0.7372549, g: 0.9333334, b: 0.6745098, a: 1}
     m_Hover:
@@ -1619,7 +1620,7 @@ MonoBehaviour:
     m_StretchHeight: 0
   - m_Name: wrong
     m_Normal:
-      m_Background: {fileID: 2800000, guid: 334569b3cbaa046dc9e5a735167b3dc1, type: 3}
+      m_Background: {fileID: 2800000, guid: ea2962d3a3951fe40ba8e5504db0f110, type: 3}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 1, g: 1, b: 1, a: 1}
     m_Hover:
@@ -1686,7 +1687,7 @@ MonoBehaviour:
     m_StretchHeight: 0
   - m_Name: complete
     m_Normal:
-      m_Background: {fileID: 2800000, guid: 3acf4009ca7f34c6b8ed810307465333, type: 3}
+      m_Background: {fileID: 2800000, guid: 376bed06a60fd634b8becf2ef6062a66, type: 3}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0.29568395, g: 1, b: 0.16176468, a: 1}
     m_Hover:
