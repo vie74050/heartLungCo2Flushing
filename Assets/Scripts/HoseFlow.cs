@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [ExecuteAlways]
-public class HoseEdge : MonoBehaviour
+public class HoseFlow : MonoBehaviour
 {
     [Header("Spline Settings")]
     [Tooltip("Four control points that define the cubic Bezier spline for the hose path.")]
@@ -125,6 +125,12 @@ public class HoseEdge : MonoBehaviour
         if (!Application.isPlaying) return;
 
         HandleFade(); 
+
+        // Test clamp toggle with spacebar for testing
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ToggleClamp();
+        }
 
         if (isClamped) return;
 
