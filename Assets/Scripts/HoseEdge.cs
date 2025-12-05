@@ -1,0 +1,273 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+[ExecuteAlways]
+public class HoseEdge : MonoBehaviour
+{
+    [Header("Spline Settings")]
+    [Tooltip("Four control points that define the cubic Bezier spline for the hose path.")]
+    public Transform[] controlPoints;
+
+    [Header("Fluid Settings")]
+    [Tooltip("Prefab used for fluid particles (e.g., small spheres).")]
+    public GameObject particlePrefab;
+   
+    [Tooltip("Speed of particle flow along the hose spline.")]
+    public float flowRate = 2f;
+    [Tooltip("Number of particles flowing through the hose.")]
+    public int particleCount = 5;
+
+    [Header("Flow Control")]
+    [Tooltip("If true, flow is clamped (stopped) and particles fade out.")]
+    public bool isClamped = false;
+    [Tooltip("If true, particles flow backwards along the spline.")]
+    public bool isReversed = false;
+    [Tooltip("Duration (in seconds) for particles to fade in/out when clamping/unclamping.")]
+    public float fadeDuration = 0.5f;
+
+    [Header("Hose Rendering")]
+    [Tooltip("Material used to render the hose line.")]
+    public Material hoseMaterial;
+    [Tooltip("Diameter (thickness) of the hose line.")]
+    public float hoseDiameter = 0.1f;
+    [Tooltip("Number of segments used to render the hose line (higher = smoother curve).")]
+    public int hoseSegments = 20;
+
+    private List<GameObject> particles = new List<GameObject>();
+    private List<Renderer> particleRenderers = new List<Renderer>();
+    private float[] tValues;
+    private LineRenderer lineRenderer;
+
+    // Fade state
+    private float fadeTimer = 0f;
+    private bool fadingOut = false;
+    private bool fadingIn = false;
+    private bool transparencySupported = false; // per particle material ability
+    private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
+    private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
+
+    void Awake()
+    {
+        // Setup LineRenderer
+        lineRenderer = GetComponent<LineRenderer>();
+        if (lineRenderer == null)
+            lineRenderer = gameObject.AddComponent<LineRenderer>();
+
+        lineRenderer.material = hoseMaterial;
+        lineRenderer.startWidth = hoseDiameter;
+        lineRenderer.endWidth = hoseDiameter;
+        lineRenderer.positionCount = hoseSegments + 1;
+    }
+
+    void Start()
+    {
+        // Get the color from the particlePrefab's material (if available)
+        fluidColor = Color.cyan; // default fallback
+        if (particlePrefab != null)
+        {
+            var renderer = particlePrefab.GetComponent<Renderer>();
+            if (renderer != null && renderer.sharedMaterial != null && renderer.sharedMaterial.HasProperty("_Color"))
+            {
+            fluidColor = renderer.sharedMaterial.GetColor("_Color");
+            }
+        }
+        if (!Application.isPlaying) return;
+
+        tValues = new float[particleCount];
+
+        particles.Clear();
+        particleRenderers.Clear();
+        mpbList.Clear();
+
+        // Instantiate particles
+        for (int i = 0; i < particleCount; i++)
+        {
+            GameObject p = Instantiate(particlePrefab, transform);
+            particles.Add(p);
+
+            var r = p.GetComponent<Renderer>();
+            if (r == null)
+            {
+                r = p.AddComponent<MeshRenderer>(); // fallback, but ideally prefab has a Renderer
+            }
+
+            particleRenderers.Add(r);
+
+            // Prepare per-particle MPB
+            var mpb = new MaterialPropertyBlock();
+            mpb.SetColor("_Color", fluidColor);
+            r.SetPropertyBlock(mpb);
+            mpbList.Add(mpb);
+
+            tValues[i] = i / (float)particleCount;
+        }
+
+        // Start with particles faded out if clamped
+        if (isClamped)
+        {
+            fadingOut = true;
+            fadingIn = false;
+            SetParticleAlpha(0f);
+        }
+        
+
+        // hide particlePrefab (only show instantiated particles)
+        if (particlePrefab != null)
+            particlePrefab.SetActive(false);
+
+    }
+
+    void Update()
+    {
+        // Always update hose line (editor + play mode)
+        UpdateHoseLine();
+
+        if (!Application.isPlaying) return;
+
+        HandleFade(); 
+
+        if (isClamped) return;
+
+        // Animate particles only when not clamped
+        for (int i = 0; i < particles.Count; i++)
+        {
+            float direction = isReversed ? -1f : 1f;
+            tValues[i] += Time.deltaTime * flowRate * 0.1f * direction;
+
+            if (tValues[i] > 1f) tValues[i] = 0f;
+            if (tValues[i] < 0f) tValues[i] = 1f;
+
+            Vector3 pos = GetBezierPoint(tValues[i],
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position);
+
+            particles[i].transform.position = pos;
+        }
+    }
+
+    void UpdateHoseLine()
+    {
+        if (controlPoints == null || controlPoints.Length < 4) return;
+
+        for (int i = 0; i <= hoseSegments; i++)
+        {
+            float t = i / (float)hoseSegments;
+            Vector3 pos = GetBezierPoint(t,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position);
+
+            lineRenderer.SetPosition(i, pos);
+        }
+    }
+
+    Vector3 GetBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
+    {
+        float u = 1 - t;
+        return u * u * u * p0 +
+               3 * u * u * t * p1 +
+               3 * u * t * t * p2 +
+               t * t * t * p3;
+    }
+
+    // Public methods for UI or other scripts
+    public void ToggleClamp() => SetClamp(!isClamped);
+
+    public void SetClamp(bool clamp)
+    {
+        if (isClamped == clamp) return;
+
+        isClamped = clamp;
+        fadeTimer = 0f;
+
+        if (clamp)
+        {
+            fadingOut = true;
+            fadingIn = false;      
+            // Set alpha to 1 at start so fade rises
+            SetParticleAlpha(1f);      
+        }
+        else
+        {
+            fadingIn = true;
+            fadingOut = false;
+            // Set alpha to zero at start so fade rises
+            SetParticleAlpha(0f);
+        }
+    }
+
+    public void ToggleReverse() => isReversed = !isReversed;
+    public void SetReverse(bool reverse) => isReversed = reverse;
+
+    private void HandleFade()
+    {
+        //Debug.Log($"Fading Out : {fadingOut}");
+        if (fadingOut)
+        {
+            fadeTimer += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, Mathf.Clamp01(fadeTimer / fadeDuration));
+            
+            SetParticleAlpha(alpha);
+
+            if (fadeTimer >= fadeDuration)
+            {
+                fadingOut = false;
+            }
+        }
+        else if (fadingIn)
+        {
+            
+            fadeTimer += Time.deltaTime;
+            float alpha = Mathf.Lerp(0f, 1f, Mathf.Clamp01(fadeTimer / fadeDuration));
+            SetParticleAlpha(alpha);
+
+            if (fadeTimer >= fadeDuration)
+            {
+                fadingIn = false;
+            }
+        }
+    }
+
+    private void SetParticleAlpha(float alpha)
+    {
+        for (int i = 0; i < particleRenderers.Count; i++)
+        {
+            var r = particleRenderers[i];
+            if (r == null) continue;
+            r.material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+            var mpb = new MaterialPropertyBlock();
+            r.GetPropertyBlock(mpb); // pull current state
+            Color c = fluidColor;
+            c.a = alpha;
+            mpb.SetColor("_Color", c);
+            r.SetPropertyBlock(mpb);
+        }
+        //Debug.Log($"Set particle alpha to {alpha}");
+    }
+
+    // Draw spline in editor for preview
+    void OnDrawGizmos()
+    {
+        if (controlPoints == null || controlPoints.Length < 4) return;
+
+        Gizmos.color = Color.yellow;
+        Vector3 prevPos = controlPoints[0].position;
+
+        for (int i = 1; i <= hoseSegments; i++)
+        {
+            float t = i / (float)hoseSegments;
+            Vector3 pos = GetBezierPoint(t,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position);
+
+            Gizmos.DrawLine(prevPos, pos);
+            prevPos = pos;
+        }
+    }
+}
