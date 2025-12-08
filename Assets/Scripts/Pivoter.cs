@@ -62,7 +62,7 @@ public class PivotItem
 {
     public float max = 30;
     public Transform t;
-    public Transform pivot; // optional
+    public Transform pivot; // optional, go that sets the pivot point, if null uses object's own position
     public Vector3 rotaxis = Vector3.forward;
        
     public void PivotAround(float amt)
