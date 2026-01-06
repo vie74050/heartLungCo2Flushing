@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/__SCENES__/HeartLungMachine/ModelViewer.unity
+    path: Assets/__SCENES__/HeartLungMachine/CO2Flushing.unity
     guid: 29dc65e1d1fad8f4ab235c5a322fd318
   m_configObjects: {}

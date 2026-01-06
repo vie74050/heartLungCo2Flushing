@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1194292536745203379}
-  - component: {fileID: 1644289123954461285}
   - component: {fileID: 5836177660777993133}
   - component: {fileID: 5982732791976395114}
   - component: {fileID: 7215466364098568036}
@@ -34,31 +33,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7863878746947764776}
   - {fileID: 1681239485144447397}
+  - {fileID: 7863878746947764776}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
---- !u!65 &1644289123954461285
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006681359596735497}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10.700859, y: 6.641758, z: 1.3745108}
-  m_Center: {x: 0.27130222, y: -13.150103, z: 0.32818615}
 --- !u!65 &5836177660777993133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,8 +56,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4785397, y: 10.517065, z: 1.326543}
-  m_Center: {x: 0.13707173, y: -4.7585316, z: 0.38288206}
+  m_Size: {x: 3.3530807, y: 10.658142, z: 2.3361645}
+  m_Center: {x: -0.0561316, y: 3.7133675, z: 0.41698113}
 --- !u!114 &5982732791976395114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,10 +72,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOpen: 1
   pvObjs:
-  - max: 30
+  - max: 15
     t: {fileID: 1681239485144447397}
     pivot: {fileID: 0}
     rotaxis: {x: 0, y: 0, z: 1}
+  - max: 15
+    t: {fileID: 7863878746947764776}
+    pivot: {fileID: 0}
+    rotaxis: {x: 0, y: 0, z: -1}
 --- !u!114 &7215466364098568036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a4c9c71c6da3304b87bfa5fdb2e1b16, type: 2}
+  - {fileID: 2100000, guid: 78ddb0e5ea4f3c443bc15947e9a45dfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -303,7 +285,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a4c9c71c6da3304b87bfa5fdb2e1b16, type: 2}
+  - {fileID: 2100000, guid: 78ddb0e5ea4f3c443bc15947e9a45dfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

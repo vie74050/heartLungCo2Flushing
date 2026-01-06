@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d55be60b3c12059449102681ad7edb1d
+guid: 77c1d2e11741bb242af7c8cfc64fab13
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,12 +7,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Transparent
-    second: {fileID: 2100000, guid: 4afc5e7eda4048846913d95cca721fcf, type: 2}
+      name: Int_Plastic_Blue_Trans_Mat
+    second: {fileID: 2100000, guid: 975511d3699c3554fb96f9e80cc1d342, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: White
+      name: Int_Plastic_Grey_Trans_Mat
+    second: {fileID: 2100000, guid: 88bdd9b86ac3bc844accce1e50408d21, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Int_Plastic_White_Trans_Mat
     second: {fileID: 2100000, guid: a9fba568279d0114bbe8a48d2a01d9c8, type: 2}
   materials:
     materialImportMode: 2

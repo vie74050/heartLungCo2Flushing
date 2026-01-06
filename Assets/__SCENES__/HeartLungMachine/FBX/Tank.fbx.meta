@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d55be60b3c12059449102681ad7edb1d
+guid: a9dce7f74ca252f4194e4db3e36b54f2
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,43 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: c0efb5d64b21b6b428f64864e694a9af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brass
+    second: {fileID: 2100000, guid: 6f728b815fdc8fc4a9e92194d3514b8e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chrome
+    second: {fileID: 2100000, guid: f884c4f5f2e5c1649b6cfd2c86c93df6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Guage0-30000
+    second: {fileID: 2100000, guid: 437cca112a108204da0c65fdbf98f9d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #11
+    second: {fileID: 2100000, guid: f884c4f5f2e5c1649b6cfd2c86c93df6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TankBottom
+    second: {fileID: 2100000, guid: 49a97baf060737c45adfd4e614fbea27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TankTop
+    second: {fileID: 2100000, guid: 64eafa0848beee34994f12da1adfd319, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Transparent
-    second: {fileID: 2100000, guid: 4afc5e7eda4048846913d95cca721fcf, type: 2}
+    second: {fileID: 2100000, guid: e66f55094a285984caa9b9d0616b9293, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

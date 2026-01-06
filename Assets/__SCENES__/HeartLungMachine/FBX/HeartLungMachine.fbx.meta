@@ -1105,7 +1105,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: MonitorGrey
-    second: {fileID: 2100000, guid: 4cacb3d6ea9c75c45a8360ed92b2d4e3, type: 2}
+    second: {fileID: 2100000, guid: 839c55eea9117344890334ed7a21cbed, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
