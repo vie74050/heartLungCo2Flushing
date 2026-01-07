@@ -1,69 +1,31 @@
+# This configuration file should be uploaded to the server as "<Application Folder>/Build/.htaccess"
+# NOTE: "mod_mime" Apache module must be enabled for this configuration to work.
+<IfModule mod_mime.c>
 
-# ================================
-# Unity WebGL Hosting - Strict .htaccess
-# Place this file in your Build/ folder.
-# Requires Apache modules: mod_headers, mod_mime
-# ================================
+# The following lines are required for builds without decompression fallback, compressed with gzip
+RemoveType .gz
+AddEncoding gzip .gz
+AddType application/gzip .data.gz # The correct MIME type here would be application/octet-stream, but due to Safari bug https://bugs.webkit.org/show_bug.cgi?id=247421, it's preferable to use MIME Type application/gzip instead.
+AddType application/wasm .wasm.gz
+AddType application/javascript .js.gz
+AddType application/octet-stream .symbols.json.gz
 
-# --- Disable automatic charset appending to binary types ---
-AddDefaultCharset Off
+# The following lines are required for builds without decompression fallback, compressed with Brotli
+RemoveType .br
+RemoveLanguage .br
+AddEncoding br .br
+AddType application/octet-stream .data.br
+AddType application/wasm .wasm.br
+AddType application/javascript .js.br
+AddType application/octet-stream .symbols.json.br
 
-# --- Correct MIME for Unity assets ---
-AddType application/javascript     .js
-AddType application/javascript     .js.gz
+# The following line improves loading performance for uncompressed builds
+AddType application/wasm .wasm
 
-AddType application/wasm           .wasm
-AddType application/wasm           .wasm.gz
+# Uncomment the following line to improve loading performance for gzip-compressed builds with decompression fallback
+# AddEncoding gzip .unityweb
 
-AddType application/octet-stream   .data
-AddType application/octet-stream   .data.gz
-AddType application/octet-stream   .mem
-AddType application/octet-stream   .mem.gz
+# Uncomment the following line to improve loading performance for brotli-compressed builds with decompression fallback
+# AddEncoding br .unityweb
 
-# Optional: if you use Brotli-compressed .unityweb
-AddType application/javascript     .js.unityweb
-AddType application/wasm           .wasm.unityweb
-AddType application/octet-stream   .data.unityweb
-
-# --- Force Content-Encoding for precompressed files ---
-<FilesMatch "\.gz$">
-  Header set Content-Encoding "gzip"
-  Header set Vary "Accept-Encoding"
-</FilesMatch>
-
-<FilesMatch "\.unityweb$">
-  Header set Content-Encoding "br"
-  Header set Vary "Accept-Encoding"
-</FilesMatch>
-
-# --- Critical: Explicitly set Content-Type for .wasm.gz ---
-# Some stacks still misreport .wasm.gz as application/gzip or octet-stream.
-<FilesMatch "\.wasm\.gz$">
-  Header set Content-Type "application/wasm"
-</FilesMatch>
-
-# --- Caching (safe for hashed filenames) ---
-<FilesMatch "\.(js|js\.gz|js\.unityweb|wasm|wasm\.gz|wasm\.unityweb|data|data\.gz|data\.unityweb|mem|mem\.gz)$">
-  Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
-
-# --- Range requests for large assets ---
-<FilesMatch "\.(wasm|wasm\.gz|wasm\.unityweb|data|data\.gz|data\.unityweb)$">
-  Header set Accept-Ranges "bytes"
-</FilesMatch>
-
-# --- Prevent double-compression by mod_deflate / proxies ---
-SetEnvIfNoCase Request_URI "\.(gz|unityweb)$" no-gzip=1
-
-# --- Optional security (uncomment if desired) ---
-# Header set X-Content-Type-Options "nosniff"
-# Header always set Referrer-Policy "strict-origin-when-cross-origin"
-# Header set Cross-Origin-Resource-Policy "same-origin"
-# Header set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), usb=()"
-
-# --- Optional CORS (only if assets served cross-origin) ---
-# Header set Access-Control-Allow-Origin "*"
-# Header set Access-Control-Allow-Methods "GET, OPTIONS"
-# Header set Access-Control-Allow-Headers "Range, Content-Type"
-
-# End of file
+</IfModule>
