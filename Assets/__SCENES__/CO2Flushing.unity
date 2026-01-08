@@ -2104,7 +2104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472779812}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2129,7 +2129,7 @@ Transform:
   - {fileID: 1462212598}
   - {fileID: 382618907}
   - {fileID: 1157335391}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 630933617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &485114006
 GameObject:
@@ -2940,10 +2940,11 @@ Transform:
   m_GameObject: {fileID: 621642147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -48.87233, y: 15.100672, z: -62.892147}
+  m_LocalPosition: {x: -66.46504, y: 34.097878, z: -49.534325}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1916251895}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &621465666
@@ -3250,7 +3251,8 @@ Transform:
   - {fileID: 1686577305}
   - {fileID: 180659374}
   - {fileID: 187549181}
-  m_Father: {fileID: 1847676305}
+  - {fileID: 472779813}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &631370819
 MonoBehaviour:
@@ -3271,7 +3273,7 @@ MonoBehaviour:
     itsFollowRotation: 1
     itsRotationSpeed: 2
   itsZoom:
-    itsEnable: 0
+    itsEnable: 1
     itsStartValue: 100
     itsUseLimits: 1
     itsMinLimit: 30
@@ -3279,10 +3281,22 @@ MonoBehaviour:
     itsZoomSpeed: 10
     itsControls:
     - itsAxisName: Mouse ScrollWheel
-      itsAxisSensitivity: 10
+      itsAxisSensitivity: 20
       itsInvertAxis: 1
       itsAdditionalKey: 0
       itsAdditionalMouseButton: -10
+      itsResetRotationOnRelease: 0
+    - itsAxisName: Vertical
+      itsAxisSensitivity: 2
+      itsInvertAxis: 1
+      itsAdditionalKey: 119
+      itsAdditionalMouseButton: 2
+      itsResetRotationOnRelease: 0
+    - itsAxisName: Vertical
+      itsAxisSensitivity: 2
+      itsInvertAxis: 1
+      itsAdditionalKey: 115
+      itsAdditionalMouseButton: 2
       itsResetRotationOnRelease: 0
     itsControlTouch:
       itsSensitivity: 1
@@ -3301,8 +3315,20 @@ MonoBehaviour:
         itsAdditionalKey: 0
         itsAdditionalMouseButton: 1
         itsResetRotationOnRelease: 0
+      - itsAxisName: Horizontal
+        itsAxisSensitivity: 1
+        itsInvertAxis: 1
+        itsAdditionalKey: 97
+        itsAdditionalMouseButton: 1
+        itsResetRotationOnRelease: 0
+      - itsAxisName: Horizontal
+        itsAxisSensitivity: 1
+        itsInvertAxis: 1
+        itsAdditionalKey: 100
+        itsAdditionalMouseButton: 1
+        itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 0
+        itsNumberOfTouches: 1
         itsSensitivity: 1
         itsInvertAxis: 0
     itsVertical:
@@ -3319,11 +3345,11 @@ MonoBehaviour:
         itsAdditionalMouseButton: 1
         itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 0
+        itsNumberOfTouches: 1
         itsSensitivity: 1
         itsInvertAxis: 0
   itsPanning:
-    itsBounds: {fileID: 0}
+    itsBounds: {fileID: 1650699935}
     itsSpeed: 10
     itsUseCameraSpace: 0
     itsLeftRight:
@@ -3335,18 +3361,36 @@ MonoBehaviour:
         itsAdditionalKey: 0
         itsAdditionalMouseButton: 0
         itsResetRotationOnRelease: 0
+      - itsAxisName: Horizontal
+        itsAxisSensitivity: 2
+        itsInvertAxis: 0
+        itsAdditionalKey: 275
+        itsAdditionalMouseButton: 0
+        itsResetRotationOnRelease: 0
+      - itsAxisName: Horizontal
+        itsAxisSensitivity: 2
+        itsInvertAxis: 0
+        itsAdditionalKey: 276
+        itsAdditionalMouseButton: 0
+        itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 0
+        itsNumberOfTouches: 2
         itsSensitivity: 1
         itsInvertAxis: 0
     itsForwardBackward:
-      itsEnable: 1
+      itsEnable: 0
       itsControls:
-      - itsAxisName: Mouse ScrollWheel
-        itsAxisSensitivity: 30
+      - itsAxisName: Vertical
+        itsAxisSensitivity: 2
         itsInvertAxis: 0
-        itsAdditionalKey: 0
-        itsAdditionalMouseButton: -10
+        itsAdditionalKey: 119
+        itsAdditionalMouseButton: 2
+        itsResetRotationOnRelease: 0
+      - itsAxisName: Vertical
+        itsAxisSensitivity: 2
+        itsInvertAxis: 0
+        itsAdditionalKey: 115
+        itsAdditionalMouseButton: 2
         itsResetRotationOnRelease: 0
       itsControlTouch:
         itsNumberOfTouches: 0
@@ -3361,8 +3405,20 @@ MonoBehaviour:
         itsAdditionalKey: 0
         itsAdditionalMouseButton: 0
         itsResetRotationOnRelease: 0
+      - itsAxisName: Vertical
+        itsAxisSensitivity: 2
+        itsInvertAxis: 0
+        itsAdditionalKey: 273
+        itsAdditionalMouseButton: 0
+        itsResetRotationOnRelease: 0
+      - itsAxisName: Vertical
+        itsAxisSensitivity: 2
+        itsInvertAxis: 0
+        itsAdditionalKey: 274
+        itsAdditionalMouseButton: 0
+        itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 0
+        itsNumberOfTouches: 2
         itsSensitivity: 1
         itsInvertAxis: 0
   itsEnvironment:
@@ -7437,13 +7493,14 @@ GameObject:
   - component: {fileID: 1650699934}
   - component: {fileID: 1650699933}
   - component: {fileID: 1650699932}
+  - component: {fileID: 1650699935}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Bounds Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &1650699932
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7464,7 +7521,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f884c4f5f2e5c1649b6cfd2c86c93df6, type: 2}
+  - {fileID: 2100000, guid: 839c55eea9117344890334ed7a21cbed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7503,12 +7560,33 @@ Transform:
   m_GameObject: {fileID: 1650699930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -50, y: 0, z: 50}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalPosition: {x: -34, y: 0, z: 40}
+  m_LocalScale: {x: 30, y: 1, z: 35}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1847676305}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1650699935
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650699930}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 200, z: 10}
+  m_Center: {x: 0, y: 110, z: 0}
 --- !u!1001 &1656281622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8519,40 +8597,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1831107050}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1847676304
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1847676305}
-  m_Layer: 0
-  m_Name: Static objects
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1847676305
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847676304}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1650699934}
-  - {fileID: 1916251895}
-  - {fileID: 630933617}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1855393047
 GameObject:
   m_ObjectHideFlags: 0
@@ -8682,14 +8726,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916251894}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 249.8, z: 0}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: -79.86997, y: 208.82513, z: -39.356213}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2137201550}
   - {fileID: 1692419651}
-  m_Father: {fileID: 1847676305}
+  m_Father: {fileID: 621419907}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924610776
 GameObject:
@@ -14284,5 +14328,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 702697782}
   - {fileID: 621419907}
-  - {fileID: 1847676305}
-  - {fileID: 472779813}
+  - {fileID: 1650699934}
+  - {fileID: 630933617}
