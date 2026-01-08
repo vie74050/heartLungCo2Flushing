@@ -34,12 +34,12 @@ The web handler will use the **web repo** [`MTV_HeartLungMachine_web` framework]
 
 1. Create a folder in `./Builds`. **Important!** The name of the folder will be used to name the build artefacts.
 2. Using gz compression will generate the .gz files if deompression fallback unchecked
-3. Copy build files to the **web repo** `./src/Builds` folder before building the next filetype since it will be over-ridden
-4. Rebuild with decompression fallback checked to generate .unityweb files
-5. Copy build files to the **web repo**`./src/Builds` folder
+3. Copy only the `.gz` files to the **web repo** `./uploads/Builds` folder before building the next filetype since it will be over-ridden
+4. Rebuild with decompression fallback checked to generate `.unityweb` files
+5. Copy `.unityweb` files to the **web repo**`./uploads/Builds` folder
 
-> NB: `*.loader.js` created by Unity is not required as the **web repo** will already have a generic one.
-> NB: `index.html` can also be coped from existing in the **web repo**
+> NB: `[foldername].loader.js` created by Unity is not required as the **web repo** will already have a generic one.
+> NB: `index.html` already existing in the **web repo**
 
 ### People ###
 
