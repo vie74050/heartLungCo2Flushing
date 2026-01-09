@@ -1,0 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Knob : MonoBehaviour
+{
+    [Tooltip("The target object to move based on knob rotation")]
+    public Transform targetObject; 
+    [Tooltip("The axis along which to move the target object moves")]
+    public Vector3 targetAxis; 
+    [Tooltip("The min and max angles for the knob rotation")]
+    public float minAngle = -90;
+    [Tooltip("The min and max angles for the knob rotation")]
+    public float maxAngle = 90;
+    [Tooltip("The min and max values for the target object movement")]
+    public float minValue;  
+    public float maxValue; 
+
+    private bool knobEnabled = true;
+
+    private Vector3 initTargetPosition;
+
+    void Start()
+    {
+        // save the initial position of the target object
+        initTargetPosition = new Vector3(targetObject.localPosition.x, targetObject.localPosition.y, targetObject.localPosition.z);
+    }
+
+    private void OnMouseOver() 
+    {
+        UpdateKnobRotation();
+        UpdateTargetPosition();
+    }
+
+    // Update Knob Rotation 
+    private void UpdateKnobRotation()
+    {
+        //get drag direction left or right
+        float dragDirection = Input.GetAxis("Mouse X");
+        //rotate knob with min and max angle
+        if (dragDirection > 0)
+        {
+            if (gameObject.transform.localEulerAngles.z < maxAngle )
+            {
+                gameObject.transform.Rotate(0, 0, 1);
+            }
+                   }
+        else if (dragDirection < 0)
+        {
+            // NB clamp rotation to positive values
+            if (gameObject.transform.localEulerAngles.z > minAngle && gameObject.transform.localEulerAngles.z > 1)
+            {
+                gameObject.transform.Rotate(0, 0, -1);
+            }
+        }
+    }
+
+
+    // Update Target Position based on knob angle
+    private void UpdateTargetPosition()
+    {
+        // move targetObject along targetAxis based on the rotation of the knob
+        float angle = Mathf.Clamp(gameObject.transform.localEulerAngles.z, minAngle, maxAngle);
+        float value = angle / (maxAngle - minAngle) * (maxValue - minValue);
+        targetObject.localPosition = initTargetPosition + targetAxis * value;
+    }
+
+}
