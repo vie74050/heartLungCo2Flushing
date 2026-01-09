@@ -250,6 +250,10 @@ public class SelectableObject : MonoBehaviour
 	}
 
 	private void ChangeMaterialColor(string state) {
+
+		if (origMaterials == null)
+			return;
+
 		// using standard shader 
 
 	  	GameObject obj = gameObject;
@@ -258,10 +262,10 @@ public class SelectableObject : MonoBehaviour
 
 		Color selectedColor = highlighColour; 
 
-		Renderer objRenderer = obj.GetComponentInChildren<Renderer>();
+		Material[] materials = GetComponent<Renderer>().materials;
 
 		int mat_i = 0;
-		foreach (Material m in objRenderer.materials) {
+		foreach (Material m in materials) {
 			Material origMat = origMaterials [mat_i];
 			Color c = origMat.color;
 			Color c_emit = Color.black * Mathf.LinearToGammaSpace (0.9f);
@@ -282,22 +286,22 @@ public class SelectableObject : MonoBehaviour
 					
 					break;
 
-			case "transparent":
-				
-					m.shader = mat_transparent.shader;
-					c.a = (mat_transparent.color.a);
-					StandardShaderUtils.ChangeRenderMode (m, StandardShaderUtils.BlendMode.Fade);   
-						
-					break;
-
-			default:
+				case "transparent":
 					
-                    c = origMat.color;
-					m.shader = origMat.shader;
+						m.shader = mat_transparent.shader;
+						c.a = (mat_transparent.color.a);
+						StandardShaderUtils.ChangeRenderMode (m, StandardShaderUtils.BlendMode.Fade);   
+							
+						break;
 
-                    StandardShaderUtils.ChangeRenderMode(m, (StandardShaderUtils.BlendMode)origMat.GetFloat("_Mode") );
+				default:
+						
+						c = origMat.color;
+						m.shader = origMat.shader;
 
-					break;
+						StandardShaderUtils.ChangeRenderMode(m, (StandardShaderUtils.BlendMode)origMat.GetFloat("_Mode") );
+
+						break;
 			}
 
 			m.SetColor ("_Color", c);
