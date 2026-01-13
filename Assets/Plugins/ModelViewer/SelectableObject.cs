@@ -9,7 +9,7 @@ NB: MATERIALS should use STANDARD shaders.  Do not use Fade mode for transparent
 Standard shader Fade mode reserved for setting visibility of non-selected parts
 
 */
-
+[RequireComponent(typeof(Collider))]
 public class SelectableObject : MonoBehaviour
 {
 	
