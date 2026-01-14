@@ -37,6 +37,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: TankFlowmeter
+    second: {fileID: 2100000, guid: 713ce1f050c3b704a998e7a6afdd7e08, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: TankTop
     second: {fileID: 2100000, guid: 64eafa0848beee34994f12da1adfd319, type: 2}
   - first:
@@ -49,6 +54,101 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: White
     second: {fileID: 2100000, guid: a9fba568279d0114bbe8a48d2a01d9c8, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 100%
+    second: {fileID: 2800000, guid: 80acd20642071c04da6058d4a14b7617, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Blender
+    second: {fileID: 2800000, guid: a4fa592540ed69f44b2d8c796de7cd4a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Dial 0-250
+    second: {fileID: 2800000, guid: 593c62b3bd480014bb33139445f40436, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Dial 0-4000
+    second: {fileID: 2800000, guid: df6ea8dc16a246a4d9b73f5f53446e80, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: FlowSensorCover
+    second: {fileID: 2800000, guid: 389e94bb6d5ae1146a0eef911e8d636c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTankTop_Color
+    second: {fileID: 2800000, guid: 41cee287804863e41b665b29f296d33b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTankTop_Metallic
+    second: {fileID: 2800000, guid: 8936b274b052a3445ac44d880c9e85e3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTankTop_Normal
+    second: {fileID: 2800000, guid: 9b7f5fdca7b227a4889b5a1fe28254b6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTankTop_Roughness
+    second: {fileID: 2800000, guid: 5d62791fd9b72f5449f3fc55cf9620f9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTank_Color
+    second: {fileID: 2800000, guid: c4d4db103490df141afe511793ec329c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTank_Metallic
+    second: {fileID: 2800000, guid: 1007dcb6698cfb049b455504c979e79a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTank_Normal
+    second: {fileID: 2800000, guid: 697b8ed187cc9f94488ae5aedc552585, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: GasTank_Roughness.
+    second: {fileID: 2800000, guid: 932863d3b22157b41ac879680d525692, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Guage
+    second: {fileID: 2800000, guid: 802dd038a6e1a844c80d7810d19a98f7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Guage0-500
+    second: {fileID: 2800000, guid: e060ba6d91c096b45b12b527e71e2d3e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Monitor Back
+    second: {fileID: 2800000, guid: ce530381b1e75a145ab4d1929eaf00b8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Plasma_LyteA
+    second: {fileID: 2800000, guid: 7815afc9ed278bf4587b9f3fdad65725, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Retangular Box
+    second: {fileID: 2800000, guid: 9f2d07b6e49e46d4ebb2f688efbc6d0c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Tank flowmeter
+    second: {fileID: 2800000, guid: 29086315c127f414ca6857649f68e388, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
