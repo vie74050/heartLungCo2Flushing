@@ -45,6 +45,7 @@ public class HoseFlow : MonoBehaviour
     private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
     private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
+    private MeshCollider meshCollider; // for hose collider if needed
 
     void Awake()
     {
@@ -126,12 +127,6 @@ public class HoseFlow : MonoBehaviour
 
         HandleFade(); 
 
-        // Test clamp toggle with spacebar for testing
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ToggleClamp();
-        }
-
         if (isClamped) return;
 
         // Animate particles only when not clamped
@@ -168,6 +163,7 @@ public class HoseFlow : MonoBehaviour
 
             lineRenderer.SetPosition(i, pos);
         }
+        UpdateMeshCollider();
     }
 
     Vector3 GetBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
@@ -179,7 +175,23 @@ public class HoseFlow : MonoBehaviour
                t * t * t * p3;
     }
 
-    // Public methods for UI or other scripts
+    public void UpdateMeshCollider()
+    {
+        meshCollider = GetComponent<MeshCollider>();
+        // check if meshCollider exists, if not add one
+        if (meshCollider == null)
+        {
+            meshCollider = gameObject.AddComponent<MeshCollider>();
+            
+        }else {
+            meshCollider.sharedMesh = null; // clear existing
+        }
+        Mesh mesh = new Mesh();
+        lineRenderer.BakeMesh(mesh, true);
+        meshCollider.sharedMesh = mesh;
+    }
+
+    // Public methods for flow controls
     public void ToggleClamp() => SetClamp(!isClamped);
 
     public void SetClamp(bool clamp)

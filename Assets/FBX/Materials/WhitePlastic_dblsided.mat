@@ -82,20 +82,20 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
-    - _Gloss: 0.06
+    - _Gloss: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 3
-    - _NormalIntensity: 0.45
+    - _NormalIntensity: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecIntensity: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Transparency: 0.566
+    - _Transparency: 0.661
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:

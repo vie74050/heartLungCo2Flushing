@@ -12,12 +12,20 @@ For WebGL:
 public class InteractableCursor : MonoBehaviour
 {
     [DllImport("__Internal")]
-	private static extern void BrowserSelect(string str);
+    private static extern void BrowserSelect(string str);
+    [DllImport("__Internal")]
+    private static extern void BrowserHover(string str);
 
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
 
+    private void Awake() {
+        if (cursorTexture == null)
+        {
+            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointerArrow");
+        }
+    }
     void OnMouseEnter()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
@@ -27,13 +35,29 @@ public class InteractableCursor : MonoBehaviour
     {
         // Pass 'null' to the texture parameter to use the default system cursor.
         Cursor.SetCursor(null, Vector2.zero, cursorMode);
+
+        // Requires web handling code to process this message
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            BrowserHover("");
+        #endif
     }
 
+    void OnMouseOver() {
+        // Requires web handling code to process this message
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            string objectName = transform.name == "Label" ? transform.parent.name : transform.name;
+            BrowserHover(objectName);
+        #endif
+    }
+    
     void OnMouseDown()
     {
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
-			BrowserSelect(transform.name);
+            string objectName = transform.name == "Label" ? transform.parent.name : transform.name;
+			BrowserSelect(objectName);
         #endif
+        //Debug.Log("Clicked on " + transform.name);
     }
+
 }
