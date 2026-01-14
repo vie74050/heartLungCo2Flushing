@@ -5,7 +5,7 @@ mergeInto(LibraryManager.library, {
   },
 
   BrowserSelect: function (str) {
-    window.FromUnity_Select(Pointer_stringify(str));
+    window.FromUnity_Select(UTF8ToString(str));
   }
   
 });
