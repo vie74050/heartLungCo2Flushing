@@ -70,7 +70,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.643
+    - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.444
     - _DetailNormalMapScale: 1
@@ -97,7 +97,7 @@ Material:
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _InnerColor: {r: 0.06328344, g: 1, b: 0, a: 1}
     - _OutColor: {r: 0.9485294, g: 0.34872404, b: 0, a: 1}
-    - _OuterColor: {r: 0.05095637, g: 1, b: 0, a: 1}
+    - _OuterColor: {r: 0.0197189, g: 0.38679248, b: 0, a: 1}
     - _OutlineColor: {r: 0.503916, g: 0.7169812, b: 0.7036585, a: 1}
     - _RimColor: {r: 0.10578859, g: 1, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

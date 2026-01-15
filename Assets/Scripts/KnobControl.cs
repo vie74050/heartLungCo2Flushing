@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Knob Control Script
+ * 
+ * This script allows a knob object to be rotated by mouse drag and moves a target object along a specified axis based on the knob's rotation.
+ * The knob rotation is clamped between minAngle and maxAngle, and the target object's position is updated accordingly.
+ * 
+ * Attach this script to the knob GameObject and assign the target object and movement axis in the inspector.
+ */
 public class Knob : MonoBehaviour
 {
     [Tooltip("The target object to move based on knob rotation")]
@@ -15,8 +23,8 @@ public class Knob : MonoBehaviour
     [Tooltip("The min and max values for the target object movement")]
     public float minValue;  
     public float maxValue; 
-
-    private bool knobEnabled = true;
+    [Tooltip("Enable or disable the knob control")]
+    public bool knobEnabled = true;
 
     private Vector3 initTargetPosition;
 
@@ -28,8 +36,11 @@ public class Knob : MonoBehaviour
 
     private void OnMouseOver() 
     {
-        UpdateKnobRotation();
-        UpdateTargetPosition();
+        if (knobEnabled && Input.GetMouseButton(0))
+        {
+            UpdateKnobRotation();
+            UpdateTargetPosition();
+        }
     }
 
     // Update Knob Rotation 

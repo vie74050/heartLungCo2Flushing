@@ -7,22 +7,6 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:Assets/Resources/materials and shaders/red fade 255.mat
-  m_Name: red fade 255
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ALPHABLEND_ON
-  - _GLOSSYREFLECTIONS_OFF
-  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  - _SPECULARHIGHLIGHTS_OFF
-  m_InvalidKeywords:
-  - _LIGHTMAPPING_REALTIME
-=======
->>>>>>> Squashed commit of the following:
   m_Name: HoseLine Blue
   m_Shader: {fileID: 4800000, guid: 36d03c1c397606949b10ed9ddd93f001, type: 3}
   m_Parent: {fileID: 0}
@@ -34,10 +18,6 @@ Material:
   - _LIGHTMAPPING_REALTIME
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   - _SPECULARHIGHLIGHTS_OFF
-<<<<<<< HEAD
-=======
->>>>>>> Squashed commit of the following::Assets/Resources/materials and shaders/HoseLine Blue.mat
->>>>>>> Squashed commit of the following:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -90,25 +70,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.643
+    - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.444
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _EmissionScaleUI: 0
     - _GlossMapScale: 0.732
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:Assets/Resources/materials and shaders/red fade 255.mat
-    - _Glossiness: 0.742
-    - _GlossyReflections: 0
-    - _Lightmapping: 1
-    - _Metallic: 0.263
-    - _Mode: 2
-    - _OcclusionStrength: 1
-    - _Outline: 0.03
-=======
->>>>>>> Squashed commit of the following:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Lightmapping: 1
@@ -116,28 +84,10 @@ Material:
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Outline: 0.002
-<<<<<<< HEAD
-=======
->>>>>>> Squashed commit of the following::Assets/Resources/materials and shaders/HoseLine Blue.mat
->>>>>>> Squashed commit of the following:
     - _Parallax: 0.02
     - _RimPower: 1
     - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 0
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:Assets/Resources/materials and shaders/red fade 255.mat
-    - _SrcBlend: 5
-    - _UVSec: 0
-    - _ZWrite: 0
-    m_Colors:
-    - _Color: {r: 1, g: 0.13062713, b: 0, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
-    - _OutColor: {r: 0.9485294, g: 0.34872404, b: 0, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-=======
->>>>>>> Squashed commit of the following:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 0
@@ -145,14 +95,10 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 0.24705882}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerColor: {r: 0, g: 0.67873216, b: 1, a: 1}
+    - _InnerColor: {r: 0.05562477, g: 0.19757922, b: 0.4716981, a: 1}
     - _OutColor: {r: 0.9485294, g: 0.34872404, b: 0, a: 1}
-    - _OuterColor: {r: 0, g: 0.6784314, b: 1, a: 1}
+    - _OuterColor: {r: 0, g: 0.6392157, b: 1, a: 1}
     - _OutlineColor: {r: 0.503916, g: 0.7169812, b: 0.7036585, a: 1}
-    - _RimColor: {r: 0, g: 0.6784314, b: 1, a: 1}
+    - _RimColor: {r: 0, g: 0.6392157, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-<<<<<<< HEAD
-=======
->>>>>>> Squashed commit of the following::Assets/Resources/materials and shaders/HoseLine Blue.mat
->>>>>>> Squashed commit of the following:
   m_BuildTextureStacks: []
