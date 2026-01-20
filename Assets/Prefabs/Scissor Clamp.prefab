@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1194292536745203379}
   - component: {fileID: 5836177660777993133}
   - component: {fileID: 5982732791976395114}
-  - component: {fileID: 7215466364098568036}
   - component: {fileID: 5898624272667101734}
   m_Layer: 0
   m_Name: Scissor Clamp
@@ -80,20 +79,6 @@ MonoBehaviour:
     t: {fileID: 7863878746947764776}
     pivot: {fileID: 0}
     rotaxis: {x: 0, y: 0, z: -1}
---- !u!114 &7215466364098568036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006681359596735497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9afcfd891cffa6d4c97df4be6cc6f66e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hosesToClamp:
-  - {fileID: 0}
 --- !u!114 &5898624272667101734
 MonoBehaviour:
   m_ObjectHideFlags: 0

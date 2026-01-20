@@ -12,17 +12,16 @@ public class HoseFlow : MonoBehaviour
     [Tooltip("Prefab used for fluid particles (e.g., small spheres).")]
     public GameObject particlePrefab;
    
-    [Tooltip("Speed of particle flow along the hose spline.")]
-    public float flowRate = 2f;
+    [Tooltip("Multiplier for particle flow along the hose spline.")]
+    public float maxFlowRate = 6f;
+    [Tooltip("Normalized flow rate (0-1) controlling the speed and visibility of particles.")]
+    public float normalizedFlowRate = 0f;
     [Tooltip("Number of particles flowing through the hose.")]
-    public int particleCount = 5;
+    public int particleCount = 3;
 
-    [Header("Flow Control")]
-    [Tooltip("If true, flow is clamped (stopped) and particles fade out.")]
-    public bool isClamped = false;
     [Tooltip("If true, particles flow backwards along the spline.")]
     public bool isReversed = false;
-    [Tooltip("Duration (in seconds) for particles to fade in/out when clamping/unclamping.")]
+    [Tooltip("Duration (in seconds) for particles to fade in/out when flow stopped.")]
     public float fadeDuration = 0.5f;
 
     [Header("Hose Rendering")]
@@ -103,8 +102,8 @@ public class HoseFlow : MonoBehaviour
             tValues[i] = i / (float)particleCount;
         }
 
-        // Start with particles faded out if clamped
-        if (isClamped)
+        // Start with particles faded out if no flow
+        if (normalizedFlowRate == 0f || particleCount == 0)
         {
             fadingOut = true;
             fadingIn = false;
@@ -127,13 +126,13 @@ public class HoseFlow : MonoBehaviour
 
         HandleFade(); 
 
-        if (isClamped) return;
+        if (normalizedFlowRate == 0f || particleCount == 0) return;
 
         // Animate particles only when not clamped
         for (int i = 0; i < particles.Count; i++)
         {
             float direction = isReversed ? -1f : 1f;
-            tValues[i] += Time.deltaTime * flowRate * 0.1f * direction;
+            tValues[i] += Time.deltaTime * normalizedFlowRate * maxFlowRate * 0.1f * direction;
 
             if (tValues[i] > 1f) tValues[i] = 0f;
             if (tValues[i] < 0f) tValues[i] = 1f;
@@ -192,16 +191,17 @@ public class HoseFlow : MonoBehaviour
     }
 
     // Public methods for flow controls
-    public void ToggleClamp() => SetClamp(!isClamped);
-
-    public void SetClamp(bool clamp)
+    // flow: normalized 0-1
+    public void SetFlow(float flow)
     {
-        if (isClamped == clamp) return;
+        // round to whole number for stability
+        flow = Mathf.Round(flow * 100f) / 100f;
+        if (normalizedFlowRate == flow) return;
 
-        isClamped = clamp;
+        normalizedFlowRate = flow;
         fadeTimer = 0f;
 
-        if (clamp)
+        if (flow == 0f)
         {
             fadingOut = true;
             fadingIn = false;      

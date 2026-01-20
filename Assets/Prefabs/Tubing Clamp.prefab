@@ -127,7 +127,6 @@ GameObject:
   - component: {fileID: 1626925214732405782}
   - component: {fileID: 2649033272271261018}
   - component: {fileID: 8031416618640671845}
-  - component: {fileID: 314115813542025624}
   m_Layer: 0
   m_Name: Tubing Clamp
   m_TagString: Untagged
@@ -190,19 +189,6 @@ MonoBehaviour:
     t: {fileID: 1626925214732405782}
     pivot: {fileID: 0}
     rotaxis: {x: 0, y: 0, z: 0}
---- !u!114 &314115813542025624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7589325855013897820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9afcfd891cffa6d4c97df4be6cc6f66e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hosesToClamp: []
 --- !u!1 &8096582298934730098
 GameObject:
   m_ObjectHideFlags: 0

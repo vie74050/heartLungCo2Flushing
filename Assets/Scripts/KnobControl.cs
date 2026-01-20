@@ -25,15 +25,26 @@ public class Knob : MonoBehaviour
     public float maxValue; 
     [Tooltip("Enable or disable the knob control")]
     public bool knobEnabled = true;
+    [Tooltip("Optional Renderer for the indicator on the knob - change material color based on knobEnabled state")]
+    public Renderer indicatorRenderer;
 
     private Vector3 initTargetPosition;
+    private Color indicatorColor;
 
     void Start()
     {
         // save the initial position of the target object
         initTargetPosition = new Vector3(targetObject.localPosition.x, targetObject.localPosition.y, targetObject.localPosition.z);
+        // save the initial color of the indicator
+        if (indicatorRenderer != null)
+        {
+            indicatorColor = indicatorRenderer.material.GetColor("_Color");
+        }
     }
-
+    void Update()
+    {
+        SetEnabled(knobEnabled);
+    }
     private void OnMouseOver() 
     {
         if (knobEnabled && Input.GetMouseButton(0))
@@ -41,6 +52,7 @@ public class Knob : MonoBehaviour
             UpdateKnobRotation();
             UpdateTargetPosition();
         }
+      
     }
 
     // Update Knob Rotation 
@@ -76,4 +88,35 @@ public class Knob : MonoBehaviour
         targetObject.localPosition = initTargetPosition + targetAxis * value;
     }
 
+    public float GetKnobValue()
+    {
+        float angle = Mathf.Clamp(gameObject.transform.localEulerAngles.z, minAngle, maxAngle);
+        float value = angle / (maxAngle - minAngle) * (maxValue - minValue);
+        return value;
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        knobEnabled = enabled;
+
+        if (!knobEnabled)
+        {
+            // reset knob rotation and target position and value to min
+            gameObject.transform.localEulerAngles = new Vector3(0, 0, minAngle);
+            targetObject.localPosition = initTargetPosition + targetAxis * minValue;    
+            // update target position to min value
+            UpdateTargetPosition();
+        }
+
+        // Update indicator color based on knobEnabled state
+        if (indicatorRenderer != null)
+        {
+            Color currentColor = indicatorRenderer.material.GetColor("_Color");
+            Color targetColor = knobEnabled ? indicatorColor : Color.red;
+            if (currentColor != targetColor)
+            {
+                indicatorRenderer.material.SetColor("_Color", targetColor);
+            }
+        }
+    }
 }
