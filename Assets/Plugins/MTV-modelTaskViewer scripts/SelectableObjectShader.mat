@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHABLEND_ON
+  - _ALPHAPREMULTIPLY_ON
   - _GLOSSYREFLECTIONS_OFF
   - _SPECULARHIGHLIGHTS_OFF
   m_InvalidKeywords:
@@ -67,28 +67,28 @@ Material:
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.287
+    - _Cutoff: 0.241
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _EmissionScaleUI: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.14
+    - _Glossiness: 0.006
     - _GlossyReflections: 0
     - _Lightmapping: 1
-    - _Metallic: 0.02
-    - _Mode: 2
+    - _Metallic: 0
+    - _Mode: 3
     - _OcclusionStrength: 0.103
-    - _Outline: 0.02
+    - _Outline: 0.05
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 0.98466915, b: 0, a: 0}
+    - _Color: {r: 0.100182414, g: 1, b: 0, a: 0.003921569}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0.13333334}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _OutColor: {r: 0.9490196, g: 0.7304652, b: 0, a: 0.16470589}
-    - _OutlineColor: {r: 1, g: 0.9887708, b: 0, a: 1}
+    - _OutlineColor: {r: 1, g: 0.98823535, b: 0, a: 0.22745098}
   m_BuildTextureStacks: []
