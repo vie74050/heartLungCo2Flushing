@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/**<summary>Add to object to allow expose control of active status or colliders of another</summary>*/
+/**<summary>Add to object to allow expose control of active status of colliders of another</summary>*/
 [System.Serializable]
 public class GameObjectsStatus : MonoBehaviour
 {

@@ -16,7 +16,10 @@ public class InteractableCursor : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void BrowserHover(string str);
 
-    public Texture2D cursorTexture;
+    [Tooltip("Optional display name instead of transform name")]
+	public string displayName = "";
+    [Tooltip("Texture for the cursor when hovering over this object")]
+    public Texture2D cursorTexture; // see Resources folder. Cursor should be 32x32 for web
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
 
@@ -45,7 +48,7 @@ public class InteractableCursor : MonoBehaviour
     void OnMouseOver() {
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string objectName = transform.name == "Label" ? transform.parent.name : transform.name;
+            string objectName = getName();
             BrowserHover(objectName);
         #endif
     }
@@ -54,10 +57,15 @@ public class InteractableCursor : MonoBehaviour
     {
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string objectName = transform.name == "Label" ? transform.parent.name : transform.name;
+            string objectName = getName();
 			BrowserSelect(objectName);
         #endif
         //Debug.Log("Clicked on " + transform.name);
+    }
+
+    private string getName()
+    {
+        return displayName != "" ? displayName : (  transform.name == "Label" ? transform.parent.name : transform.name );
     }
 
 }

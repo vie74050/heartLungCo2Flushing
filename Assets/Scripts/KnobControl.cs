@@ -30,9 +30,13 @@ public class Knob : MonoBehaviour
 
     private Vector3 initTargetPosition;
     private Color indicatorColor;
+    private KGFOrbitCam camsettings;
 
     void Start()
     {
+        // get cam settings ref -- to override panning when dragging
+		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
+
         // save the initial position of the target object
         initTargetPosition = new Vector3(targetObject.localPosition.x, targetObject.localPosition.y, targetObject.localPosition.z);
         // save the initial color of the indicator
@@ -49,8 +53,12 @@ public class Knob : MonoBehaviour
     {
         if (knobEnabled && Input.GetMouseButton(0))
         {
+            camsettings.SetPanningEnable(false);
             UpdateKnobRotation();
             UpdateTargetPosition();
+        }else
+        {
+            camsettings.SetPanningEnable(true);
         }
       
     }

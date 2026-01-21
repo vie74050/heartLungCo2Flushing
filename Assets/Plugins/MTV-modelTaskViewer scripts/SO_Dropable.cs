@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /** Makes Selectable Object droppable on collision with specified dropzone collider
- *  - require Selectable Object
+ *  - inherits from SelectableObject
+ *  - on mouse drag, checks for dropzone collision
+ *  - on mouse up, if over dropzone, snaps to target with the same name that is set in the Dropzone checklist
+ *  - can reparent to target parent on drop
+ *  - can mask child colliders until dropped
+ * NB: target objects in dropzone checklist are only used for position/rotation reference and are hidden on start.
  */
 
-public class Dropable : MonoBehaviour
+public class SO_Dropable : SelectableObject
 {
 	[Tooltip("Move w parent after dropped?")]
 	public bool reparentOnDrop = false;
@@ -20,17 +25,19 @@ public class Dropable : MonoBehaviour
 	[Tooltip("Default dist from camera if not over dropzone")]
 	public float distFromCamDefault = 5;
 
-	private SelectableObject so;
 	private readonly string dzLayerName = "Ignore Raycast";
 	private LayerMask dropzoneMask;
 	private float hitdistance = 1;
+	private Transform startParent;
 
 	private void Start()
 	{
+		base.Start(); // Call Start from SelectableObject
+
+		startParent = transform.parent;
+
 		// nb: assign dropzone items to Ignore Raycast layer
 		dropzoneMask = LayerMask.GetMask(dzLayerName);
-
-		so = GetComponent<SelectableObject>();
 
 		if (maskChildUntilDropped)
 		{
@@ -39,26 +46,26 @@ public class Dropable : MonoBehaviour
 	}
 	private void OnMouseDrag()
 	{
+		base.OnMouseDrag(); // Call OnMouseDrag from SelectableObject
 		SetDzsLayer("Default");
 		bool isOver = IsOverDropzone();
 
 		if (isOver)
 		{
-			so.distFromCam = hitdistance * .9f;
-			//so.snapbackDistMin = 100;
+			distFromCam = hitdistance;
 		}
 		else
 		{
-			so.distFromCam = distFromCamDefault < so.screenPoint.z ? distFromCamDefault : so.screenPoint.z;
-			//so.snapbackDistMin = 2;
+			distFromCam = distFromCamDefault < screenPoint.z ? distFromCamDefault : screenPoint.z;
 		}
 	}
 	private void OnMouseUp()
 	{
-		if (so.isDraggable && !so.alphaMode)
+		base.OnMouseUp(); // Call OnMouseUp from SelectableObject
+		if (isDraggable && !alphaMode)
 		{
 			OnDropzone(GetOverDropzone());
-			so.Deselect();
+			Deselect();
 		}
 		
 		SetDzsLayer(dzLayerName);
@@ -83,7 +90,7 @@ public class Dropable : MonoBehaviour
 			}
 			else
 			{
-				so.ResetAll();
+				ResetAll();
 			}
 			
 		}
@@ -112,19 +119,10 @@ public class Dropable : MonoBehaviour
 		}
 
 		if (!isDraggableAfterDrop){
-			so.isDraggable = false;		
+			isDraggable = false;        
 		}
 
-		so.isTaskComplete = true;
-
-		IDropHandler[] idhs = GetComponents<IDropHandler>();
-		foreach(IDropHandler idh in idhs)
-		{
-			if (idh != null)
-			{
-				idh.eDrop(target);
-			}
-		}
+		isTaskComplete = true;
 		
 		//BroadcastMessage("eDrop", target,SendMessageOptions.DontRequireReceiver);
 	}
@@ -152,7 +150,7 @@ public class Dropable : MonoBehaviour
 				}
 				isOver = true;
 
-				hitdistance = Camera.main.transform.position.y - hit.point.y; //hit.distance; 
+				hitdistance = Camera.main.transform.position.z - hit.point.z; //hit.distance; 
 				//Debug.Log(hitdistance);
 			}
 
@@ -214,5 +212,16 @@ public class Dropable : MonoBehaviour
 			_dz.gameObject.layer = i_layer;
 		}
 		
+	}
+
+	public void ResetPosition()
+	{
+		if (reparentOnDrop)
+		{
+			// reparent to original parent
+			transform.parent = startParent;
+		}
+		// reset to start position
+		base.ResetAll();
 	}
 }

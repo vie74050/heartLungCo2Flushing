@@ -19,9 +19,6 @@ public class SelectableObject : MonoBehaviour
 	[DllImport("__Internal")]
 	private static extern void BrowserSelect(string str);
 
-	[Tooltip("Optional display name instead of transform name")]
-	public string displayName = "";
-
 	[Tooltip("if true, object is highlighted ")]
 	public bool isSelected = false;
 
@@ -31,11 +28,6 @@ public class SelectableObject : MonoBehaviour
 	[Tooltip("Set the highlight tint")]
 	public Color highlightColour;
 
-	[Tooltip("Whether or not to set to snapToTransform if selected")]
-	public bool doSnapToTarget = false;
-	[Tooltip("Assign transform to snap to after selected")]
-	public Transform snapToTransform;
-
 	// draggable vars
 	public float snapbackDistMin = 5;
 	public float snapbackDistMax = 15;
@@ -44,60 +36,40 @@ public class SelectableObject : MonoBehaviour
 	public bool isListItem = true;
 
 	[HideInInspector]
-	public Vector3 targetPos = new Vector3(0, 10000, 0);            // local position ref
-	public bool isTaskComplete = false;
-
-	//private Transform pivotObj; 									// adjust for wrong pivot points
-	private Material[] origMaterials;
-
-	private Material mat_transparent;
-
 	public Vector3 screenPoint;
-
+	[HideInInspector]
+	public float distFromCam = 5;
+	[HideInInspector]
+	public bool isTaskComplete = false;
+	private Material[] origMaterials;
+	private Material mat_transparent;
 	private Vector3 offset;
 	private Vector3 origPos;                                        // position for reset
 	private Vector3 origRot;                                        // rot for reset
-	private float origSnapbackDistMin = 5;
-	private float origSnapbackDistMax = 15;
 	private animationOverride ao;
-
 	private readonly string tag_drag = "Draggable";
 
 	private KGFOrbitCam camsettings;
-	private Vector3 origCamTargetPos;
-	public float distFromCam = 5;
-
-	protected void Awake () {
-		if (displayName == "") {
-			displayName = gameObject.name;
-		}
-	}
+	
 	protected void Start()
 	{
 		Init();
 	}
-	public virtual void Init()
+    public virtual void Init()
 	{
-
+		// get cam settings ref -- to override panning when dragging
 		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
-		GameObject camTarget = camsettings.GetTarget();
-		origCamTargetPos = new Vector3(camTarget.transform.position.x, camTarget.transform.position.y, camTarget.transform.position.z);
-
+	
 		// make sure transparent material is in the Resources/materials and shaders folder
 		mat_transparent = Resources.Load("materials and shaders/transparent") as Material;
 
 		// save orig materials
 		SetOrigMaterials();
 
-		// adjusted pivot ref if any
-		//Transform[] pivot = GetComponentsInChildren<Transform>();
-		//pivotObj = pivot[pivot.Length-1];
-
 		// draggable: save orig positions
 		origPos = transform.localPosition;
 		origRot = transform.localEulerAngles;
-		origSnapbackDistMin = snapbackDistMin;
-		origSnapbackDistMax = snapbackDistMax;
+		
 
 		if (alphaMode)
 		{
@@ -123,34 +95,8 @@ public class SelectableObject : MonoBehaviour
 			ao = gameObject.AddComponent<animationOverride>();
 			ao.animOverride = false;
 		}
-
-		if (snapToTransform != null && doSnapToTarget) {
-			targetPos = snapToTransform.position;
-			// TODO rotation too?
-		}
-
 	}
 
-	void Update()
-	{
-		float speed = 10f;
-		if (doSnapToTarget && !ao.animOverride && isTaskComplete)
-		{
-
-			transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-
-		}
-
-	}
-
-	public void SetTargetPos(Transform tar)
-	{
-
-		//target.parent = transform.parent;
-		targetPos = tar.localPosition;
-		//Destroy(target.gameObject);
-
-	}
 	public void TriggerAnim()
 	{
 
@@ -159,17 +105,7 @@ public class SelectableObject : MonoBehaviour
 			ao.PlayAnim();
 		}
 	}
-	public Material[] GetOriginalMaterials()
-	{
-		return origMaterials;
-	}
-	//public float GetOrigScreenPointZ()
-	//{
-	//	float origScreenPoint_z;
-	//	Vector3 sp = Camera.main.WorldToScreenPoint(origPos);
-	//	origScreenPoint_z = sp.z;
-	//	return origScreenPoint_z;
-	//}
+	
 	public virtual void Deselect()
 	{
 		
@@ -208,18 +144,13 @@ public class SelectableObject : MonoBehaviour
 			#endif
 
 		}
-		
-		if (doSnapToTarget && snapToTransform !=null) {
-			isTaskComplete = true;
-		}
 
 		gameObject.BroadcastMessage("e_selected", SendMessageOptions.DontRequireReceiver);
 		
 	}
 	public virtual void ResetAll()
 	{
-		snapbackDistMin = origSnapbackDistMin;
-		snapbackDistMax = origSnapbackDistMax;
+	
 		ResetPosition();
 		ResetRotation();
 		Deselect();
@@ -227,7 +158,6 @@ public class SelectableObject : MonoBehaviour
 	public virtual void ResetPosition()
 	{
 		transform.localPosition = origPos;
-		doSnapToTarget = false;
 	}
 
 	public virtual void ResetRotation()
@@ -300,6 +230,7 @@ public class SelectableObject : MonoBehaviour
 
 	protected void OnMouseDrag()
 	{
+		Debug.Log("Mouse button down: " + Input.mousePresent + ", Button: " + (Input.GetMouseButton(0) ? "Left" : Input.GetMouseButton(1) ? "Right" : Input.GetMouseButton(2) ? "Middle" : "None"));
 		camsettings.SetPanningEnable(false);
 		if (isDraggable)
 		{
@@ -346,12 +277,12 @@ public class SelectableObject : MonoBehaviour
 			foreach (GameObject go in dragTagObjs)
 			{
 				SelectableObject so = go.GetComponent<SelectableObject>();
-				Dropable dp = go.GetComponent<Dropable>();
+				SO_Dropable dp = go.GetComponent<SO_Dropable>();
 
 				if (dp == null)
 				{
 					float dist = Vector3.Distance(go.transform.localPosition, so.origPos);
-					if ((dist < snapbackDistMin || dist > origSnapbackDistMax) && so.isDraggable)
+					if ((dist < snapbackDistMin || dist > snapbackDistMax) && so.isDraggable)
 					{
 						so.ResetPosition();
 					}
