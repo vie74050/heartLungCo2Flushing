@@ -90,7 +90,7 @@ public class SO_Dropable : SelectableObject
 			}
 			else
 			{
-				ResetAll();
+				ResetPosition();
 			}
 			
 		}

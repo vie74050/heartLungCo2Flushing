@@ -127,4 +127,16 @@ public class Knob : MonoBehaviour
             }
         }
     }
+
+    public void ResetAll()
+    {
+        // reset knob rotation and target position to initial state
+        gameObject.transform.localEulerAngles = new Vector3(0, 0, minAngle);
+        targetObject.localPosition = initTargetPosition;
+        // restore indicator color
+        if (indicatorRenderer != null)
+        {
+            indicatorRenderer.material.SetColor("_Color", indicatorColor);
+        }
+    }
 }

@@ -26,7 +26,7 @@ public class InteractableCursor : MonoBehaviour
     private void Awake() {
         if (cursorTexture == null)
         {
-            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointerArrow");
+            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointer");
         }
     }
     void OnMouseEnter()

@@ -404,7 +404,7 @@ public class SelectableObject : MonoBehaviour
 		
 	}
 
-	public void AddRigidBody()
+	private void AddRigidBody()
 	{
 		if (gameObject.GetComponent<Rigidbody>() == null)
 		{

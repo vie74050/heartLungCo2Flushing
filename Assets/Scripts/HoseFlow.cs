@@ -195,13 +195,13 @@ public class HoseFlow : MonoBehaviour
     public void SetFlow(float flow)
     {
         // round to whole number for stability
-        flow = Mathf.Round(flow * 100f) / 100f;
+        flow = Mathf.Round(flow * 100f) / 100f; //Debug.Log($"SetFlow called with {flow}");
         if (normalizedFlowRate == flow) return;
 
         normalizedFlowRate = flow;
         fadeTimer = 0f;
 
-        if (flow == 0f)
+        if (flow <= 0.01f)
         {
             fadingOut = true;
             fadingIn = false;      
