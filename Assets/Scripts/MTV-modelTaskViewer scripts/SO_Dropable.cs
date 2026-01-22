@@ -122,9 +122,6 @@ public class SO_Dropable : SelectableObject
 			isDraggable = false;        
 		}
 
-		isTaskComplete = true;
-		
-		//BroadcastMessage("eDrop", target,SendMessageOptions.DontRequireReceiver);
 	}
 
 	/// <summary>
@@ -214,6 +211,13 @@ public class SO_Dropable : SelectableObject
 		
 	}
 
+	/// <summary>
+	/// Returns the name of the current parent object, to check where object is dropped
+	/// </summary>
+	public string GetCurrentParentName()
+	{
+		return transform.parent.name;
+	}
 	public void ResetPosition()
 	{
 		if (reparentOnDrop)

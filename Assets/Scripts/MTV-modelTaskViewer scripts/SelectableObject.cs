@@ -119,7 +119,6 @@ public class SelectableObject : MonoBehaviour
 		isSelected = false;
 
 		//Debug.Log ("changed - deselect");
-		gameObject.BroadcastMessage("e_deselected", SendMessageOptions.DontRequireReceiver);
 
 	}
 
