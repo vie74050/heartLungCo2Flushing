@@ -32,6 +32,11 @@ public class InteractableCursor : MonoBehaviour
     void OnMouseEnter()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        // Requires web handling code to process this message
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            string objectName = getName();
+            BrowserHover(objectName);
+        #endif
     }
 
     void OnMouseExit()
@@ -42,14 +47,6 @@ public class InteractableCursor : MonoBehaviour
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
             BrowserHover("");
-        #endif
-    }
-
-    void OnMouseOver() {
-        // Requires web handling code to process this message
-        #if UNITY_WEBGL && !UNITY_EDITOR
-            string objectName = getName();
-            BrowserHover(objectName);
         #endif
     }
     
@@ -63,6 +60,17 @@ public class InteractableCursor : MonoBehaviour
         //Debug.Log("Clicked on " + transform.name);
     }
 
+    public void SetCursorTexture(Texture2D newTexture)
+    {
+        if (newTexture == null)
+        {
+            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointer");
+        }else
+        {
+            cursorTexture = newTexture;
+        }
+
+    }
     private string getName()
     {
         return displayName != "" ? displayName : (  transform.name == "Label" ? transform.parent.name : transform.name );

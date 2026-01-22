@@ -31,11 +31,18 @@ public class Knob : MonoBehaviour
     private Vector3 initTargetPosition;
     private Color indicatorColor;
     private KGFOrbitCam camsettings;
+    private InteractableCursor cursorSetter; // optional to change cursor if disabled
+    private Texture2D defaultCursorTexture;
 
     void Start()
     {
         // get cam settings ref -- to override panning when dragging
 		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
+        cursorSetter = GetComponent<InteractableCursor>();
+        if (cursorSetter != null)
+        {
+            defaultCursorTexture = cursorSetter.cursorTexture;
+        }
 
         // save the initial position of the target object
         initTargetPosition = new Vector3(targetObject.localPosition.x, targetObject.localPosition.y, targetObject.localPosition.z);
@@ -63,6 +70,10 @@ public class Knob : MonoBehaviour
       
     }
 
+    private void OnMouseUp() 
+    {
+        camsettings.SetPanningEnable(true);    
+    }   
     // Update Knob Rotation 
     private void UpdateKnobRotation()
     {
@@ -124,6 +135,18 @@ public class Knob : MonoBehaviour
             if (currentColor != targetColor)
             {
                 indicatorRenderer.material.SetColor("_Color", targetColor);
+            }
+        }
+        // Update cursor if cursorSetter is available
+        if (cursorSetter != null)
+        {
+            if (knobEnabled)
+            {
+                cursorSetter.SetCursorTexture(defaultCursorTexture);
+            }
+            else
+            {
+                cursorSetter.SetCursorTexture(null);
             }
         }
     }
