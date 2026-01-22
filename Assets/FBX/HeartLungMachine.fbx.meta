@@ -1170,27 +1170,27 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 100%
-    second: {fileID: 2800000, guid: f7f205dec2587f94489090e22993daf0, type: 3}
+    second: {fileID: 2800000, guid: a4e7e731d38104245a92319a93a30eb8, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Blender
-    second: {fileID: 2800000, guid: 14ee9a383891c504887b5263b61f8cd1, type: 3}
+    second: {fileID: 2800000, guid: 1e690bf3f13547f44ac89cc6a1c7841e, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Dial 0-250
-    second: {fileID: 2800000, guid: f6d7aee9260d4ed46912f994442223ce, type: 3}
+    second: {fileID: 2800000, guid: c65e32ac3ae1bb44288024a3c2f00c7f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Dial 0-4000
-    second: {fileID: 2800000, guid: 73e14f6ec711e2044a4829ced9c3d211, type: 3}
+    second: {fileID: 2800000, guid: d4fbfcafdef445443875c4cfa54d8b47, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: FlowSensorCover
-    second: {fileID: 2800000, guid: d9c0ca9510cca5049835c7c3f509f63c, type: 3}
+    second: {fileID: 2800000, guid: 9ccb5c4aa4ba08f4eab6fe94b4428dcb, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
@@ -1235,42 +1235,42 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Guage
-    second: {fileID: 2800000, guid: e995bd9339abac346a5410d35a8faa17, type: 3}
+    second: {fileID: 2800000, guid: 4136cf8d1128bdf41bbf0e095b2fb656, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Guage0-500
-    second: {fileID: 2800000, guid: 00b7385b42bc36945981d250c94c5860, type: 3}
+    second: {fileID: 2800000, guid: 2c4126d7d65c3114fb9763a3076d48ae, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Machines_Albedo.tga
-    second: {fileID: 2800000, guid: ad6a8fa6173e4b446b7985a69f442f79, type: 3}
+    second: {fileID: 2800000, guid: df2c565089127804283d7584c9038a1b, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Machines_Normal.tga
-    second: {fileID: 2800000, guid: 307a83b32ff291047a95cd6c8cccc9f1, type: 3}
+    second: {fileID: 2800000, guid: 9eb08cf29c67e494d8d8b24ec01bc682, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Monitor Back
-    second: {fileID: 2800000, guid: e05bd4a744134cd40bd5d4b9fea36825, type: 3}
+    second: {fileID: 2800000, guid: 0190929b9b0da484b957daf4c23de8e4, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Plasma_LyteA
-    second: {fileID: 2800000, guid: 31348e335c8d1684d8502da86bc62557, type: 3}
+    second: {fileID: 2800000, guid: 42c6d8aba374136498bc90e02e700b50, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Reservoir
-    second: {fileID: 2800000, guid: af75462646dc1484196848147489cf2a, type: 3}
+    second: {fileID: 2800000, guid: a7e44139f4186cd49b1da8cc0180cdcd, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Retangular Box
-    second: {fileID: 2800000, guid: 870a986e23153a04491a2de5be9bc206, type: 3}
+    second: {fileID: 2800000, guid: 19206354fe608fd4bb17e4ff8a668c55, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
