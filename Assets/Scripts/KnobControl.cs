@@ -24,7 +24,7 @@ public class Knob : MonoBehaviour
     public float minValue;  
     public float maxValue; 
     [Tooltip("Enable or disable the knob control")]
-    public bool knobEnabled = true;
+    public bool isActive = true;
     [Tooltip("Optional Renderer for the indicator on the knob - change material color based on knobEnabled state")]
     public Renderer indicatorRenderer;
 
@@ -54,11 +54,11 @@ public class Knob : MonoBehaviour
     }
     void Update()
     {
-        SetEnabled(knobEnabled);
+        SetEnabled(isActive);
     }
     private void OnMouseOver() 
     {
-        if (knobEnabled && Input.GetMouseButton(0))
+        if (isActive && Input.GetMouseButton(0))
         {
             camsettings.SetPanningEnable(false);
             UpdateKnobRotation();
@@ -116,9 +116,9 @@ public class Knob : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        knobEnabled = enabled;
+        isActive = enabled;
 
-        if (!knobEnabled)
+        if (!isActive)
         {
             // reset knob rotation and target position and value to min
             gameObject.transform.localEulerAngles = new Vector3(0, 0, minAngle);
@@ -131,7 +131,7 @@ public class Knob : MonoBehaviour
         if (indicatorRenderer != null)
         {
             Color currentColor = indicatorRenderer.material.GetColor("_Color");
-            Color targetColor = knobEnabled ? indicatorColor : Color.red;
+            Color targetColor = isActive ? indicatorColor : Color.red;
             if (currentColor != targetColor)
             {
                 indicatorRenderer.material.SetColor("_Color", targetColor);
@@ -140,7 +140,7 @@ public class Knob : MonoBehaviour
         // Update cursor if cursorSetter is available
         if (cursorSetter != null)
         {
-            if (knobEnabled)
+            if (isActive)
             {
                 cursorSetter.SetCursorTexture(defaultCursorTexture);
             }

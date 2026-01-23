@@ -1,7 +1,6 @@
 /* Controller for game object that behaves like a stopcock
-    Specify number of ports angles
-    Which ports are active at each angle
-    Which hoses are connected at each port
+   - Rotates to preset angles on each mouse click
+   - Keeps track of current position index
 */
 using System.Collections;
 using System.Collections.Generic;

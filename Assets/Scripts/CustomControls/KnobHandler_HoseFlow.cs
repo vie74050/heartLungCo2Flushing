@@ -33,7 +33,7 @@ public class KnobHandler_HoseFlow : MonoBehaviour
         }
         if (pivotObject != null)
         {
-            knobControl.knobEnabled = pivotObject.isOpen;
+            knobControl.isActive = pivotObject.IsOn;
         }
     }
 
@@ -41,7 +41,7 @@ public class KnobHandler_HoseFlow : MonoBehaviour
     {
         if (pivotObject != null)
         {
-            knobControl.knobEnabled = pivotObject.isOpen;
+            knobControl.isActive = pivotObject.IsOn;
         }
 
         if (knobControl != null && hoseFlow != null)

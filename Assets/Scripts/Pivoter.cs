@@ -9,25 +9,46 @@ using UnityEngine;
  * 
  * */
 
-public class Pivoter : MonoBehaviour
+public class Pivoter : MonoBehaviour, ISwitch
 {
+    [Tooltip("Initial state of the pivoter")]
     public bool isOpen = false;
 
     [Tooltip("The objects to pivot around their pivots")]
     public PivotItem[] pvObjs;
 
-    private float mouseDowndT = 0;
+    public bool IsOn { get => isOpen; set => isOpen = value; }
+    public bool IsActive { get; set; } = true;
+    
+    private float mouseDowndT = 0; // track how long mouse has been down to avoid conflict with mousedrag
     private int mouseDowndT_limit = 30;
 
     private void Start()
     {
-        if (isOpen){
-            foreach (PivotItem pi in pvObjs)
-            {
-                if (isOpen) pi.PivotAround(pi.max);
-            }
+        if (IsOn)
+        {
+            OnTurnedOn();
         }
+       
     }
+    public void OnTurnedOn()
+    {
+        // open
+        foreach (PivotItem pi in pvObjs)
+        {
+            pi.PivotAround(pi.max);
+        }
+        IsOn = true;
+    }
+    public void OnTurnedOff()
+    {
+        // close
+        foreach (PivotItem pi in pvObjs)
+        {
+            pi.PivotAround(-pi.max);
+        }
+        IsOn = false;
+    }   
     private void Update()
     {
         if (Input.GetMouseButton(0))
@@ -39,20 +60,25 @@ public class Pivoter : MonoBehaviour
     {
         if (mouseDowndT < mouseDowndT_limit)
         {
-            ToggleOpen();
+            Toggle();
         }
         mouseDowndT = 0;
     }
 
-    private void ToggleOpen()
+    public void Toggle()
     {
-       foreach (PivotItem pi in pvObjs)
-        {
-            if (isOpen) pi.PivotAround(-pi.max);
-            else pi.PivotAround(pi.max);
-        }
+        if (!IsActive) return;
 
-        isOpen = !isOpen;
+        IsOn = !IsOn;
+
+        if (IsOn)
+        {
+            OnTurnedOn();
+        }
+        else
+        {
+            OnTurnedOff();
+        }
     }
 
 }

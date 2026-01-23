@@ -10,7 +10,7 @@ public class WarningTextControl : MonoBehaviour
 {
     [Tooltip("TextMesh Pro text component for warning text display")]
     public TextMeshProUGUI warningText;
-    [Tooltip("Show on start")]
+    [Tooltip("Whether to show warning on start")]
     public bool showOnStart = false;
 
     private Canvas canvas;
@@ -41,7 +41,7 @@ public class WarningTextControl : MonoBehaviour
 
     protected void Update()
     {
-        // make it so text always facing camera 
+        // make it so text always facing camera (World Space canvas)
         if (warningText != null)
         {
             canvas.transform.rotation = Camera.main.transform.rotation;
