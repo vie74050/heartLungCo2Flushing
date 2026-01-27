@@ -31,6 +31,8 @@ public class HoseFlow : MonoBehaviour
     public float hoseDiameter = 0.1f;
     [Tooltip("Number of segments used to render the hose line (higher = smoother curve).")]
     public int hoseSegments = 20;
+    [Tooltip("Downstream hose dependents, optional.")]
+    public HoseFlow[] downstreamHoses;
 
     private List<GameObject> particles = new List<GameObject>();
     private List<Renderer> particleRenderers = new List<Renderer>();
@@ -120,7 +122,7 @@ public class HoseFlow : MonoBehaviour
     void Update()
     {
         // Always update hose line (editor + play mode)
-        UpdateHoseLine();
+        UpdateHoseLineRenderer();
 
         if (!Application.isPlaying) return;
 
@@ -147,7 +149,7 @@ public class HoseFlow : MonoBehaviour
         }
     }
 
-    void UpdateHoseLine()
+    private void UpdateHoseLineRenderer()
     {
         if (controlPoints == null || controlPoints.Length < 4) return;
 
@@ -174,7 +176,7 @@ public class HoseFlow : MonoBehaviour
                t * t * t * p3;
     }
 
-    public void UpdateMeshCollider()
+    private void UpdateMeshCollider()
     {
         meshCollider = GetComponent<MeshCollider>();
         // check if meshCollider exists, if not add one
