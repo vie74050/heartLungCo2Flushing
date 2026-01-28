@@ -229,7 +229,7 @@ public class SelectableObject : MonoBehaviour
 
 	protected void OnMouseDrag()
 	{
-		Debug.Log("Mouse button down: " + Input.mousePresent + ", Button: " + (Input.GetMouseButton(0) ? "Left" : Input.GetMouseButton(1) ? "Right" : Input.GetMouseButton(2) ? "Middle" : "None"));
+		//Debug.Log("Mouse button down: " + Input.mousePresent + ", Button: " + (Input.GetMouseButton(0) ? "Left" : Input.GetMouseButton(1) ? "Right" : Input.GetMouseButton(2) ? "Middle" : "None"));
 		camsettings.SetPanningEnable(false);
 		if (isDraggable)
 		{

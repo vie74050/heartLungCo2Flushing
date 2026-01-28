@@ -28,13 +28,13 @@ public class SO_Dropable : SelectableObject
 	private readonly string dzLayerName = "Ignore Raycast";
 	private LayerMask dropzoneMask;
 	private float hitdistance = 1;
-	private Transform startParent;
+	private Transform startParent => transform.parent;
+	private Vector3 startLocalPosition => transform.localPosition;
+	private Quaternion startLocalRotation => transform.localRotation;
 
 	private void Start()
 	{
 		base.Start(); // Call Start from SelectableObject
-
-		startParent = transform.parent;
 
 		// nb: assign dropzone items to Ignore Raycast layer
 		dropzoneMask = LayerMask.GetMask(dzLayerName);
@@ -96,10 +96,10 @@ public class SO_Dropable : SelectableObject
 		}
 		
 	}
-	private void Drop(Transform target)
+	private  void Drop(Transform target)
 	{
 		// drop action 
-		print("drop " + target.name);
+		//print("drop " + target.name);
 
 		// snap to target pos and rot
 		transform.position = target.position;
@@ -122,6 +122,7 @@ public class SO_Dropable : SelectableObject
 			isDraggable = false;        
 		}
 
+		OnDrop();
 	}
 
 	/// <summary>
@@ -176,7 +177,7 @@ public class SO_Dropable : SelectableObject
 			Transform t = hit.transform;
 			dz = t.GetComponent<Dropzone>();
 			
-			Debug.Log("Mouse over collider " + t.name);
+			//Debug.Log("Mouse over collider " + t.name);
 		}
 
 		return dz;
@@ -211,6 +212,10 @@ public class SO_Dropable : SelectableObject
 		
 	}
 
+	protected virtual void OnDrop()
+	{
+		// override in child classes for specific drop behavior
+	}
 	/// <summary>
 	/// Returns the name of the current parent object, to check where object is dropped
 	/// </summary>
@@ -224,6 +229,9 @@ public class SO_Dropable : SelectableObject
 		{
 			// reparent to original parent
 			transform.parent = startParent;
+			// reset to initial transform positionl, rotation
+			transform.localPosition = startLocalPosition;
+			transform.localRotation = startLocalRotation;
 		}
 		// reset to start position
 		base.ResetAll();

@@ -31,7 +31,7 @@ public class Pivoter : MonoBehaviour, ISwitch
         }
        
     }
-    public void OnTurnedOn()
+    public virtual void OnTurnedOn()
     {
         // open
         foreach (PivotItem pi in pvObjs)
@@ -40,7 +40,7 @@ public class Pivoter : MonoBehaviour, ISwitch
         }
         IsOn = true;
     }
-    public void OnTurnedOff()
+    public virtual void OnTurnedOff()
     {
         // close
         foreach (PivotItem pi in pvObjs)

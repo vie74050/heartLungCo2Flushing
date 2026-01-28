@@ -10,7 +10,7 @@ using UnityEngine;
  * 
  * Attach this script to the knob GameObject and assign the target object and movement axis in the inspector.
  */
-public class KnobControl : MonoBehaviour
+public class KnobDialControl : MonoBehaviour
 {
     [Tooltip("The target object to move based on knob rotation")]
     public Transform targetObject; 
@@ -57,7 +57,7 @@ public class KnobControl : MonoBehaviour
             indicatorColor = indicatorRenderer.material.GetColor("_Color");
         }
 
-        SetEnabled(isActive);
+        UpdateVisuals();
     }
    
     private void OnMouseOver() 
@@ -77,7 +77,11 @@ public class KnobControl : MonoBehaviour
     private void OnMouseUp() 
     {
         camsettings.SetPanningEnable(true);    
-    }   
+    }  
+    private void OnMouseExit() 
+    {
+        camsettings.SetPanningEnable(true);    
+    } 
     // Update Knob Rotation around local Z axis based on mouse drag
     private void UpdateKnobRotationMouseMove()
     {
@@ -118,18 +122,9 @@ public class KnobControl : MonoBehaviour
         float value = angle / (maxAngle - minAngle) * (maxValue - minValue);
         return value;
     }
-    // returns normalized knob value between 0 and 1
-    public float GetNormalizedKnobValue()
+    private void UpdateVisuals()
     {
-        float angle = Mathf.Clamp(gameObject.transform.localEulerAngles.z, minAngle, maxAngle);
-        float normalizedValue = (angle - minAngle) / (maxAngle - minAngle);
-        return normalizedValue;
-    }
-
-    public void SetEnabled(bool enabled)
-    {
-        isActive = enabled;
-
+        
         if (!isActive)
         {
             // reset knob rotation and target position and value to min
@@ -160,6 +155,22 @@ public class KnobControl : MonoBehaviour
                 cursorSetter.SetCursorTexture(null);
             }
         }
+    }
+    // returns normalized knob value between 0 and 1
+    public float GetNormalizedKnobValue()
+    {
+        float angle = Mathf.Clamp(gameObject.transform.localEulerAngles.z, minAngle, maxAngle);
+        float normalizedValue = (angle - minAngle) / (maxAngle - minAngle);
+        return normalizedValue;
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        // only update if state changed
+        if (isActive == enabled) return;
+
+        isActive = enabled;
+        UpdateVisuals();
     }
 
     public void ResetAll()

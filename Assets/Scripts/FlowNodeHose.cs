@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [ExecuteAlways]
-public class HoseFlow : MonoBehaviour
+public class FlowNodeHose : FlowNode
 {
     [Header("Spline Settings")]
     [Tooltip("Four control points that define the cubic Bezier spline for the hose path.")]
@@ -23,6 +23,8 @@ public class HoseFlow : MonoBehaviour
     public bool isReversed = false;
     [Tooltip("Duration (in seconds) for particles to fade in/out when flow stopped.")]
     public float fadeDuration = 0.5f;
+    [Tooltip("Whether flow is clamped")]
+    public bool isClamped = true;
 
     [Header("Hose Rendering")]
     [Tooltip("Material used to render the hose line.")]
@@ -31,9 +33,7 @@ public class HoseFlow : MonoBehaviour
     public float hoseDiameter = 0.1f;
     [Tooltip("Number of segments used to render the hose line (higher = smoother curve).")]
     public int hoseSegments = 20;
-    [Tooltip("Downstream hose dependents, optional.")]
-    public HoseFlow[] downstreamHoses;
-
+    
     private List<GameObject> particles = new List<GameObject>();
     private List<Renderer> particleRenderers = new List<Renderer>();
     private float[] tValues;
@@ -41,7 +41,7 @@ public class HoseFlow : MonoBehaviour
 
     // Fade state
     private float fadeTimer = 0f;
-    private bool fadingOut = false;
+    private bool fadingOut = true;
     private bool fadingIn = false;
     private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
@@ -107,9 +107,10 @@ public class HoseFlow : MonoBehaviour
         // Start with particles faded out if no flow
         if (normalizedFlowRate == 0f || particleCount == 0)
         {
-            fadingOut = true;
-            fadingIn = false;
             SetParticleAlpha(0f);
+        }
+        if (normalizedFlowRate > 0f && particleCount > 0){
+            SetFlow(normalizedFlowRate);
         }
         
 
@@ -130,7 +131,7 @@ public class HoseFlow : MonoBehaviour
 
         if (normalizedFlowRate == 0f || particleCount == 0) return;
 
-        // Animate particles only when not clamped
+        // Animate particles 
         for (int i = 0; i < particles.Count; i++)
         {
             float direction = isReversed ? -1f : 1f;
@@ -191,36 +192,6 @@ public class HoseFlow : MonoBehaviour
         lineRenderer.BakeMesh(mesh, true);
         meshCollider.sharedMesh = mesh;
     }
-
-    // Public methods for flow controls
-    // flow: normalized 0-1
-    public void SetFlow(float flow)
-    {
-        // round to whole number for stability
-        flow = Mathf.Round(flow * 100f) / 100f; //Debug.Log($"SetFlow called with {flow}");
-        if (normalizedFlowRate == flow) return;
-
-        normalizedFlowRate = flow;
-        fadeTimer = 0f;
-
-        if (flow <= 0.01f)
-        {
-            fadingOut = true;
-            fadingIn = false;      
-            // Set alpha to 1 at start so fade rises
-            SetParticleAlpha(1f);      
-        }
-        else
-        {
-            fadingIn = true;
-            fadingOut = false;
-            // Set alpha to zero at start so fade rises
-            SetParticleAlpha(0f);
-        }
-    }
-
-    public void ToggleReverse() => isReversed = !isReversed;
-    public void SetReverse(bool reverse) => isReversed = reverse;
 
     private void HandleFade()
     {
@@ -290,4 +261,46 @@ public class HoseFlow : MonoBehaviour
             prevPos = pos;
         }
     }
+
+    // Public methods for flow controls
+    // flow: normalized 0-1
+    public override void SetFlow(float flow)
+    {
+        // round to whole number for stability
+        flow = isClamped? 0f : Mathf.Round(flow * 100f) / 100f; 
+    
+        fadeTimer = 0f;
+
+        if (flow <= 0.01f && normalizedFlowRate > 0f && !fadingOut)
+        {
+            fadingOut = true;
+            fadingIn = false;        
+        }
+        else if (flow > 0.01f && normalizedFlowRate == 0f && !fadingIn)
+        {
+            fadingIn = true;
+            fadingOut = false;
+        }else {
+            fadingIn = false;
+            fadingOut = false;
+        }
+        
+        // update flow rate
+        normalizedFlowRate = flow;
+        
+        // propogate to downstream hoses if any
+        //Debug.Log("FlowNodeHose SetFlow called. Flow: " + flow);
+        if (downstreamFlowNodes != null)
+        {
+            foreach (var hose in downstreamFlowNodes)
+            {
+                hose?.SetFlow(flow);
+            }
+        }
+    }
+
+    public void ToggleReverse() => isReversed = !isReversed;
+    public void SetReverse(bool reverse) => isReversed = reverse;
+
+
 }

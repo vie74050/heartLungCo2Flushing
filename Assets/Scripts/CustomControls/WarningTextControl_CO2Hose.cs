@@ -6,7 +6,7 @@ using UnityEngine;
 public class WarningTextControl_CO2Hose : WarningTextControl
 {
     // extends class to add conditions for when to show warnings
-    public HoseFlow hose;               // reference to CO2Hose script to get hose flow rate
+    public FlowNodeHose hose;               // reference to CO2Hose script to get hose flow rate
     public Stopcock stopcock;           // reference to stopcock to check if open
     public SO_Dropable hoseEndDropable; // reference to dropable script on hose end
     public Transform targetDropParent;  // the parent transform when tank is dropped correctly
