@@ -42,8 +42,8 @@ public class Stopcock : FlowNode
         stopcockRotationTn.localRotation = Quaternion.Euler(0, targetAngle, 0);
 
         // Update flow system   
-        flowSystemController?.UpdateFlowSystem();     
-        //Debug.Log(flowSystemController != null ? "Flow system controller found." : "No flow system controller assigned.");
+        base.UpdateFlowSystem();     
+        
     }
 
     // Public method to get the current position index
