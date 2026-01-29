@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CO2TankONOFF : Pivoter
 {
-    // The tank also controls the CO2 flow meter knob
+    // The tank also controls CO2 flow meter knob enabled state
     [Tooltip("Reference to the CO2 Flow Meter Knob Control")]
     public KnobDialControl_FlowMeter co2FlowMeterKnob;
 

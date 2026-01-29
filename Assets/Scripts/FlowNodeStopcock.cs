@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class Stopcock : FlowNode
 {
-    [Tooltip("The Flow Meter Control that sets the flow rate")]
-    public KnobDialControl_FlowMeter flowMeterControl; // Reference to the flow meter control
     [Tooltip("Transform of the stopcock game object to rotate")]
     public Transform stopcockRotationTn;
 
@@ -44,7 +42,8 @@ public class Stopcock : FlowNode
         stopcockRotationTn.localRotation = Quaternion.Euler(0, targetAngle, 0);
 
         // Update flow system   
-        flowMeterControl?.HandleKnobUpdated();     
+        flowSystemController?.UpdateFlowSystem();     
+        //Debug.Log(flowSystemController != null ? "Flow system controller found." : "No flow system controller assigned.");
     }
 
     // Public method to get the current position index
@@ -57,16 +56,30 @@ public class Stopcock : FlowNode
     public override void SetFlow(float flow)
     {
         // Propagate flow to downstream hoses based on current position
-        for (int i = 0; i < downstreamFlowNodes.Length; i++)
+        if (downstreamFlowNodes == null) return;
+
+        FlowNode currentNode = downstreamFlowNodes[currentPositionIndex];
+
+        if (currentNode == null)
         {
-            if (i == currentPositionIndex)
-            {
-                downstreamFlowNodes[i]?.SetFlow(flow);
-            }
-            else
+            // set all lines to 0
+            for (int i = 0; i < downstreamFlowNodes.Length; i++)
             {
                 downstreamFlowNodes[i]?.SetFlow(0f);
+                //Debug.Log("stopcock closed line " + i);
             }
-        } 
-    }
+        }else
+        {
+            currentNode.SetFlow(flow);
+            // set all other lines to 0
+            for (int i = 0; i < downstreamFlowNodes.Length; i++)
+            {
+                if (i != currentPositionIndex && downstreamFlowNodes[i] != currentNode)
+                {
+                    downstreamFlowNodes[i]?.SetFlow(0f);
+                }
+            }
+        }
+        
+    }   
 }

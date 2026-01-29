@@ -177,8 +177,7 @@ public class KnobDialControl : MonoBehaviour
     {
         // reset knob rotation and target position to initial state
         gameObject.transform.localEulerAngles = new Vector3(0, 0, initKnobRotationZ);
-        targetObject.localPosition = initTargetPosition;
-        HandleKnobUpdated();
+        UpdateTargetPosition();
         // restore indicator color
         if (indicatorRenderer != null)
         {

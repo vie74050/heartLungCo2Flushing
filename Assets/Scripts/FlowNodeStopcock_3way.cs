@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ThreeWayStopcockNode : Stopcock
+public class FlowNodeStopcock_3way : Stopcock
 {
     // 3-way valve positions in order of 0, 1, 2, 3, where 
     // 0 is closed
@@ -15,7 +15,7 @@ public class ThreeWayStopcockNode : Stopcock
        
         state = Mathf.RoundToInt(currentPositionIndex);
         // round to whole number for stability
-        //Debug.Log("ThreeWayStopcockNode SetFlow called. State: " + state + " Flow: " + flow);
+        //Debug.Log("3 way stopcock SetFlow called. State: " + state + " Flow: " + flow);
 
         switch (currentPositionIndex)
         {

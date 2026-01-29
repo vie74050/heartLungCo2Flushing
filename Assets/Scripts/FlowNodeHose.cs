@@ -50,6 +50,7 @@ public class FlowNodeHose : FlowNode
 
     void Awake()
     {
+        base.Awake();
         // Setup LineRenderer
         lineRenderer = GetComponent<LineRenderer>();
         if (lineRenderer == null)
@@ -264,19 +265,20 @@ public class FlowNodeHose : FlowNode
 
     // Public methods for flow controls
     // flow: normalized 0-1
-    public override void SetFlow(float flow)
+    public override void SetFlow(float newFlow)
     {
         // round to whole number for stability
-        flow = isClamped? 0f : Mathf.Round(flow * 100f) / 100f; 
+        newFlow = isClamped? 0f : Mathf.Round(newFlow * 100f) / 100f; 
     
         fadeTimer = 0f;
 
-        if (flow <= 0.01f && normalizedFlowRate > 0f && !fadingOut)
+        if (newFlow <= 0.01f && normalizedFlowRate > 0f )
         {
             fadingOut = true;
-            fadingIn = false;        
+            fadingIn = false;     
+            Debug.Log("FlowNodeHose SetFlow fading out");   
         }
-        else if (flow > 0.01f && normalizedFlowRate == 0f && !fadingIn)
+        else if (newFlow > 0.01f && normalizedFlowRate == 0f)
         {
             fadingIn = true;
             fadingOut = false;
@@ -286,7 +288,7 @@ public class FlowNodeHose : FlowNode
         }
         
         // update flow rate
-        normalizedFlowRate = flow;
+        normalizedFlowRate = newFlow;
         
         // propogate to downstream hoses if any
         //Debug.Log("FlowNodeHose SetFlow called. Flow: " + flow);
@@ -294,7 +296,7 @@ public class FlowNodeHose : FlowNode
         {
             foreach (var hose in downstreamFlowNodes)
             {
-                hose?.SetFlow(flow);
+                hose?.SetFlow(newFlow);
             }
         }
     }
