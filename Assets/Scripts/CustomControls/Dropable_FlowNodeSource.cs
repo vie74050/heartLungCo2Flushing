@@ -4,9 +4,10 @@ public class Dropable_SourceNode : SO_Dropable
 {
     // This class extends the dropable functionality so on drop 
     // it can set downstream flow nodes of the supply line
-
-    public KnobDialControl_FlowMeter flowMeterControl; // Reference to the flow meter control
-    public FlowNode flowNode_supplyLine; // Reference to the FlowNode component to update
+    [Tooltip("The Flow Meter Control that sets the flow rate")]
+    public KnobDialControl_FlowMeter flowMeterControl; 
+    [Tooltip("The FlowNode component representing the supply line")]
+    public FlowNode flowNode_supplyLine; 
     [Tooltip("Downstream hose dependents to connect to supply line when dropped.")]
     public FlowNode[] downstreamFlowNodes; 
 

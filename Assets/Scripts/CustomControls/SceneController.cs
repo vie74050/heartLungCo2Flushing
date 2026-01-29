@@ -35,14 +35,6 @@ public class SceneController : MonoBehaviour
         frameCount++;
     }
 
-    // for webGL Browser to Unity using UnityInstance.SendMessage('Main', 'ResetScene');
-    // the game object must be named `Main`
-    public void ResetScene()
-    {
-        StartCoroutine(FadeAndReload());
-        frameCount = 0;
-    }
-
     private IEnumerator FadeAndReload()
     {
         yield return StartCoroutine(FadeOut());
@@ -107,5 +99,30 @@ public class SceneController : MonoBehaviour
             cg = fadeObj.GetComponent<CanvasGroup>();
         }
         return fadeObj;
+    }
+
+    // for webGL Browser to Unity using UnityInstance.SendMessage('Main', 'ResetScene');
+    // the game object must be named `Main`
+    public void ResetScene()
+    {
+        StartCoroutine(FadeAndReload());
+        frameCount = 0;
+    }
+    public string GetCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
+    // For WebGL: Browser can call this to get all SetCursor element names
+    public string GetAllSetCursorNames()
+    {
+        SetCursor[] cursorElements = FindObjectsOfType<SetCursor>();
+        List<string> names = new List<string>();
+        foreach (var cursor in cursorElements)
+        {
+            names.Add(cursor.GetLabelName());
+        }
+        // Return as comma-separated string for easy parsing in JS
+        return string.Join(",", names);
     }
 }

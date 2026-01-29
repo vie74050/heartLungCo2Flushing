@@ -33,14 +33,14 @@ public class KnobDialControl : MonoBehaviour
     private float initKnobRotationZ;
     private Color indicatorColor;
     private KGFOrbitCam camsettings;
-    private InteractableCursor cursorSetter; // optional to change cursor if disabled
+    private SetCursor cursorSetter; // optional to change cursor if disabled
     private Texture2D defaultCursorTexture;
 
     void Start()
     {
         // get cam settings ref -- to override panning when dragging
 		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
-        cursorSetter = GetComponent<InteractableCursor>();
+        cursorSetter = GetComponent<SetCursor>();
         if (cursorSetter != null)
         {
             defaultCursorTexture = cursorSetter.cursorTexture;

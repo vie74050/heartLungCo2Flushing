@@ -9,7 +9,7 @@ For WebGL:
 - ensure cursor size is 32x32 pixels for best results.
 - send message to browser (for further web handling of mouse over event) --> see JSLibs
 */
-public class InteractableCursor : MonoBehaviour
+public class SetCursor : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void BrowserSelect(string str);
@@ -71,7 +71,7 @@ public class InteractableCursor : MonoBehaviour
         }
 
     }
-    private string getName()
+    public string GetLabelName()
     {
         return displayName != "" ? displayName : (  transform.name == "Label" ? transform.parent.name : transform.name );
     }
