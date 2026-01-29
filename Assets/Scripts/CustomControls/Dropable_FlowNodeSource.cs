@@ -11,7 +11,11 @@ public class Dropable_SourceNode : SO_Dropable
     [Tooltip("Downstream hose dependents to connect to supply line when dropped.")]
     public FlowNode[] downstreamFlowNodes; 
 
-    // Called when the object is dropped
+    protected override void OnDrag()
+    {
+        base.OnDrag();
+        flowNode_supplyLine.GetComponent<FlowNodeHose>()?.UpdateHoseLineRenderer();
+    }
     protected override void OnDrop()
     {
         base.OnDrop();
@@ -20,6 +24,7 @@ public class Dropable_SourceNode : SO_Dropable
         {
             // connect the downstream flow nodes for the supply line
             flowNode_supplyLine.downstreamFlowNodes = downstreamFlowNodes;
+            flowNode_supplyLine.GetComponent<FlowNodeHose>()?.UpdateHoseLineRenderer();
             // Update flow system   
             flowSystemController?.UpdateFlowSystem();     
         }

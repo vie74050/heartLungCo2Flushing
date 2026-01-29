@@ -119,12 +119,17 @@ public class FlowNodeHose : FlowNode
         if (particlePrefab != null)
             particlePrefab.SetActive(false);
 
+        UpdateHoseLineRenderer();
+
     }
 
     void Update()
     {
-        // Always update hose line (editor + play mode)
-        UpdateHoseLineRenderer();
+        // Only update line renderer in edit mode
+        if (!Application.isPlaying)
+        {
+            UpdateHoseLineRenderer();
+        }       
 
         if (!Application.isPlaying) return;
 
@@ -149,24 +154,6 @@ public class FlowNodeHose : FlowNode
 
             particles[i].transform.position = pos;
         }
-    }
-
-    private void UpdateHoseLineRenderer()
-    {
-        if (controlPoints == null || controlPoints.Length < 4) return;
-
-        for (int i = 0; i <= hoseSegments; i++)
-        {
-            float t = i / (float)hoseSegments;
-            Vector3 pos = GetBezierPoint(t,
-                controlPoints[0].position,
-                controlPoints[1].position,
-                controlPoints[2].position,
-                controlPoints[3].position);
-
-            lineRenderer.SetPosition(i, pos);
-        }
-        UpdateMeshCollider();
     }
 
     Vector3 GetBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
@@ -304,5 +291,27 @@ public class FlowNodeHose : FlowNode
     public void ToggleReverse() => isReversed = !isReversed;
     public void SetReverse(bool reverse) => isReversed = reverse;
 
+    public void SetClamp(bool clamp)
+    {
+        isClamped = clamp;
+        base.UpdateFlowSystem();
+    }
 
+    public void UpdateHoseLineRenderer()
+    {
+        if (controlPoints == null || controlPoints.Length < 4) return;
+
+        for (int i = 0; i <= hoseSegments; i++)
+        {
+            float t = i / (float)hoseSegments;
+            Vector3 pos = GetBezierPoint(t,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position);
+
+            lineRenderer.SetPosition(i, pos);
+        }
+        UpdateMeshCollider();
+    }
 }

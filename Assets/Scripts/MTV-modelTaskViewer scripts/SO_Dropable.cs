@@ -58,6 +58,8 @@ public class SO_Dropable : SelectableObject
 		{
 			distFromCam = distFromCamDefault < screenPoint.z ? distFromCamDefault : screenPoint.z;
 		}
+
+		OnDrag();
 	}
 	private void OnMouseUp()
 	{
@@ -69,6 +71,8 @@ public class SO_Dropable : SelectableObject
 		}
 		
 		SetDzsLayer(dzLayerName);
+		
+		OnUp();
 	}
 	private void OnDropzone(Dropzone dz)
 	{
@@ -96,7 +100,7 @@ public class SO_Dropable : SelectableObject
 		}
 		
 	}
-	private  void Drop(Transform target)
+	private void Drop(Transform target)
 	{
 		// drop action 
 		//print("drop " + target.name);
@@ -119,7 +123,14 @@ public class SO_Dropable : SelectableObject
 		}
 
 		if (!isDraggableAfterDrop){
-			isDraggable = false;        
+			isDraggable = false;      
+
+			// if SetCursor component attached, reset cursor to default
+			SetCursor sc = GetComponent<SetCursor>();
+			if (sc)
+			{
+				sc.SetCursorTexture(null);
+			}  
 		}
 
 		OnDrop();
@@ -212,10 +223,6 @@ public class SO_Dropable : SelectableObject
 		
 	}
 
-	protected virtual void OnDrop()
-	{
-		// override in child classes for specific drop behavior
-	}
 	/// <summary>
 	/// Returns the name of the current parent object, to check where object is dropped
 	/// </summary>
@@ -235,5 +242,18 @@ public class SO_Dropable : SelectableObject
 		}
 		// reset to start position
 		base.ResetAll();
+	}
+
+	protected virtual void OnDrag()
+	{
+		// for specific drag behavior
+	}
+	protected virtual void OnUp()
+	{
+		// for specific mouse up behavior
+	}
+	protected virtual void OnDrop()
+	{
+		// for specific drop on dropzone behavior
 	}
 }
