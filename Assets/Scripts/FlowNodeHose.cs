@@ -46,7 +46,11 @@ public class FlowNodeHose : FlowNode
     private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
     private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
-    private MeshCollider meshCollider; // for hose collider if needed
+    
+    // for clamps detection
+    private MeshCollider meshCollider; 
+    // to track attached clamps
+    private List<GameObject> clamps = new List<GameObject>();
 
     void Awake()
     {
@@ -60,6 +64,7 @@ public class FlowNodeHose : FlowNode
         lineRenderer.startWidth = hoseDiameter;
         lineRenderer.endWidth = hoseDiameter;
         lineRenderer.positionCount = hoseSegments + 1;
+
     }
 
     void Start()
@@ -129,7 +134,11 @@ public class FlowNodeHose : FlowNode
         if (!Application.isPlaying)
         {
             UpdateHoseLineRenderer();
+        }
+        else{
+            UpdateMeshCollider(); // to ensure collider oreints to camera
         }       
+
 
         if (!Application.isPlaying) return;
 
@@ -179,6 +188,14 @@ public class FlowNodeHose : FlowNode
         Mesh mesh = new Mesh();
         lineRenderer.BakeMesh(mesh, true);
         meshCollider.sharedMesh = mesh;
+
+        // add Dropzone component if not already present
+        Dropzone dz = GetComponent<Dropzone>();
+        if (dz == null)
+        {
+            dz = gameObject.AddComponent<Dropzone>();
+            //dz.checklist = new List<DropzoneList>() { "SO_FlowNodeClamp" };
+        }
     }
 
     private void HandleFade()
@@ -263,7 +280,7 @@ public class FlowNodeHose : FlowNode
         {
             fadingOut = true;
             fadingIn = false;     
-            Debug.Log("FlowNodeHose SetFlow fading out");   
+            //Debug.Log("FlowNodeHose SetFlow fading out");   
         }
         else if (newFlow > 0.01f && normalizedFlowRate == 0f)
         {
@@ -291,9 +308,25 @@ public class FlowNodeHose : FlowNode
     public void ToggleReverse() => isReversed = !isReversed;
     public void SetReverse(bool reverse) => isReversed = reverse;
 
-    public void SetClamp(bool clamp)
+    public void SetClamp(GameObject clamp, bool clampState)
     {
-        isClamped = clamp;
+        if (clampState)
+        {
+            if (!clamps.Contains(clamp))
+            {
+                clamps.Add(clamp);
+            }
+        }
+        else
+        {
+            if (clamps.Contains(clamp))
+            {
+                clamps.Remove(clamp);
+            }
+        }
+
+        isClamped = clamps.Count > 0;
+        
         base.UpdateFlowSystem();
     }
 

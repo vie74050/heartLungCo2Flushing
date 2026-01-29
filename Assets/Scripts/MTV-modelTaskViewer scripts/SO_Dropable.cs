@@ -25,8 +25,8 @@ public class SO_Dropable : SelectableObject
 	[Tooltip("Default dist from camera if not over dropzone")]
 	public float distFromCamDefault = 5;
 
-	private readonly string dzLayerName = "Ignore Raycast";
-	private LayerMask dropzoneMask;
+	public string dzLayerName = "Ignore Raycast";
+	protected LayerMask dropzoneMask;
 	private float hitdistance = 1;
 	private Transform startParent => transform.parent;
 	private Vector3 startLocalPosition => transform.localPosition;
@@ -159,7 +159,7 @@ public class SO_Dropable : SelectableObject
 				}
 				isOver = true;
 
-				hitdistance = Camera.main.transform.position.z - hit.point.z; //hit.distance; 
+				hitdistance = Vector3.Distance(Camera.main.transform.position, hit.point);
 				//Debug.Log(hitdistance);
 			}
 
@@ -175,7 +175,7 @@ public class SO_Dropable : SelectableObject
 	/// Return Dropzone if mouse is over a dropzone.
 	/// </summary>
 	/// <returns></returns>
-	private Dropzone GetOverDropzone()
+	protected Dropzone GetOverDropzone()
 	{
 		// detect if pointer collision over dropzone
 		RaycastHit hit;

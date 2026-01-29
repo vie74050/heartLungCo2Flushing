@@ -54,7 +54,7 @@
  
     SubShader
     {
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
+        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" "PerformanceChecks"="False" }
         LOD 300
  
         // Outline addition starts here

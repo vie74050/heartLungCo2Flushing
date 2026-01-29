@@ -29,6 +29,7 @@ public class Dropzone : MonoBehaviour
 	{
 		
 		// nb: assign dropzone items to Ignore Raycast layer
+		// so is ignored by general raycasts, except those specifically targeting dropzones
 		dropzoneMask = LayerMask.GetMask("Ignore Raycast");
 
 		if (checklist.Count == 0)
