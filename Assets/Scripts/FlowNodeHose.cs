@@ -136,7 +136,7 @@ public class FlowNodeHose : FlowNode
             UpdateHoseLineRenderer();
         }
         else{
-            UpdateMeshCollider(); // to ensure collider oreints to camera
+            UpdateMeshCollider(); // to ensure collider orients to camera
         }       
 
 

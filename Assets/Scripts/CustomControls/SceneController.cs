@@ -113,10 +113,10 @@ public class SceneController : MonoBehaviour
         return SceneManager.GetActiveScene().name;
     }
 
-    // For WebGL: Browser can call this to get all SetCursor element names
-    public string GetAllSetCursorNames()
+    // For WebGL: Browser can call this to get all Interactible element names
+    public string GetAllInteractibleNames()
     {
-        SetCursor[] cursorElements = FindObjectsOfType<SetCursor>();
+        Interactible[] cursorElements = FindObjectsOfType<Interactible>();
         List<string> names = new List<string>();
         foreach (var cursor in cursorElements)
         {

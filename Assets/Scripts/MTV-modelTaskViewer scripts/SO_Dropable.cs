@@ -129,8 +129,8 @@ public class SO_Dropable : SelectableObject
 		if (!isDraggableAfterDrop){
 			isDraggable = false;      
 
-			// if SetCursor component attached, reset cursor to default
-			SetCursor sc = GetComponent<SetCursor>();
+			// if Interactible component attached, reset cursor to default
+			Interactible sc = GetComponent<Interactible>();
 			if (sc)
 			{
 				sc.SetCursorTexture(null);

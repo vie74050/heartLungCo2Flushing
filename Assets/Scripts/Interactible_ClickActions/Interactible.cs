@@ -9,7 +9,7 @@ For WebGL:
 - ensure cursor size is 32x32 pixels for best results.
 - send message to browser (for further web handling of mouse over event) --> see JSLibs
 */
-public class SetCursor : MonoBehaviour
+public class Interactible : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void BrowserSelect(string str);
@@ -20,14 +20,19 @@ public class SetCursor : MonoBehaviour
 	public string displayName = "";
     [Tooltip("Texture for the cursor when hovering over this object")]
     public Texture2D cursorTexture; // see Resources folder. Cursor should be 32x32 for web
+
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
+
+    // List of ClickAction scripts attached to this GameObject
+    private ClickAction[] clickActions;
 
     private void Awake() {
         if (cursorTexture == null)
         {
             cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointer");
         }
+        clickActions = GetComponents<ClickAction>();
     }
     void OnMouseEnter()
     {
@@ -58,6 +63,17 @@ public class SetCursor : MonoBehaviour
 			BrowserSelect(objectName);
         #endif
         //Debug.Log("Clicked on " + transform.name);
+
+        if (clickActions != null)
+        {
+            foreach (ClickAction action in clickActions)
+            {
+                if (action != null)
+                {
+                    action.OnClick();
+                }
+            }
+        }
     }
 
     public void SetCursorTexture(Texture2D newTexture)
@@ -77,3 +93,4 @@ public class SetCursor : MonoBehaviour
     }
 
 }
+

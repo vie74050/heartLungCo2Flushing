@@ -3,7 +3,7 @@
 */
 using UnityEngine;
 
-public class WarningTextControl_CO2Hose : WarningTextControl
+public class WarningTextControl_CO2Hose : AlertTextControl
 {
     [Tooltip("Reference to CO2Hose script to get hose flow rate")]
     public FlowNodeHose hose;

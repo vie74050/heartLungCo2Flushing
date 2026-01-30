@@ -6,35 +6,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 [RequireComponent(typeof(Canvas))]
-public class WarningTextControl : MonoBehaviour
+public class AlertTextControl : MonoBehaviour
 {
     [Tooltip("TextMesh Pro text component for warning text display")]
-    public TextMeshProUGUI warningText;
+    public TextMeshProUGUI alertText;
     [Tooltip("Whether to show warning on start")]
     public bool showOnStart = false;
+    [Tooltip("Optional: text to show OnClick")]
+    public string onClickText = "";
 
     private Canvas canvas;
 
     protected void Start()
     {
         // try to get component from children
-        warningText = GetComponentInChildren<TextMeshProUGUI>();
+        alertText = GetComponentInChildren<TextMeshProUGUI>();
         canvas = GetComponent<Canvas>();
 
-        if (warningText == null)
+        if (alertText == null)
         {
-            Debug.LogError("WarningTextControl: TextMeshProUGUI component not assigned.");
+            Debug.LogError("AlertTextControl: TextMeshProUGUI component not assigned.");
             
         }
         else
         {
            if (showOnStart)
            {
-               ShowWarning();
+               ShowAlert();
            }
            else
            {
-               HideWarning();
+               HideAlert();
            }
         }
     }
@@ -42,43 +44,37 @@ public class WarningTextControl : MonoBehaviour
     protected void Update()
     {
         // make it so text always facing camera (World Space canvas)
-        if (warningText != null)
+        if (alertText != null)
         {
             canvas.transform.rotation = Camera.main.transform.rotation;
         }
     }
 
-    // Show warning text
-    private void ShowWarning()
+    // Show alert text
+    private void ShowAlert()
     {
-        if (warningText != null)
-        {
-            canvas.enabled = true;
-        }
+        gameObject.SetActive(true);
     }
 
-    // Hide warning text
-    private void HideWarning()
+    // Hide alert text
+    private void HideAlert()
     {
-        if (warningText != null)
-        {
-            canvas.enabled = false;
-        }
+        gameObject.SetActive(false);
     }
 
-    // Update the warning text content, send empty string to hide
+    // Update the alert text content, send empty string to hide
     public void UpdateWarningText(string newText)
     {
         if (newText == "")
         {
             // empty text, hide warning
-            HideWarning();
+            HideAlert();
             return;
         }
-        if (warningText != null)
+        if (alertText != null)
         {
-            warningText.text = newText;
-            ShowWarning();
+            alertText.text = newText;
+            ShowAlert();
             
         }
     }
