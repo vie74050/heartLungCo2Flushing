@@ -24,9 +24,8 @@ public class SO_Dropable : SelectableObject
 	
 	[Tooltip("Default dist from camera if not over dropzone")]
 	public float distFromCamDefault = 5;
-
-	public string dzLayerName = "Ignore Raycast";
-	protected LayerMask dropzoneMask;
+	[Tooltip("Layer mask for dropzone object")]
+	public LayerMask dropzoneMask;
 	private float hitdistance = 1;
 	private Transform startParent => transform.parent;
 	private Vector3 startLocalPosition => transform.localPosition;
@@ -36,9 +35,11 @@ public class SO_Dropable : SelectableObject
 	{
 		base.Start(); // Call Start from SelectableObject
 
-		// nb: assign dropzone items to Ignore Raycast layer
-		dropzoneMask = LayerMask.GetMask(dzLayerName);
-
+		if (dropzoneMask == 0)
+		{
+			dropzoneMask = LayerMask.GetMask("Ignore Raycast");
+		}
+		
 		if (maskChildUntilDropped)
 		{
 			SetChildrenColliders(false);
@@ -47,7 +48,10 @@ public class SO_Dropable : SelectableObject
 	private void OnMouseDrag()
 	{
 		base.OnMouseDrag(); // Call OnMouseDrag from SelectableObject
-		SetDzsLayer("Default");
+		//SetDzsLayer("Default");
+		// while dropable being dragged, set dropzones to default layer so can be detected by raycast
+		SetDZLayerMask(0);
+
 		bool isOver = IsOverDropzone();
 
 		if (isOver)
@@ -70,7 +74,7 @@ public class SO_Dropable : SelectableObject
 			Deselect();
 		}
 		
-		SetDzsLayer(dzLayerName);
+		SetDZLayerMask(dropzoneMask);
 		
 		OnUp();
 	}
@@ -211,17 +215,14 @@ public class SO_Dropable : SelectableObject
 	/// <summary>
 	/// Sets all children Dropzone layer to targetlayer
 	/// </summary>
-	/// <param name="targetlayer">Name of target layer</param>
-	private void SetDzsLayer(string targetlayer)
+	private void SetDZLayerMask(LayerMask lm)
 	{
 		Dropzone[] dzs = GetComponentsInChildren<Dropzone>();
-		int i_layer = LayerMask.NameToLayer(targetlayer);
 		foreach (Dropzone _dz in dzs)
 		{
-			_dz.gameObject.layer = i_layer;
+			_dz.gameObject.layer = lm;
 		}
-		
-	}
+	}	
 
 	/// <summary>
 	/// Returns the name of the current parent object, to check where object is dropped

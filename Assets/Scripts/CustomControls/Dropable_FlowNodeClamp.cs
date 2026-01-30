@@ -79,7 +79,7 @@ public class SO_FlowNodeClamp : SO_Dropable
             controlledHose.SetClamp(gameObject, true);
             transform.position = droppedPos;
             transform.rotation = droppedRot;
-            Debug.Log("SO_FlowNodeClamp dropped on FlowNodeHose - clamp ON");
+            //Debug.Log("SO_FlowNodeClamp dropped on FlowNodeHose - clamp ON");
         }
 
         if(dz!=null)

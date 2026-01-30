@@ -34,7 +34,7 @@ public class SetCursor : MonoBehaviour
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string objectName = getName();
+            string objectName = GetLabelName();
             BrowserHover(objectName);
         #endif
     }
@@ -54,7 +54,7 @@ public class SetCursor : MonoBehaviour
     {
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR
-            string objectName = getName();
+            string objectName = GetLabelName();
 			BrowserSelect(objectName);
         #endif
         //Debug.Log("Clicked on " + transform.name);

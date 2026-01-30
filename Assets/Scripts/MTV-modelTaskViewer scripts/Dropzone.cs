@@ -20,17 +20,25 @@ public class Dropzone : MonoBehaviour
 
 	[Tooltip("Set inactive when complete")]
 	public bool hideOnComplete = true;
-
+	private LayerMask dropzoneMask;
 	private Material[] origMaterials;
 	private Material mat_transparent;
 	// references
-	private LayerMask dropzoneMask;
+	
 	private void Start()
 	{
 		
 		// nb: assign dropzone items to Ignore Raycast layer
 		// so is ignored by general raycasts, except those specifically targeting dropzones
-		dropzoneMask = LayerMask.GetMask("Ignore Raycast");
+		
+		// get the LayerMask for this dropzone
+		dropzoneMask = 1 << gameObject.layer;
+
+		// if unassigned, set to Ignore Raycast layer
+		if (dropzoneMask == 0)
+		{
+			dropzoneMask = LayerMask.GetMask("Ignore Raycast");
+		}
 
 		if (checklist.Count == 0)
 		{
