@@ -134,11 +134,7 @@ public class FlowNodeHose : FlowNode
         if (!Application.isPlaying)
         {
             UpdateHoseLineRenderer();
-        }
-        else{
-            UpdateMeshCollider(); // to ensure collider orients to camera
-        }       
-
+        }   
 
         if (!Application.isPlaying) return;
 
