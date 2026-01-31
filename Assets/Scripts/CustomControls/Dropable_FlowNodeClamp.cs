@@ -97,30 +97,28 @@ public class SO_FlowNodeClamp : SO_Dropable
     {
         base.OnDrag();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, dropzoneMask))
+        if (HoseRaycastManager.GetClosestHose(ray, out var hose, out var hoseHitPoint))
         {
-            controlledHose = HoseRaycastManager.GetClosestHose(ray);
-            if (controlledHose != null)
+            controlledHose = hose;
+            
+            // attach to hose at closest point
+            if (TryGetClampPoseOnHose(controlledHose, hoseHitPoint, out var cp, out var rot, 
+                        out int segIndex, out float t))
             {
-                if (TryGetClampPoseOnHose(controlledHose, hit.point, out var cp, out var rot, 
-                          out int segIndex, out float t))
+                attachment = new HoseAttachment
                 {
-                    attachment = new HoseAttachment
-                    {
-                        hose = controlledHose,
-                        segmentIndex = segIndex,
-                        t = t
-                    };
+                    hose = controlledHose,
+                    segmentIndex = segIndex,
+                    t = t
+                };
 
-                    transform.SetPositionAndRotation(cp, rot);
-
-                    droppedPos = cp;
-                    droppedRot = rot;
-                }
-
+                transform.SetPositionAndRotation(cp, rot);
+                controlledHose?.SetClamp(gameObject, true);
+                droppedPos = cp;
+                droppedRot = rot;
             }
-           
-        }
+
+        }        
         else
         {
             controlledHose?.SetClamp(gameObject, false);
@@ -133,17 +131,43 @@ public class SO_FlowNodeClamp : SO_Dropable
     protected override void OnDrop()
     {
        
-        if (controlledHose != null)
-        {
-            controlledHose.SetClamp(gameObject, true);
-            transform.SetPositionAndRotation(droppedPos, droppedRot);
-            //Debug.Log("SO_FlowNodeClamp dropped on FlowNodeHose - clamp ON");
-        }
-        
+                
     }
 
 
 }
+
+// Utility class to find closest FlowNodeHose from a ray
+public static class HoseRaycastManager
+{
+    public static bool GetClosestHose(Ray ray, out FlowNodeHose hose, out Vector3 hitPoint)
+    {
+        hose = null;
+        hitPoint = Vector3.zero;
+
+        float bestT = float.PositiveInfinity;
+
+        foreach (var h in Object.FindObjectsOfType<FlowNodeHose>())
+        {
+            float t;
+            Vector3 hp;
+
+            if (h.RaycastHose(ray, out t, out hp))
+            {
+                if (t < bestT)
+                {
+                    bestT = t;
+                    hose = h;
+                    hitPoint = hp;
+                }
+            }
+        }
+
+        return hose != null;
+    }
+
+}
+
 
 
  

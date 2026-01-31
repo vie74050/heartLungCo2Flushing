@@ -417,29 +417,3 @@ public class FlowNodeHose : FlowNode
 
 }
 
-// Utility class to find closest FlowNodeHose from a ray
-public static class HoseRaycastManager
-{
-    public static FlowNodeHose GetClosestHose(Ray ray)
-    {
-        FlowNodeHose best = null;
-        float bestT = float.PositiveInfinity;
-
-        foreach (var hose in Object.FindObjectsOfType<FlowNodeHose>())
-        {
-            float t;
-            Vector3 hitPoint;
-
-            if (hose.RaycastHose(ray, out t, out hitPoint))
-            {
-                if (t < bestT)
-                {
-                    bestT = t;
-                    best = hose;
-                }
-            }
-        }
-
-        return best;
-    }
-}
