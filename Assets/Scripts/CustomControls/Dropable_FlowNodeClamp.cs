@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// Component will add functionality to control clamped stated of the FlowNodeHose if attached
+// Makes a dropable that can interact with FlowNodeHose to clamp it
+// FlowNodeHose must have a LineRenderer component. Instead of using colliders for clamp detection,
+// we use raycasting against the LineRenderer to find the closest point on the hose to drop position.
+// The clamp object is then positioned and oriented at that point.
 
 public class SO_FlowNodeClamp : SO_Dropable
 {
@@ -9,64 +12,120 @@ public class SO_FlowNodeClamp : SO_Dropable
     private Transform initTn;
     private Vector3 droppedPos;
     private Quaternion droppedRot;
-    private Dropzone dz;
+
+    [System.Serializable]
+    public struct HoseAttachment // store parameters for clamp on hose
+    {
+        public FlowNodeHose hose;
+        public int segmentIndex;
+        public float t;
+    }
+    private HoseAttachment? attachment;
     
+    void Update()
+    {
+        if (attachment.HasValue)
+        {
+            FollowHose();
+        }
+    }
+    private void FollowHose()
+    {
+        var a = attachment.Value;
+
+        LineRenderer lr = a.hose.GetComponent<LineRenderer>();
+        if (lr == null) return;
+
+        Vector3 p1 = lr.GetPosition(a.segmentIndex);
+        Vector3 p2 = lr.GetPosition(a.segmentIndex + 1);
+
+        Vector3 cp = Vector3.Lerp(p1, p2, a.t);
+
+        // Compute orientation again
+        Vector3 dir = (p2 - p1).normalized;
+        Vector3 normal = Vector3.Cross(-dir, Camera.main.transform.forward).normalized;
+        Quaternion rot = Quaternion.LookRotation(dir, normal);
+
+        transform.SetPositionAndRotation(cp, rot);
+    }
+    private bool TryGetClampPoseOnHose(
+        FlowNodeHose hose,
+        Vector3 worldPoint,
+        out Vector3 closestPoint,
+        out Quaternion rotation,
+        out int closestSegment,
+        out float closestT)
+    {
+        closestPoint = Vector3.zero;
+        rotation = Quaternion.identity;
+        closestSegment = 0;
+        closestT = 0f;
+
+        LineRenderer lr = hose.GetComponent<LineRenderer>();
+        if (lr == null || lr.positionCount < 2)
+            return false;
+
+        float minDist = float.MaxValue;
+        
+        for (int i = 0; i < lr.positionCount - 1; i++)
+        {
+            Vector3 p1 = lr.GetPosition(i);
+            Vector3 p2 = lr.GetPosition(i + 1);
+
+            Vector3 seg = p2 - p1;
+            float t = Mathf.Clamp01(Vector3.Dot(worldPoint - p1, seg) / seg.sqrMagnitude);
+            Vector3 pointOnSegment = p1 + seg * t;
+
+            float dist = Vector3.SqrMagnitude(worldPoint - pointOnSegment);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closestPoint = pointOnSegment;
+                closestSegment = i;
+                closestT = t;
+            }
+        }
+
+        Vector3 dir = (lr.GetPosition(closestSegment + 1) - lr.GetPosition(closestSegment)).normalized;
+        Vector3 normal = Vector3.Cross(-dir, Camera.main.transform.forward).normalized;
+
+        rotation = Quaternion.LookRotation(dir, normal);
+        return true;
+    }
+
     protected override void OnDrag()
     {
         base.OnDrag();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, dropzoneMask))
         {
-            Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.yellow);
-            // get dropzone being hovered over
-            dz = GetOverDropzone();
-            // if over dropzone with FlowNodeHose, update clamp state
-            if (dz != null)
+            controlledHose = HoseRaycastManager.GetClosestHose(ray);
+            if (controlledHose != null)
             {
-                controlledHose = dz.GetComponent<FlowNodeHose>();
-                                
-                
-                // Orient the clamp normal to the hose (LineRenderer) at the closest point
-                LineRenderer lr = controlledHose?.GetComponent<LineRenderer>();
-                if (lr != null)
+                if (TryGetClampPoseOnHose(controlledHose, hit.point, out var cp, out var rot, 
+                          out int segIndex, out float t))
                 {
-                    // Find closest point on the line to the hit point
-                    float minDist = float.MaxValue;
-                    Vector3 closestPoint = lr.GetPosition(0);
-                    int closestSegment = 0;
-                    for (int i = 0; i < lr.positionCount - 1; i++)
+                    attachment = new HoseAttachment
                     {
-                        Vector3 p1 = lr.GetPosition(i);
-                        Vector3 p2 = lr.GetPosition(i + 1);
-                        Vector3 proj = Vector3.Project(hit.point - p1, p2 - p1);
-                        float t = Mathf.Clamp01(Vector3.Dot(proj, p2 - p1) / (p2 - p1).sqrMagnitude);
-                        Vector3 pointOnSegment = Vector3.Lerp(p1, p2, t);
-                        float dist = Vector3.Distance(hit.point, pointOnSegment);
-                        if (dist < minDist)
-                        {
-                            minDist = dist;
-                            closestPoint = pointOnSegment;
-                            closestSegment = i;
-                        }
-                    }
-                    // Find direction of the segment
-                    Vector3 dir = (lr.GetPosition(closestSegment + 1) - lr.GetPosition(closestSegment)).normalized;
-                    // Find a normal vector (arbitrary, but perpendicular)
-                    Vector3 normal = Vector3.Cross(-dir, Camera.main.transform.forward).normalized;
-                    // Set rotation so clamp's up is normal to hose
-                    transform.rotation = Quaternion.LookRotation(dir, normal);
+                        hose = controlledHose,
+                        segmentIndex = segIndex,
+                        t = t
+                    };
+
+                    transform.SetPositionAndRotation(cp, rot);
+
+                    droppedPos = cp;
+                    droppedRot = rot;
                 }
 
-                // store dropped position to snap to on drop
-                droppedPos = hit.point;
-                // store dropped rotation to snap to on drop
-                droppedRot = transform.rotation;
             }
+           
         }
         else
         {
             controlledHose?.SetClamp(gameObject, false);
             controlledHose = null;
+            attachment = null;
         }
     }
 
@@ -77,16 +136,14 @@ public class SO_FlowNodeClamp : SO_Dropable
         if (controlledHose != null)
         {
             controlledHose.SetClamp(gameObject, true);
-            transform.position = droppedPos;
-            transform.rotation = droppedRot;
+            transform.SetPositionAndRotation(droppedPos, droppedRot);
             //Debug.Log("SO_FlowNodeClamp dropped on FlowNodeHose - clamp ON");
-        }
-
-        if(dz!=null)
-        {
-            dz.checklist[0].isComplete = false;
         }
         
     }
+
+
 }
+
+
  

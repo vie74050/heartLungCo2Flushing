@@ -46,11 +46,8 @@ public class FlowNodeHose : FlowNode
     private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
     private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
-    
-    // for clamps detection
-    private MeshCollider meshCollider; 
-    // to track attached clamps
-    private List<GameObject> clamps = new List<GameObject>();
+
+    private List<GameObject> clamps = new List<GameObject>();  // to track attached clamps
 
     void Awake()
     {
@@ -170,30 +167,6 @@ public class FlowNodeHose : FlowNode
                t * t * t * p3;
     }
 
-    private void UpdateMeshCollider()
-    {
-        meshCollider = GetComponent<MeshCollider>();
-        // check if meshCollider exists, if not add one
-        if (meshCollider == null)
-        {
-            meshCollider = gameObject.AddComponent<MeshCollider>();
-            
-        }else {
-            meshCollider.sharedMesh = null; // clear existing
-        }
-        Mesh mesh = new Mesh();
-        lineRenderer.BakeMesh(mesh, true);
-        meshCollider.sharedMesh = mesh;
-
-        // add Dropzone component if not already present
-        Dropzone dz = GetComponent<Dropzone>();
-        if (dz == null)
-        {
-            dz = gameObject.AddComponent<Dropzone>();
-            //dz.checklist = new List<DropzoneList>() { "SO_FlowNodeClamp" };
-        }
-    }
-
     private void HandleFade()
     {
         //Debug.Log($"Fading Out : {fadingOut}");
@@ -239,6 +212,67 @@ public class FlowNodeHose : FlowNode
             r.SetPropertyBlock(mpb);
         }
         //Debug.Log($"Set particle alpha to {alpha}");
+    }
+
+    // important -- MOMORY LEAK AVOIDANCE, only use in edit mode or on changes
+    private void UpdateMeshCollider()
+    {
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
+        // check if meshCollider exists, if not add one
+        if (meshCollider == null)
+        {
+            meshCollider = gameObject.AddComponent<MeshCollider>();
+            
+        }else {
+            meshCollider.sharedMesh = null; // clear existing
+        }
+        Mesh mesh = new Mesh();
+        lineRenderer.BakeMesh(mesh, true);
+        meshCollider.sharedMesh = mesh;
+    }
+
+    private float RaySegmentDistanceSqr(
+        Ray ray,
+        Vector3 a,
+        Vector3 b,
+        out float rayT)
+    {
+        Vector3 p = ray.origin;
+        Vector3 r = ray.direction;
+
+        Vector3 q = a;
+        Vector3 s = b - a;
+
+        float rDotR = Vector3.Dot(r, r);
+        float sDotS = Vector3.Dot(s, s);
+        float rDotS = Vector3.Dot(r, s);
+        Vector3 qMinusP = q - p;
+        float rDotQMinusP = Vector3.Dot(r, qMinusP);
+        float sDotQMinusP = Vector3.Dot(s, qMinusP);
+
+        float denom = rDotR * sDotS - rDotS * rDotS;
+
+        float t, u;
+
+        // Handle near-parallel case
+        if (Mathf.Abs(denom) < 1e-6f)
+        {
+            t = rDotQMinusP / rDotR;
+            u = Mathf.Clamp01(rDotQMinusP / (rDotS + 1e-6f));
+        }
+        else
+        {
+            t = (rDotQMinusP * sDotS - sDotQMinusP * rDotS) / denom;
+            u = (rDotQMinusP * rDotS - sDotQMinusP * rDotR) / denom;
+            u = Mathf.Clamp01(u);
+        }
+
+        rayT = t;
+
+        Vector3 closestOnRay = p + t * r;
+        Vector3 closestOnSeg = q + u * s;
+
+        return (closestOnRay - closestOnSeg).sqrMagnitude;
     }
 
     // Draw spline in editor for preview
@@ -341,6 +375,71 @@ public class FlowNodeHose : FlowNode
 
             lineRenderer.SetPosition(i, pos);
         }
+
         UpdateMeshCollider();
+    }
+
+    // for collistion detection without need for line collider
+    public bool RaycastHose(Ray ray, out float rayT, out Vector3 hitPoint)
+    {
+        float hoseRadius = hoseDiameter * 0.5f;
+        rayT = float.PositiveInfinity;
+        hitPoint = Vector3.zero;
+
+        LineRenderer lr = GetComponent<LineRenderer>();
+        if (lr == null || lr.positionCount < 2)
+            return false;
+
+        float radiusSqr = hoseRadius * hoseRadius;
+        bool hit = false;
+
+        for (int i = 0; i < lr.positionCount - 1; i++)
+        {
+            Vector3 a = lr.GetPosition(i);
+            Vector3 b = lr.GetPosition(i + 1);
+
+            float t;
+            float distSqr = RaySegmentDistanceSqr(ray, a, b, out t);
+
+            if (distSqr <= radiusSqr && t >= 0f)
+            {
+                if (t < rayT)
+                {
+                    rayT = t;
+                    hitPoint = ray.origin + ray.direction * t;
+                    hit = true;
+                }
+            }
+        }
+
+        return hit;
+    }
+
+}
+
+// Utility class to find closest FlowNodeHose from a ray
+public static class HoseRaycastManager
+{
+    public static FlowNodeHose GetClosestHose(Ray ray)
+    {
+        FlowNodeHose best = null;
+        float bestT = float.PositiveInfinity;
+
+        foreach (var hose in Object.FindObjectsOfType<FlowNodeHose>())
+        {
+            float t;
+            Vector3 hitPoint;
+
+            if (hose.RaycastHose(ray, out t, out hitPoint))
+            {
+                if (t < bestT)
+                {
+                    bestT = t;
+                    best = hose;
+                }
+            }
+        }
+
+        return best;
     }
 }
