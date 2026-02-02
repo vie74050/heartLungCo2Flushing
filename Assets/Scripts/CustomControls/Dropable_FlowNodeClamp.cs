@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// Makes a dropable that can interact with FlowNodeHose to clamp it
-// FlowNodeHose must have a LineRenderer component. Instead of using colliders for clamp detection,
-// we use raycasting against the LineRenderer to find the closest point on the hose to drop position.
+// Makes a draggable g.o that can interact with FlowNodeHose LineRenderer component. 
+// - raycasting against the LineRenderer to find the closest point on the hose to drop position.
 // The clamp object is then positioned and oriented at that point.
 
 public class SO_FlowNodeClamp : SO_Dropable
 {
+    //public Color highlightColor = Color.yellow;
     private FlowNodeHose controlledHose;
     private Transform initTn;
     private Vector3 droppedPos;
@@ -21,6 +21,13 @@ public class SO_FlowNodeClamp : SO_Dropable
         public float t;
     }
     private HoseAttachment? attachment;
+
+    public override void Init()
+    {
+        // for reference to reset position if needed
+        initTn = transform;
+        base.Init();
+    }
     
     void Update()
     {
@@ -93,12 +100,16 @@ public class SO_FlowNodeClamp : SO_Dropable
         return true;
     }
 
-    protected override void OnDrag()
+    void OnDrag()
     {
-        base.OnDrag();
+        Debug.Log("Dragging FlowNodeClamp");
+
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (HoseRaycastManager.GetClosestHose(ray, out var hose, out var hoseHitPoint))
         {
+            // disable camera panning while dragging
+            
             controlledHose = hose;
             
             // attach to hose at closest point
@@ -126,15 +137,6 @@ public class SO_FlowNodeClamp : SO_Dropable
             attachment = null;
         }
     }
-
-    // extend OnMouseUp to detect collision with FlowNodeHose and toggle clamp state
-    protected override void OnDrop()
-    {
-       
-                
-    }
-
-
 }
 
 // Utility class to find closest FlowNodeHose from a ray
