@@ -226,8 +226,91 @@ public class FlowNodeHose : FlowNode
         }else {
             meshCollider.sharedMesh = null; // clear existing
         }
+        // Create a 3D tube mesh along the spline instead of baking the 2D line renderer mesh
         Mesh mesh = new Mesh();
-        lineRenderer.BakeMesh(mesh, true);
+
+        int radialSegments = 8; // Number of sides for the tube
+        int lengthSegments = hoseSegments;
+        float radius = hoseDiameter * 0.5f;
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+        List<Vector3> normals = new List<Vector3>();
+
+        // Generate vertices and normals
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float t = i / (float)lengthSegments;
+            Vector3 center = GetBezierPoint(t,
+            controlPoints[0].position,
+            controlPoints[1].position,
+            controlPoints[2].position,
+            controlPoints[3].position);
+
+            // Calculate tangent for orientation
+            Vector3 tangent;
+            if (i < lengthSegments)
+            {
+            float tNext = (i + 1) / (float)lengthSegments;
+            tangent = (GetBezierPoint(tNext,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position) - center).normalized;
+            }
+            else
+            {
+            float tPrev = (i - 1) / (float)lengthSegments;
+            tangent = (center - GetBezierPoint(tPrev,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position)).normalized;
+            }
+
+            // Find a vector not parallel to tangent for normal calculation
+            Vector3 normal = Vector3.Cross(tangent, Vector3.up);
+            if (normal.sqrMagnitude < 0.001f)
+            normal = Vector3.Cross(tangent, Vector3.right);
+            normal.Normalize();
+
+            for (int j = 0; j < radialSegments; j++)
+            {
+            float angle = 2 * Mathf.PI * j / radialSegments;
+            Quaternion rot = Quaternion.AngleAxis(Mathf.Rad2Deg * angle, tangent);
+            Vector3 dir = rot * normal;
+            vertices.Add(center + dir * radius);
+            normals.Add(dir);
+            }
+        }
+
+        // Generate triangles
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < radialSegments; j++)
+            {
+            int current = i * radialSegments + j;
+            int next = current + radialSegments;
+            int nextJ = (j + 1) % radialSegments;
+
+            int currentNextJ = i * radialSegments + nextJ;
+            int nextNextJ = currentNextJ + radialSegments;
+
+            // Two triangles per quad
+            triangles.Add(current);
+            triangles.Add(next);
+            triangles.Add(nextNextJ);
+
+            triangles.Add(current);
+            triangles.Add(nextNextJ);
+            triangles.Add(currentNextJ);
+            }
+        }
+
+        mesh.SetVertices(vertices);
+        mesh.SetNormals(normals);
+        mesh.SetTriangles(triangles, 0);
+
         meshCollider.sharedMesh = mesh;
     }
 
