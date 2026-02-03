@@ -10,8 +10,6 @@ public class SO_FlowNodeClamp : SO_Dropable
     //public Color highlightColor = Color.yellow;
     private FlowNodeHose controlledHose;
     private Transform initTn;
-    private Vector3 droppedPos;
-    private Quaternion droppedRot;
 
     [System.Serializable]
     public struct HoseAttachment // store parameters for clamp on hose
@@ -102,7 +100,7 @@ public class SO_FlowNodeClamp : SO_Dropable
 
     protected override void OnDrag()
     {
-        Debug.Log("Dragging FlowNodeClamp");
+        //Debug.Log("Dragging FlowNodeClamp");
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (HoseRaycastManager.GetClosestHose(ray, out var hose, out var hoseHitPoint))
@@ -122,8 +120,6 @@ public class SO_FlowNodeClamp : SO_Dropable
 
                 transform.SetPositionAndRotation(cp, rot);
                 controlledHose?.SetClamp(gameObject, true);
-                droppedPos = cp;
-                droppedRot = rot;
             }
 
         }
@@ -134,7 +130,6 @@ public class SO_FlowNodeClamp : SO_Dropable
             attachment = null;
         }
     }
-
 }
 
 // Utility class to find closest FlowNodeHose from a ray

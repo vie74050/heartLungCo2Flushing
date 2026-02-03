@@ -39,10 +39,6 @@ public class FlowNodeHose : FlowNode
     private float[] tValues;
     private LineRenderer lineRenderer;
 
-    // Fade state
-    private float fadeTimer = 0f;
-    private bool fadingOut = true;
-    private bool fadingIn = false;
     private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
     private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
@@ -135,8 +131,6 @@ public class FlowNodeHose : FlowNode
 
         if (!Application.isPlaying) return;
 
-        HandleFade(); 
-
         if (normalizedFlowRate == 0f || particleCount == 0) return;
 
         // Animate particles 
@@ -167,33 +161,22 @@ public class FlowNodeHose : FlowNode
                t * t * t * p3;
     }
 
-    private void HandleFade()
+    private System.Collections.IEnumerator HandleFade(bool fadeIn)
     {
-        //Debug.Log($"Fading Out : {fadingOut}");
-        if (fadingOut)
-        {
-            fadeTimer += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, Mathf.Clamp01(fadeTimer / fadeDuration));
-            
-            SetParticleAlpha(alpha);
+        float startAlpha = fadeIn ? 0f : 1f;
+        float endAlpha = fadeIn ? 1f : 0f;
+        float timer = 0f;
 
-            if (fadeTimer >= fadeDuration)
-            {
-                fadingOut = false;
-            }
-        }
-        else if (fadingIn)
+        while (timer < fadeDuration)
         {
-            
-            fadeTimer += Time.deltaTime;
-            float alpha = Mathf.Lerp(0f, 1f, Mathf.Clamp01(fadeTimer / fadeDuration));
+            timer += Time.deltaTime;
+            float t = Mathf.Clamp01(timer / fadeDuration);
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, t);
             SetParticleAlpha(alpha);
-
-            if (fadeTimer >= fadeDuration)
-            {
-                fadingIn = false;
-            }
+            yield return null;
         }
+        SetParticleAlpha(endAlpha);
+
     }
 
     private void SetParticleAlpha(float alpha)
@@ -386,22 +369,18 @@ public class FlowNodeHose : FlowNode
     {
         // round to whole number for stability
         newFlow = isClamped? 0f : Mathf.Round(newFlow * 100f) / 100f; 
-    
-        fadeTimer = 0f;
 
-        if (newFlow <= 0.01f && normalizedFlowRate > 0f )
+        if (newFlow <= 0.0f && normalizedFlowRate > 0f )
         {
-            fadingOut = true;
-            fadingIn = false;     
-            //Debug.Log("FlowNodeHose SetFlow fading out");   
+            // start fade out
+            StartCoroutine(HandleFade(false));       
         }
-        else if (newFlow > 0.01f && normalizedFlowRate == 0f)
+        else if (newFlow > 0.0f && normalizedFlowRate == 0f)
         {
-            fadingIn = true;
-            fadingOut = false;
+            // start fade in
+            StartCoroutine(HandleFade(true));       
         }else {
-            fadingIn = false;
-            fadingOut = false;
+           /// Debug.Log("FlowNodeHose SetFlow called. Flow: " + newFlow);
         }
         
         // update flow rate
