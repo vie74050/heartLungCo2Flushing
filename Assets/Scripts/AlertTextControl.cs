@@ -44,7 +44,7 @@ public class AlertTextControl : MonoBehaviour
     protected void Update()
     {
         // make it so text always facing camera (World Space canvas)
-        if (alertText != null)
+        if (canvas != null)
         {
             canvas.transform.rotation = Camera.main.transform.rotation;
         }
@@ -53,13 +53,13 @@ public class AlertTextControl : MonoBehaviour
     // Show alert text
     private void ShowAlert()
     {
-        gameObject.SetActive(true);
+        alertText.gameObject.SetActive(true);
     }
 
     // Hide alert text
     private void HideAlert()
     {
-        gameObject.SetActive(false);
+        alertText.gameObject.SetActive(false);
     }
 
     // Update the alert text content, send empty string to hide

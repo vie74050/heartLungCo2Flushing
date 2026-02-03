@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class WarningTextControl_CO2Hose : AlertTextControl
 {
-    [Tooltip("Reference to CO2Hose script to get hose flow rate")]
-    public FlowNodeHose hose;
+    [Tooltip("FlowMeterControl that sets flow rate")]
+    public KnobDialControl_FlowMeter flowMeterControl;
+    [Tooltip("Reference to CO2Hose supply line")]
+    public FlowNodeHose supplyLine;
 
     [Tooltip("Reference to stopcock to check if open")]
     public Stopcock stopcock;
@@ -32,10 +34,11 @@ public class WarningTextControl_CO2Hose : AlertTextControl
         string warning = "";
         // get hoseEndDropable current parent to see if it is targetDropParent
         string currentParentName = hoseEndDropable.GetCurrentParentName();
-        bool isFlow = hose.normalizedFlowRate > 0.01f;
+        bool isFlow = supplyLine.normalizedFlowRate > 0.0f;
         bool isConnected = currentParentName == targetDropParent.name;
         bool isStopcockOpen = stopcock.GetCurrentPositionIndex() > 0; // assuming index 0 is closed
-
+        bool isFlowMeterOn = flowMeterControl?flowMeterControl.GetNormalizedKnobValue() > 0.0f : false;
+        
         if (isFlow && !isConnected)
         {
             warning = warnings[0];
@@ -44,7 +47,7 @@ public class WarningTextControl_CO2Hose : AlertTextControl
         {
             warning = warnings[1];
         }
-
+        
         // Check if CO2 can vent out properly
         else if (isFlow)
         {
@@ -52,7 +55,7 @@ public class WarningTextControl_CO2Hose : AlertTextControl
             foreach (Transform terminal in endTerminalsToCheck)
             {
                 FlowNodeHose endHose = terminal.GetComponent<FlowNodeHose>();
-                if (endHose != null && endHose.normalizedFlowRate > 0.01f)
+                if (endHose != null && endHose.normalizedFlowRate > 0.0f)
                 {
                     allZeroFlow = false;
                     break;
@@ -64,6 +67,13 @@ public class WarningTextControl_CO2Hose : AlertTextControl
                 warning = warnings[2];
             }
         }   
+
+        if (isFlowMeterOn && supplyLine.isClamped)
+        {
+            // supply line is connected and on but clamped
+            //Debug.Log("CO2 Hose connected and stopcock open but no flow - likely clamped.");
+            warning = warnings[2];
+        }
 
         UpdateWarningText(warning);
         
