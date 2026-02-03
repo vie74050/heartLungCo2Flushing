@@ -27,14 +27,7 @@ public class SO_FlowNodeClamp : SO_Dropable
         base.Init();
     }
 
-    void Update()
-    {
-        if (attachment.HasValue)
-        {
-            FollowHose();
-        }
-    }
-    private void FollowHose()
+    public void FollowHose()
     {
         var a = attachment.Value;
 
@@ -98,10 +91,10 @@ public class SO_FlowNodeClamp : SO_Dropable
         return true;
     }
 
-    protected override void OnDrag()
+    protected override void OnMouseDrag()
     {
         //Debug.Log("Dragging FlowNodeClamp");
-
+        base.OnMouseDrag();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (HoseRaycastManager.GetClosestHose(ray, out var hose, out var hoseHitPoint))
         {
@@ -139,6 +132,15 @@ public class SO_FlowNodeClamp : SO_Dropable
         }
     }
 
+    protected override void OnMouseUp()
+    {
+        //Debug.Log("Released FlowNodeClamp");
+        base.OnMouseUp();
+        if (attachment.HasValue)
+        {
+            FollowHose();
+        }
+    }
 }
 
 // Utility class to find closest FlowNodeHose from a ray

@@ -227,7 +227,7 @@ public class SelectableObject : MonoBehaviour
 		
 	}
 
-	protected void OnMouseDrag()
+	protected virtual void OnMouseDrag()
 	{
 		//Debug.Log("Mouse button down: " + Input.mousePresent + ", Button: " + (Input.GetMouseButton(0) ? "Left" : Input.GetMouseButton(1) ? "Right" : Input.GetMouseButton(2) ? "Middle" : "None"));
 		camsettings.SetPanningEnable(false);
@@ -267,7 +267,7 @@ public class SelectableObject : MonoBehaviour
 
 	}
 
-	protected void OnMouseUp()
+	protected virtual void OnMouseUp()
 	{
 		if (!alphaMode)
 		{

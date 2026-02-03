@@ -439,6 +439,13 @@ public class FlowNodeHose : FlowNode
         }
 
         UpdateMeshCollider();
+
+        // if there are clamps attached, get SO_FlowNodeClamp component to call FollowHose
+        foreach (var c in clamps)
+        {
+            var soClamp = c.GetComponent<SO_FlowNodeClamp>();
+            soClamp?.FollowHose();
+        }
     }
 
     // for collistion detection without need for line collider

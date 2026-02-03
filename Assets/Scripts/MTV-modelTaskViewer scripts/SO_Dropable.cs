@@ -45,7 +45,7 @@ public class SO_Dropable : SelectableObject
 			SetChildrenColliders(false);
 		}
 	}
-	private void OnMouseDrag()
+	protected virtual void OnMouseDrag()
 	{
 		base.OnMouseDrag(); // Call OnMouseDrag from SelectableObject
 		//SetDzsLayer("Default");
@@ -63,9 +63,8 @@ public class SO_Dropable : SelectableObject
 			distFromCam = distFromCamDefault < screenPoint.z ? distFromCamDefault : screenPoint.z;
 		}
 
-		OnDrag();
 	}
-	private void OnMouseUp()
+	protected virtual void OnMouseUp()
 	{
 		base.OnMouseUp(); // Call OnMouseUp from SelectableObject
 		if (isDraggable && !alphaMode)
@@ -75,10 +74,9 @@ public class SO_Dropable : SelectableObject
 		}
 		
 		SetDZLayerMask(dropzoneMask);
-		
-		OnUp();
+
 	}
-	private void OnDropzone(Dropzone dz)
+	protected virtual void OnDropzone(Dropzone dz)
 	{
 		// handle object being dropped on a dropzone
 		//print("ondropzone");
@@ -104,7 +102,7 @@ public class SO_Dropable : SelectableObject
 		}
 		
 	}
-	private void Drop(Transform target)
+	protected virtual void Drop(Transform target)
 	{
 		// drop action 
 		//print("drop " + target.name);
@@ -245,14 +243,6 @@ public class SO_Dropable : SelectableObject
 		base.ResetAll();
 	}
 
-	protected virtual void OnDrag()
-	{
-		// for specific drag behavior
-	}
-	protected virtual void OnUp()
-	{
-		// for specific mouse up behavior
-	}
 	protected virtual void OnDrop()
 	{
 		// for specific drop on dropzone behavior
