@@ -1,8 +1,9 @@
 using UnityEngine;
 /* Changes the color of a specified material globally */
 
-public class GlobalMaterialColorChanger : MonoBehaviour
+public class GlobalMaterialColorChanger : ClickAction
 {
+    [Header("Material Color Change Settings")]
     [Tooltip("The material whose color will be changed globally.")]
     public Material targetMaterial;     
     [Tooltip("Target color to change the material to.")]
@@ -19,6 +20,15 @@ public class GlobalMaterialColorChanger : MonoBehaviour
         {
             Debug.LogWarning("Target material is not assigned.");
         }
+    }
+    void Start()
+    {
+        if (isOn) ChangeGlobalMaterialColor();
+        else ResetMaterialColor();
+    }
+    private void OnApplicationQuit()
+    {
+        ResetMaterialColor();
     }
     public void ChangeGlobalMaterialColor()
     {
@@ -42,9 +52,27 @@ public class GlobalMaterialColorChanger : MonoBehaviour
             Debug.LogWarning("Target material is not assigned.");
         }
     }   
-    void OnApplicationQuit()
+    public override void OnClick()
     {
-        ResetMaterialColor();
+        switch (onClickActiveMode)
+        {
+            case GameObjectActiveMode.SetTrue:
+                ChangeGlobalMaterialColor();
+                break;
+            case GameObjectActiveMode.SetFalse:
+                ResetMaterialColor();
+                break;
+            case GameObjectActiveMode.Toggle:
+                if (targetMaterial.color == originalColor)
+                {
+                    ChangeGlobalMaterialColor();
+                }
+                else
+                {
+                    ResetMaterialColor();
+                }
+                break;
+        }
     }
 
 }

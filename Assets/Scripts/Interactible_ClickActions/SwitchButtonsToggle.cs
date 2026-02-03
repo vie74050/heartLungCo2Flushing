@@ -6,17 +6,16 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SwitchButtonsToggle : MonoBehaviour, ISwitch
+public class SwitchButtonsToggle : ClickAction, ISwitch
 {
+    [Header("Switch Button Settings")]
     [Tooltip("transform of the ON geometry to animate")]
     [SerializeField] protected Transform ONBtnTransform;
     [Tooltip("transform of the OFF geometry to animate")]
     [SerializeField] protected Transform OFFBtnTransform;
     [Tooltip("Offset to apply to the button when pressed")]
     [SerializeField] protected Vector3 pressedOffset = new Vector3(0f, 0f, -1.1f);
-    [Tooltip("Initial state of the switch button")]
-    public bool isOn = false;
-    
+        
     
     // for button press animation
     private Vector3 ONBtnOriginalPosition; 
@@ -40,7 +39,7 @@ public class SwitchButtonsToggle : MonoBehaviour, ISwitch
             OnTurnedOff();
         }
     }
-    public virtual void OnMouseDown()
+    public override void OnClick()
     {
         if (!IsActive) return;
 

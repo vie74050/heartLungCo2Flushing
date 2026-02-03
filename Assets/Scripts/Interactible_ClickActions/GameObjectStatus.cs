@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**<summary>Add to object to allow expose control of active status target game object (go)</summary>*/
-public enum GameObjectActiveMode
-{
-    SetTrue,
-    SetFalse,
-    Toggle
-}
 
 [System.Serializable]
 public class CA_GameObjectsStatus : ClickAction
 {
+    [Header("Game Object Status Settings")]
     [Tooltip("Game Object to set active/inactive")]
     public GameObject targetGameObject;
 
-    [Tooltip("Active mode to set")]
-    public GameObjectActiveMode onClickActiveMode;
-
-    private void SetActiveStatus()
+    void Start()
+    {
+        if (isOn) targetGameObject.SetActive(true);
+        else targetGameObject.SetActive(false);
+    }
+    public override void OnClick()
     {
         switch (onClickActiveMode)
         {
@@ -33,10 +30,5 @@ public class CA_GameObjectsStatus : ClickAction
                 targetGameObject.SetActive(!targetGameObject.activeSelf);
                 break;
         }
-    }
-
-    public override void OnClick()
-    {
-        SetActiveStatus();
     }
 }
