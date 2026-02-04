@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 public class SceneController : MonoBehaviour
 {
     [Tooltip("Key to reset current scene in Play mode testing")]
@@ -10,12 +11,23 @@ public class SceneController : MonoBehaviour
     private float numFramesToWait = 60f;
     private int frameCount = 0;
 
+    [DllImport("__Internal")]
+    private static extern void BrowserApplicationStarted(string str);
+
     void Start()
     {
         frameCount = 0;
         // Create SceneFade object on scene start
         GameObject fadeObj = GetOrCreateFadeObject(out CanvasGroup cg);
         cg.alpha = 1f;
+        
+        string interactibleNames = GetAllInteractibleNames();
+        Debug.Log("Interactibles: " + interactibleNames );
+        // Notify browser that application has started
+        #if UNITY_WEBGL && !UNITY_EDITOR    
+            BrowserApplicationStarted(interactibleNames);
+        #endif
+
     }
     void Update()
     {
@@ -110,20 +122,7 @@ public class SceneController : MonoBehaviour
         return fadeObj;
     }
 
-    // for webGL Browser to Unity using UnityInstance.SendMessage('Main', 'ResetScene');
-    // the game object must be named `Main`
-    public void ResetScene()
-    {
-        StartCoroutine(FadeAndReload());
-        frameCount = 0;
-    }
-    public string GetCurrentSceneName()
-    {
-        return SceneManager.GetActiveScene().name;
-    }
-
-    // For WebGL: Browser can call this to get all Interactible element names
-    public string GetAllInteractibleNames()
+    private string GetAllInteractibleNames()
     {
         Interactible[] cursorElements = FindObjectsOfType<Interactible>();
         List<string> names = new List<string>();
@@ -134,4 +133,46 @@ public class SceneController : MonoBehaviour
         // Return as comma-separated string for easy parsing in JS
         return string.Join(",", names);
     }
+
+    // For WebGL: Browser to Unity using UnityInstance.SendMessage('Main', 'ResetScene');
+    // the game object must be named `Main`
+    public void ResetScene()
+    {
+        StartCoroutine(FadeAndReload());
+        frameCount = 0;
+    }
+    
+    public void LoadNextScene()
+    {
+        // check how many scenes are in build settings
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+    
+        if (sceneCount == 0)
+            return;
+
+        // get the next scene index if possible
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = (currentSceneIndex + 1) % sceneCount;
+        // fade out and load next scene
+        StartCoroutine(FadeOutAndLoadScene(nextSceneIndex));    
+    }
+    private IEnumerator FadeOutAndLoadScene(int sceneIndex)
+    {
+        yield return StartCoroutine(FadeOut());
+        SceneManager.LoadScene(sceneIndex);
+    }
+    
+    public void LoadScene(string sceneName)
+    {
+        // check if scene is in build settings
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            StartCoroutine(FadeOutAndLoadSceneByName(sceneName));
+        }
+    }
+    private IEnumerator FadeOutAndLoadSceneByName(string sceneName)
+    {
+        yield return StartCoroutine(FadeOut());
+        SceneManager.LoadScene(sceneName);
+    }    
 }
