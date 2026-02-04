@@ -21,7 +21,6 @@ public class SwitchButtonsToggle : ClickAction, ISwitch
     private Vector3 ONBtnOriginalPosition; 
     private Vector3 OFFBtnOriginalPosition;
     
-
     public bool IsOn { get => isOn; set => isOn = value; }
     public bool IsActive { get; set; } = true;
     protected virtual void Start()
@@ -43,7 +42,18 @@ public class SwitchButtonsToggle : ClickAction, ISwitch
     {
         if (!IsActive) return;
 
-        IsOn = !IsOn;
+        if (onClickActiveMode == GameObjectActiveMode.SetTrue)
+        {
+            IsOn = true;
+        }
+        else if (onClickActiveMode == GameObjectActiveMode.SetFalse)
+        {
+            IsOn = false;
+        }
+        else if (onClickActiveMode == GameObjectActiveMode.Toggle)
+        {
+            IsOn = !IsOn;
+        }
 
         if (IsOn)
         {
