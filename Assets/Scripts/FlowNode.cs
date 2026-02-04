@@ -16,7 +16,14 @@ public abstract class FlowNode : MonoBehaviour
         // if unset, default to the on FlowNodeSystemController on main camera
         if (flowSystemController == null)
         {
-            flowSystemController = Camera.main.GetComponent<FlowNodeSystemController>();
+            // check if there is a flowSystemController on this object first  
+            flowSystemController = GetComponent<FlowNodeSystemController>();
+
+            // then check main camera
+            if (flowSystemController == null)
+            {
+                flowSystemController = Camera.main.GetComponent<FlowNodeSystemController>();
+            }
         }
     }
     protected void UpdateFlowSystem()
