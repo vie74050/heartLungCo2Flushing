@@ -12,9 +12,9 @@ public class GlobalMaterialColorChanger : ClickAction
     public Color originalColor { get; private set; }
     private void Awake()
     {
-        if (targetMaterial != null)
+        if (targetMaterial != null && targetMaterial.HasProperty("_Color"))
         {
-            originalColor = targetMaterial.color;
+            originalColor = targetMaterial.GetColor("_Color");
         }
         else
         {
@@ -26,7 +26,16 @@ public class GlobalMaterialColorChanger : ClickAction
         if (isOn) ChangeGlobalMaterialColor();
         else ResetMaterialColor();
     }
+    
     private void OnApplicationQuit()
+    {
+        ResetMaterialColor();
+    }
+    private void OnDestroy()
+    {
+        ResetMaterialColor();
+    }
+    private void OnDisable()
     {
         ResetMaterialColor();
     }
@@ -34,7 +43,7 @@ public class GlobalMaterialColorChanger : ClickAction
     {
         if (targetMaterial != null)
         {
-            targetMaterial.color = targetColor;
+            targetMaterial.SetColor("_Color", targetColor);
         }
         else
         {
@@ -45,7 +54,7 @@ public class GlobalMaterialColorChanger : ClickAction
     {
         if (targetMaterial != null)
         {
-            targetMaterial.color = originalColor;
+            targetMaterial.SetColor("_Color", originalColor);
         }
         else
         {

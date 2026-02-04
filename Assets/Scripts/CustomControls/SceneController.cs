@@ -37,6 +37,15 @@ public class SceneController : MonoBehaviour
 
     private IEnumerator FadeAndReload()
     {
+        // get all ClickActions and reset their states
+        ClickAction[] clickActions = FindObjectsOfType<ClickAction>();
+        foreach (var action in clickActions)
+        {
+            if (action is GlobalMaterialColorChanger colorChanger)
+            {
+                colorChanger.ResetMaterialColor();
+            }
+        }
         yield return StartCoroutine(FadeOut());
 
         // Reload scene
