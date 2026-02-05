@@ -9,12 +9,12 @@ public class CO2TankONOFF : Pivoter
     public override void OnTurnedOn()
     {
         base.OnTurnedOn();
-        co2FlowMeterKnob.SetEnabled(true);
+        co2FlowMeterKnob.Set_isActive(true);
     }
 
     public override void OnTurnedOff()
     {
         base.OnTurnedOff();
-        co2FlowMeterKnob.SetEnabled(false);
+        co2FlowMeterKnob.Set_isActive(false);
     }
 }

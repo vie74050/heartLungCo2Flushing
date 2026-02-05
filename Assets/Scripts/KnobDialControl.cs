@@ -164,7 +164,7 @@ public class KnobDialControl : MonoBehaviour
         return normalizedValue;
     }
 
-    public void SetEnabled(bool enabled)
+    public void Set_isActive(bool enabled)
     {
         // only update if state changed
         if (isActive == enabled) return;
