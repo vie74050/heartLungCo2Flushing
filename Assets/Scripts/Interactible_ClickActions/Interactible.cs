@@ -28,10 +28,7 @@ public class Interactible : MonoBehaviour
     private ClickAction[] clickActions;
 
     private void Awake() {
-        if (cursorTexture == null)
-        {
-            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointer");
-        }
+        SetCursorTexture(cursorTexture);
         clickActions = GetComponents<ClickAction>();
     }
     void OnMouseEnter()
@@ -80,7 +77,7 @@ public class Interactible : MonoBehaviour
     {
         if (newTexture == null)
         {
-            cursorTexture = Resources.Load<Texture2D>("Texture2D Cursors/cursor_pointer");
+            cursorTexture = Resources.Load<Texture2D>("Texture2D Sprites and Cursors/cursor_pointer");
         }else
         {
             cursorTexture = newTexture;
