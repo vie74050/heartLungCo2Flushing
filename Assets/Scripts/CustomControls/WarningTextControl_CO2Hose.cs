@@ -23,8 +23,8 @@ public class WarningTextControl_CO2Hose : AlertTextControl
     public Transform[] endTerminalsToCheck;
 
     private string[] warnings = {
-        "Warning: CO2 is flowing but not connected to system!",
-        "Warning: CO2 is flowing but stopcock is closed!",
+        "Warning: CO2 is flowing but not connected to system! Drag tube end to correct port!",
+        "Warning: CO2 is flowing but stopcock is closed! Click the stopcock to rotate it!",
         "Warning: CO2 cannot vent out properly!"
     };
 
