@@ -20,7 +20,7 @@ public class Pivoter : MonoBehaviour, ISwitch
     public bool IsOn { get => isOpen; set => isOpen = value; }
     public bool IsActive { get; set; } = true;
     
-    private float mouseDowndT = 0; // track how long mouse has been down to avoid conflict with mousedrag
+    protected float mouseDowndT = 0; // track how long mouse has been down to avoid conflict with mousedrag
     private int mouseDowndT_limit = 30;
 
     private void Start()
@@ -56,7 +56,7 @@ public class Pivoter : MonoBehaviour, ISwitch
             mouseDowndT++;
         }
     }
-    private void OnMouseDown()
+    public virtual void OnMouseDown()
     {
         if (mouseDowndT < mouseDowndT_limit)
         {
