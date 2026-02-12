@@ -123,14 +123,6 @@ public class FlowNodeHose : FlowNode
 
     void Update()
     {
-        // Only update line renderer in edit mode
-        if (!Application.isPlaying)
-        {
-            UpdateHoseLineRenderer();
-        }   
-
-        if (!Application.isPlaying) return;
-
         if (normalizedFlowRate == 0f || particleCount == 0) return;
 
         // Animate particles 
@@ -209,6 +201,7 @@ public class FlowNodeHose : FlowNode
         }else {
             meshCollider.sharedMesh = null; // clear existing
         }
+        
         // Create a 3D tube mesh along the spline instead of baking the 2D line renderer mesh
         Mesh mesh = new Mesh();
 
@@ -293,8 +286,94 @@ public class FlowNodeHose : FlowNode
         mesh.SetVertices(vertices);
         mesh.SetNormals(normals);
         mesh.SetTriangles(triangles, 0);
+        // Make collider radius 1.2x wider for better collision
+        float colliderRadius = Mathf.Max(radius * 1.2f, 1f);
 
-        meshCollider.sharedMesh = mesh;
+        // Generate collider mesh with wider radius
+        List<Vector3> colliderVertices = new List<Vector3>();
+        List<int> colliderTriangles = new List<int>();
+        List<Vector3> colliderNormals = new List<Vector3>();
+
+        for (int i = 0; i <= lengthSegments; i++)
+        {
+            float t = i / (float)lengthSegments;
+            Vector3 center = GetBezierPoint(t,
+            controlPoints[0].position,
+            controlPoints[1].position,
+            controlPoints[2].position,
+            controlPoints[3].position);
+
+            Vector3 tangent;
+            if (i < lengthSegments)
+            {
+            float tNext = (i + 1) / (float)lengthSegments;
+            tangent = (GetBezierPoint(tNext,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position) - center).normalized;
+            }
+            else
+            {
+            float tPrev = (i - 1) / (float)lengthSegments;
+            tangent = (center - GetBezierPoint(tPrev,
+                controlPoints[0].position,
+                controlPoints[1].position,
+                controlPoints[2].position,
+                controlPoints[3].position)).normalized;
+            }
+
+            Vector3 normal = Vector3.Cross(tangent, Vector3.up);
+            if (normal.sqrMagnitude < 0.001f)
+            normal = Vector3.Cross(tangent, Vector3.right);
+            normal.Normalize();
+
+            for (int j = 0; j < radialSegments; j++)
+            {
+            float angle = 2 * Mathf.PI * j / radialSegments;
+            Quaternion rot = Quaternion.AngleAxis(Mathf.Rad2Deg * angle, tangent);
+            Vector3 dir = rot * normal;
+            colliderVertices.Add(center + dir * colliderRadius);
+            colliderNormals.Add(dir);
+            }
+        }
+
+        for (int i = 0; i < lengthSegments; i++)
+        {
+            for (int j = 0; j < radialSegments; j++)
+            {
+            int current = i * radialSegments + j;
+            int next = current + radialSegments;
+            int nextJ = (j + 1) % radialSegments;
+
+            int currentNextJ = i * radialSegments + nextJ;
+            int nextNextJ = currentNextJ + radialSegments;
+
+            colliderTriangles.Add(current);
+            colliderTriangles.Add(next);
+            colliderTriangles.Add(nextNextJ);
+
+            colliderTriangles.Add(current);
+            colliderTriangles.Add(nextNextJ);
+            colliderTriangles.Add(currentNextJ);
+            }
+        }
+
+        Mesh colliderMesh = new Mesh();
+        colliderMesh.SetVertices(colliderVertices);
+        colliderMesh.SetNormals(colliderNormals);
+        colliderMesh.SetTriangles(colliderTriangles, 0);
+
+        meshCollider.sharedMesh = colliderMesh;
+
+        // update mesh filter
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        if (meshFilter == null)        {
+            meshFilter = gameObject.AddComponent<MeshFilter>();
+        }
+        meshFilter.sharedMesh = mesh;
+               
+
     }
 
     private float RaySegmentDistanceSqr(
@@ -426,6 +505,7 @@ public class FlowNodeHose : FlowNode
     {
         if (controlPoints == null || controlPoints.Length < 4) return;
 
+        lineRenderer.positionCount = hoseSegments + 1;
         for (int i = 0; i <= hoseSegments; i++)
         {
             float t = i / (float)hoseSegments;
@@ -485,4 +565,3 @@ public class FlowNodeHose : FlowNode
     }
 
 }
-
