@@ -46,6 +46,7 @@ public class WarningTextControl_CO2Hose : AlertTextControl
         else if (isFlow && !isStopcockOpen)
         {
             warning = warnings[1];
+           
         }
         
         // Check if CO2 can vent out properly

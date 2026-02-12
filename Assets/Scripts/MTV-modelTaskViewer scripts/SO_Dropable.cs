@@ -24,7 +24,7 @@ public class SO_Dropable : SelectableObject
 	
 	[Tooltip("Default dist from camera if not over dropzone")]
 	public float distFromCamDefault = 5;
-	[Tooltip("Layer mask for dropzone object")]
+	[Tooltip("Layer mask for dropzone object so it only interacts with colliders on dropzone layer")]
 	public LayerMask dropzoneMask;
 	private float hitdistance = 1;
 	private Transform startParent => transform.parent;
@@ -50,7 +50,7 @@ public class SO_Dropable : SelectableObject
 		base.OnMouseDrag(); // Call OnMouseDrag from SelectableObject
 		//SetDzsLayer("Default");
 		// while dropable being dragged, set dropzones to default layer so can be detected by raycast
-		SetDZLayerMask(0);
+		//SetDZLayerMask(0);
 
 		bool isOver = IsOverDropzone();
 
@@ -73,7 +73,7 @@ public class SO_Dropable : SelectableObject
 			Deselect();
 		}
 		
-		SetDZLayerMask(dropzoneMask);
+		//SetDZLayerMask(dropzoneMask);
 
 	}
 	protected virtual void OnDropzone(Dropzone dz)
@@ -218,7 +218,7 @@ public class SO_Dropable : SelectableObject
 		Dropzone[] dzs = GetComponentsInChildren<Dropzone>();
 		foreach (Dropzone _dz in dzs)
 		{
-			_dz.gameObject.layer = lm;
+			//_dz.gameObject.layer = lm;
 		}
 	}	
 
