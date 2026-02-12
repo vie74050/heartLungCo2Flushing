@@ -61,7 +61,7 @@ MonoBehaviour:
   isReversed: 0
   fadeDuration: 0.5
   isClamped: 0
-  hoseMaterial: {fileID: 2100000, guid: c6caf3ed35176a0428036efb919e1a35, type: 2}
+  hoseMaterial: {fileID: 2100000, guid: e66f55094a285984caa9b9d0616b9293, type: 2}
   hoseDiameter: 1
   hoseSegments: 20
 --- !u!120 &7788525036254248642
@@ -216,7 +216,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4afc5e7eda4048846913d95cca721fcf, type: 2}
+  - {fileID: 2100000, guid: e66f55094a285984caa9b9d0616b9293, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
