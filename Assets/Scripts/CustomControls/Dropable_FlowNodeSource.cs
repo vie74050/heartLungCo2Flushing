@@ -3,6 +3,7 @@ using UnityEngine;
 public class Dropable_SourceNode : SO_Dropable
 {
     // This class extends the dropable functionality so on drop 
+    [Header("Dropable_SourceNode specific settings")]
     // it can set downstream flow nodes of the supply line
     [Tooltip("The Flow Meter Control that sets the flow rate")]
     public FlowNodeSystemController flowSystemController; 
@@ -10,6 +11,8 @@ public class Dropable_SourceNode : SO_Dropable
     public FlowNode flowNode_supplyLine; 
     [Tooltip("Downstream hose dependents to connect to supply line when dropped.")]
     public FlowNode[] downstreamFlowNodes; 
+    [Tooltip("Colliders to disable on drop")]
+    public Collider[] collidersToDisableOnDrop;
 
     protected override void OnMouseDrag()
     {
@@ -27,6 +30,15 @@ public class Dropable_SourceNode : SO_Dropable
             flowNode_supplyLine.GetComponent<FlowNodeHose>()?.UpdateHoseLineRenderer();
             // Update flow system   
             flowSystemController?.UpdateFlowSystem();     
+        }
+
+        // disable it's collider so doesn't hide filter collider
+        foreach (Collider col in collidersToDisableOnDrop)
+        {
+            if (col)
+            {
+                col.enabled = false;
+            }
         }
         
     }
