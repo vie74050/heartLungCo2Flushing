@@ -38,14 +38,12 @@ public class FlowNodeHose : FlowNode
     private List<Renderer> particleRenderers = new List<Renderer>();
     private float[] tValues;
     private LineRenderer lineRenderer;
-
-    private bool transparencySupported = false; // per particle material ability
     private List<MaterialPropertyBlock> mpbList = new List<MaterialPropertyBlock>();
     private Color fluidColor = Color.cyan; // default, otherwise taken from particlePrefab
 
     private List<GameObject> clamps = new List<GameObject>();  // to track attached clamps
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         // Setup LineRenderer
@@ -479,6 +477,7 @@ public class FlowNodeHose : FlowNode
     public void ToggleReverse() => isReversed = !isReversed;
     public void SetReverse(bool reverse) => isReversed = reverse;
 
+    // used by user-added clamps to dynamically clamp/unclamp the hose
     public void SetClamp(GameObject clamp, bool clampState)
     {
         if (clampState)

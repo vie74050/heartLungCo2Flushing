@@ -8,7 +8,13 @@ public class CO2FlowNodeSystemController : FlowNodeSystemController
     public KnobDialControl_FlowMeter flowMeterControl;
 
     [Tooltip("WarningTextControl for CO2 Hose to show warnings")]
-    public WarningTextControl_CO2Hose warningTextControl;
+    public AlertTextControl_CO2Hose warningTextControl;
+
+    [Tooltip("ERC Clamp Control to toggle ERC clamp on/off")]
+    public Interactible ercClampOFFControl;
+    public Interactible ercClampONControl;
+
+    public bool isERCClampOn = false; // track ERC clamp state
 
     // Call this global when system changes to recaulculate flow through system
     public override void UpdateFlowSystem()
@@ -21,4 +27,32 @@ public class CO2FlowNodeSystemController : FlowNodeSystemController
         warningTextControl?.CheckWarningConditions();
     }
 
+    private void SetERCClamp()
+    {
+        // ensure both controls are active in hierarchy before sending click events to avoid errors
+        if (ercClampOFFControl != null && ercClampONControl != null
+            && ercClampOFFControl.gameObject.activeInHierarchy
+            && ercClampONControl.gameObject.activeInHierarchy)
+        {
+            if (isERCClampOn)        {
+                ercClampONControl?.OnMouseDown();
+            }
+            else
+            {
+                ercClampOFFControl?.OnMouseDown();
+            }
+        }
+        
+    }
+
+    // Public methods for external WEBGL system panel
+    public void SetERCClampOn() {
+        isERCClampOn = true;
+        SetERCClamp();
+    }
+
+    public void SetERCClampOff() {
+        isERCClampOn = false;
+        SetERCClamp();
+    }
 }   

@@ -52,7 +52,7 @@ public class Interactible : MonoBehaviour
         #endif
     }
     
-    void OnMouseDown()
+    public void OnMouseDown()
     {
         // Requires web handling code to process this message
         #if UNITY_WEBGL && !UNITY_EDITOR

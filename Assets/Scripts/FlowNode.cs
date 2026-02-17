@@ -11,7 +11,7 @@ public abstract class FlowNode : MonoBehaviour
     [Tooltip("The Flow Node System Controller. If unset, defaults to the one on the main camera.")]
     public FlowNodeSystemController flowSystemController;
     
-    protected void Awake()
+    protected virtual void Awake()
     {
         // if unset, default to the on FlowNodeSystemController on main camera
         if (flowSystemController == null)

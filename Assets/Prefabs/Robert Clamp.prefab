@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 6492011553580011245}
   - component: {fileID: 735081254162848192}
   m_Layer: 0
-  m_Name: Tubing Clamp
+  m_Name: Robert Clamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

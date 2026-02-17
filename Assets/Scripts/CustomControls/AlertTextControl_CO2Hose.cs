@@ -3,7 +3,7 @@
 */
 using UnityEngine;
 
-public class WarningTextControl_CO2Hose : AlertTextControl
+public class AlertTextControl_CO2Hose : AlertTextControl
 {
     [Tooltip("FlowMeterControl that sets flow rate")]
     public KnobDialControl_FlowMeter flowMeterControl;

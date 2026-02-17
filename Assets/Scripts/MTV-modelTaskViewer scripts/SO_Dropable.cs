@@ -31,9 +31,9 @@ public class SO_Dropable : SelectableObject
 	private Vector3 startLocalPosition => transform.localPosition;
 	private Quaternion startLocalRotation => transform.localRotation;
 
-	private void Start()
+	public override void Init()
 	{
-		base.Start(); // Call Start from SelectableObject
+		base.Init(); // Call Start from SelectableObject
 
 		if (dropzoneMask == 0)
 		{
@@ -45,7 +45,7 @@ public class SO_Dropable : SelectableObject
 			SetChildrenColliders(false);
 		}
 	}
-	protected virtual void OnMouseDrag()
+	protected override void OnMouseDrag()
 	{
 		base.OnMouseDrag(); // Call OnMouseDrag from SelectableObject
 		//SetDzsLayer("Default");
@@ -64,7 +64,7 @@ public class SO_Dropable : SelectableObject
 		}
 
 	}
-	protected virtual void OnMouseUp()
+	protected override void OnMouseUp()
 	{
 		base.OnMouseUp(); // Call OnMouseUp from SelectableObject
 		if (isDraggable && !alphaMode)
@@ -229,7 +229,7 @@ public class SO_Dropable : SelectableObject
 	{
 		return transform.parent.name;
 	}
-	public void ResetPosition()
+	public override void ResetPosition()
 	{
 		if (reparentOnDrop)
 		{
