@@ -1836,7 +1836,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165708953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1845,7 +1845,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 8, y: 15.6}
+  m_AnchoredPosition: {x: 21.31, y: 0}
   m_SizeDelta: {x: 30, y: 10}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &165708955
@@ -1868,7 +1868,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Items on cart can be dragged and dropped to attach to the system.
+  m_text: 'Click and drag to position.
 
 '
   m_isRightToLeft: 0
@@ -1933,7 +1933,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -21.440628, y: 0, z: 7.3253956, w: -5.6533384}
+  m_margin: {x: -21.440628, y: 0, z: 20.728758, w: -5.6533384}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -18400,17 +18400,17 @@ PrefabInstance:
     - target: {fileID: 6119003477308442709, guid: c261cba99554dfc4dbd677238ba27cd3,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.05
+      value: 36.21845
       objectReference: {fileID: 0}
     - target: {fileID: 6119003477308442709, guid: c261cba99554dfc4dbd677238ba27cd3,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.45
+      value: 13.2824
       objectReference: {fileID: 0}
     - target: {fileID: 6119003477308442709, guid: c261cba99554dfc4dbd677238ba27cd3,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 29.90931
       objectReference: {fileID: 0}
     - target: {fileID: 6119003477308442709, guid: c261cba99554dfc4dbd677238ba27cd3,
         type: 3}
@@ -20470,7 +20470,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222526002}
   m_LocalRotation: {x: -0.6532815, y: 0.27059805, z: 0.27059805, w: -0.6532815}
-  m_LocalPosition: {x: 0, y: 0, z: 83.30001}
+  m_LocalPosition: {x: 0, y: 0, z: 84.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20479,7 +20479,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.899109, y: 2.8991241}
+  m_AnchoredPosition: {x: 18.5, y: 9.7}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1222526004
@@ -25912,7 +25912,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -43, y: 1.2}
+  m_AnchoredPosition: {x: -43, y: 3.24}
   m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1622614073
