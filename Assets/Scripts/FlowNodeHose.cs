@@ -477,6 +477,15 @@ public class FlowNodeHose : FlowNode
         {
             foreach (var hose in downstreamFlowNodes)
             {
+                // error check that hose's downstreamFlowNodes is not empty and does not include this hose to avoid infinite loop, if it does, skip propogation and log error
+                if (hose?.downstreamFlowNodes != null )
+                {
+                    if(hose.downstreamFlowNodes.Length > 0 && System.Array.Exists(hose.downstreamFlowNodes, n => n == this))
+                    {
+                        Debug.LogError("FlowNodeHose SetFlow error: downstream hose " + hose.name + " has this hose as downstream, skipping propogation to avoid infinite loop.");
+                        continue;
+                    }
+                }
                 hose?.SetFlow(newFlow);
             }
         }
