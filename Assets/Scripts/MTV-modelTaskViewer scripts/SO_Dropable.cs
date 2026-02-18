@@ -229,7 +229,7 @@ public class SO_Dropable : SelectableObject
 	{
 		return transform.parent.name;
 	}
-	public override void ResetPosition()
+	public void ResetPosition()
 	{
 		if (reparentOnDrop)
 		{

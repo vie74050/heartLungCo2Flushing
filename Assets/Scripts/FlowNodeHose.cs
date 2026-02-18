@@ -440,6 +440,14 @@ public class FlowNodeHose : FlowNode
         }
     }
 
+    private void OnMouseOver() {
+        SetHoseColor(new Color(1f, 1f, 0f, 0.5f));    
+    }
+  
+    private void OnMouseExit()
+    {
+        SetHoseColor(new Color(1f, 1f, 1f, 0f));
+    }
     // Public methods for flow controls
     // flow: normalized 0-1
     public override void SetFlow(float newFlow)
@@ -563,4 +571,12 @@ public class FlowNodeHose : FlowNode
         return hit;
     }
 
+    // public method to change color of hose
+    public void SetHoseColor(Color newColor)
+    {
+        if (lineRenderer != null && lineRenderer.material != null)
+        {
+            lineRenderer.material.color = newColor;
+        }
+    }
 }

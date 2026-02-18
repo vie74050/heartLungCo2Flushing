@@ -5,11 +5,13 @@ using UnityEngine.EventSystems;
 // - raycasting against the LineRenderer to find the closest point on the hose to drop position.
 // The clamp object is then positioned and oriented at that point.
 
-public class SO_FlowNodeClamp : SO_Dropable
+public class SO_FlowNodeClamp : MonoBehaviour
 {
     //public Color highlightColor = Color.yellow;
     private FlowNodeHose controlledHose;
     private Transform initTn;
+
+    private bool isDragging { get; set; } = false;
 
     [System.Serializable]
     public struct HoseAttachment // store parameters for clamp on hose
@@ -20,32 +22,15 @@ public class SO_FlowNodeClamp : SO_Dropable
     }
     private HoseAttachment? attachment;
 
-    public override void Init()
+    private Interactible interactible;
+    void Start()
     {
         // for reference to reset position if needed
-        initTn = transform;
-        base.Init();
+        initTn = new GameObject("InitTn").transform;
+        initTn.SetPositionAndRotation(transform.position, transform.rotation);
+        interactible = GetComponent<Interactible>();
     }
 
-    public void FollowHose()
-    {
-        var a = attachment.Value;
-
-        LineRenderer lr = a.hose.GetComponent<LineRenderer>();
-        if (lr == null) return;
-
-        Vector3 p1 = lr.GetPosition(a.segmentIndex);
-        Vector3 p2 = lr.GetPosition(a.segmentIndex + 1);
-
-        Vector3 cp = Vector3.Lerp(p1, p2, a.t);
-
-        // Compute orientation again
-        Vector3 dir = (p2 - p1).normalized;
-        Vector3 normal = Vector3.Cross(-dir, Camera.main.transform.forward).normalized;
-        Quaternion rot = Quaternion.LookRotation(dir, normal);
-
-        transform.SetPositionAndRotation(cp, rot);
-    }
     private bool TryGetClampPoseOnHose(
         FlowNodeHose hose,
         Vector3 worldPoint,
@@ -90,11 +75,8 @@ public class SO_FlowNodeClamp : SO_Dropable
         rotation = Quaternion.LookRotation(dir, normal);
         return true;
     }
-
-    protected override void OnMouseDrag()
+    private void FindHose()
     {
-        //Debug.Log("Dragging FlowNodeClamp");
-        base.OnMouseDrag();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (HoseRaycastManager.GetClosestHose(ray, out var hose, out var hoseHitPoint))
         {
@@ -132,14 +114,86 @@ public class SO_FlowNodeClamp : SO_Dropable
         }
     }
 
-    protected override void OnMouseUp()
+    // when clicked, "pickup" clamp, hide it's collider and turn on find hose
+    // isDragging until released attachment or dropped on dropzone
+    private void OnMouseDown()
     {
-        //Debug.Log("Released FlowNodeClamp");
-        base.OnMouseUp();
-        if (attachment.HasValue)
+        SetDragging(true);
+    }
+    private void OnDrag()
+    {
+        FindHose();
+        // set the mouse cursor interactible cursor when dragging
+        /*if (interactible != null && interactible.cursorTexture != null)
         {
-            FollowHose();
+            Cursor.SetCursor(interactible.cursorTexture, Vector2.zero, CursorMode.Auto);
+        }*/
+
+        if (!attachment.HasValue)
+        {   
+            // follow mouse position in world space (keep original z)
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.WorldToScreenPoint(transform.position).z;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            transform.position = worldPos;
         }
+    }
+    // detect mouse move while isDragging, find hose and attach to it
+    private void Update()
+    {
+        if (isDragging)
+        {
+            OnDrag();
+        }
+
+        // if not attached, reset position to initial position
+        if (Input.GetMouseButtonUp(0) )
+        {
+            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) )
+            {
+                if (attachment.HasValue && hit.collider.gameObject.GetComponent<FlowNodeHose>() == attachment.Value.hose)
+                {
+                    // release from hose
+                    SetDragging(false);
+                }
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("dropzone"))
+                {
+                    // Return to initial - reset the position, rotation
+                    SetDragging(false); 
+                    transform.SetPositionAndRotation(initTn.position, initTn.rotation);
+                }
+                
+            }
+
+
+        }
+    }
+
+    public void FollowHose()
+    {
+        if (!attachment.HasValue) return;
+        var a = attachment.Value;
+
+        LineRenderer lr = a.hose.GetComponent<LineRenderer>();
+        if (lr == null) return;
+
+        Vector3 p1 = lr.GetPosition(a.segmentIndex);
+        Vector3 p2 = lr.GetPosition(a.segmentIndex + 1);
+
+        Vector3 cp = Vector3.Lerp(p1, p2, a.t);
+
+        // Compute orientation again
+        Vector3 dir = (p2 - p1).normalized;
+        Vector3 normal = Vector3.Cross(-dir, Camera.main.transform.forward).normalized;
+        Quaternion rot = Quaternion.LookRotation(dir, normal);
+
+        transform.SetPositionAndRotation(cp, rot);
+    }
+
+    public void SetDragging(bool dragging)
+    {
+        isDragging = dragging;
+        GetComponent<Collider>().enabled = !dragging; // re-enable collider when not dragging
     }
 }
 
