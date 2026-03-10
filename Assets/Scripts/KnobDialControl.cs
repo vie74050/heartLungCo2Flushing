@@ -33,6 +33,7 @@ public class KnobDialControl : MonoBehaviour
     private float initKnobRotationZ;
     private Color indicatorColor;
     private KGFOrbitCam camsettings;
+    private bool panningInitEnabled;
     private Interactible cursorSetter; // optional to change cursor if disabled
     private Texture2D defaultCursorTexture;
 
@@ -40,6 +41,11 @@ public class KnobDialControl : MonoBehaviour
     {
         // get cam settings ref -- to override panning when dragging
 		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
+        if (camsettings != null)
+        {
+			var p = camsettings.itsPanning;
+			panningInitEnabled = p.itsLeftRight.itsEnable || p.itsUpDown.itsEnable;
+		}
         cursorSetter = GetComponent<Interactible>();
         if (cursorSetter != null)
         {
@@ -69,18 +75,18 @@ public class KnobDialControl : MonoBehaviour
             UpdateTargetPosition();
         }else
         {
-            camsettings.SetPanningEnable(true);
+            camsettings.SetPanningEnable(panningInitEnabled);
         }
       
     }
 
     private void OnMouseUp() 
     {
-        camsettings.SetPanningEnable(true);    
+        camsettings.SetPanningEnable(panningInitEnabled);    
     }  
     private void OnMouseExit() 
     {
-        camsettings.SetPanningEnable(true);    
+        camsettings.SetPanningEnable(panningInitEnabled);    
     } 
     // Update Knob Rotation around local Z axis based on mouse drag
     private void UpdateKnobRotationMouseMove()
