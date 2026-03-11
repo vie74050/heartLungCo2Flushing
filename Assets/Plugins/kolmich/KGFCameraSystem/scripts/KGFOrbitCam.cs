@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
-
+/* 2026 VL - modified to access pan controls */
 /// <summary>
 /// The KGFOrbitCam class. This class implements an orbiter that can be used to control a unity3d camera.
 /// </summary>
@@ -248,8 +248,8 @@ public class KGFOrbitCam : KGFObject, KGFIValidator
 	private float itsLocalRotationVerticalCurrent;
 	
 	//input panning
-	private Vector3 itsPanningOffset;
-	private Vector3 itsCurrentPanningOffset;
+	public Vector3 itsPanningOffset;
+	public Vector3 itsCurrentPanningOffset;
 
 	//target link position
 	private Vector3 itsTargetStartPosition;
@@ -987,7 +987,7 @@ public class KGFOrbitCam : KGFObject, KGFIValidator
 	/// </summary>
 	/// <param name="theDirection"></param>
 	/// <returns></returns>
-	private void DampPanningDirection()
+	public void DampPanningDirection()
 	{
 		if(itsPanning.itsBounds != null && itsPanningOffset != Vector3.zero)
 		{
