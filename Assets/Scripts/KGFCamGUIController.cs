@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 public class KGFCamGUIController : MonoBehaviour
 {
-    public GUISkin guistyle;
+    public GUISkin guiskin;
     private KGFOrbitCam camsettings;
     private float rotationVertAmt = 0;
     private float rotationHorzAmt = 0;
@@ -122,64 +122,76 @@ public class KGFCamGUIController : MonoBehaviour
     // create the GUILayout buttons
     void OnGUI()
     {
-        GUI.skin = guistyle;
+        GUI.skin = guiskin;
 
         // Calculate vertical centering
         float x = 0;
-        float y = (Screen.height - height) / 2f;     
+        float y = 10;     
         
-        GUILayout.BeginArea(new Rect(x, y, width, height));
-        showMenu = GUILayout.Toggle(showMenu, "");
+        GUILayout.BeginVertical(guiskin.box, GUILayout.MinHeight(30), GUILayout.MinWidth(30));
         
-        if (showMenu)
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        showMenu = GUILayout.Toggle(showMenu, new GUIContent("", "Click to toggle menu"), "cam");
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+
+
+        if (!showMenu)
         {
-            GUILayout.BeginVertical(guistyle.box);
+            GUILayout.EndVertical();
+        } else
+        {            
             if (GUILayout.Button("Reset View"))
             {
                 ResetView();
             }
-
-            GUILayout.Label("Orbit");
+            
+            GUILayout.Label(new GUIContent("Orbit","Click and drag right mouse button, or use the buttons below"),"rightbutton");
+           
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("<"))
+            
+            if (GUILayout.Button("◀"))
             {
                 RotateCamera(CameraDirection.Left);
             }
-            if (GUILayout.Button(">"))
+            if (GUILayout.Button("▶"))
             {
                 RotateCamera(CameraDirection.Right);
             }
-            if (GUILayout.Button("^"))
+            if (GUILayout.Button("▲"))
             {
                 RotateCamera(CameraDirection.Up);
             }
-            if (GUILayout.Button("v"))
+            if (GUILayout.Button("▼"))
             {
                 RotateCamera(CameraDirection.Down);
             }
             GUILayout.EndHorizontal();
-
-            GUILayout.Label("Move");
+                   
+            GUILayout.Label(new GUIContent("Pan","Click and drag mouse wheel button, or use the buttons below"),"midbutton");
+           
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("<"))
+            if (GUILayout.Button("◀"))
             {
                 PanCamera(CameraDirection.Left);
             }
-            if (GUILayout.Button(">"))
+            if (GUILayout.Button("▶"))
             {
                 PanCamera(CameraDirection.Right);
             }
-            if (GUILayout.Button("^"))
+            if (GUILayout.Button("▲"))
             {
                 PanCamera(CameraDirection.Up);
             }
-            if (GUILayout.Button("v"))
+            if (GUILayout.Button("▼"))
             {
                 PanCamera(CameraDirection.Down);
-            }
+            }            
             GUILayout.EndHorizontal();
-
-            GUILayout.Label("Zoom");
+           
+            GUILayout.Label(new GUIContent("Zoom","Scroll the mouse wheel button, or use the buttons below"),"midbutton");
+            
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("+"))
             {
@@ -190,9 +202,18 @@ public class KGFCamGUIController : MonoBehaviour
                 ZoomCamera(1f);
             }
             GUILayout.EndHorizontal();
+            
             GUILayout.EndVertical();
         }
                 
-        GUILayout.EndArea();
+        // draw tooltip
+        if (!string.IsNullOrEmpty(GUI.tooltip))
+        {
+            var tooltipStyle = guiskin.GetStyle("textarea");
+            Vector2 size = tooltipStyle.CalcSize(new GUIContent(GUI.tooltip));
+            Rect rect = new Rect(Event.current.mousePosition.x + 15, Event.current.mousePosition.y + 15, size.x, size.y);
+            GUI.Box(rect, GUI.tooltip, tooltipStyle);
+        }
+
     }
 }
