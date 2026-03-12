@@ -10646,7 +10646,7 @@ MonoBehaviour:
         itsAdditionalMouseButton: 1
         itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 1
+        itsNumberOfTouches: 2
         itsSensitivity: 1
         itsInvertAxis: 0
     itsVertical:
@@ -10663,7 +10663,7 @@ MonoBehaviour:
         itsAdditionalMouseButton: 1
         itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 1
+        itsNumberOfTouches: 2
         itsSensitivity: 1
         itsInvertAxis: 0
   itsPanning:
@@ -10677,7 +10677,7 @@ MonoBehaviour:
         itsAxisSensitivity: 2
         itsInvertAxis: 1
         itsAdditionalKey: 0
-        itsAdditionalMouseButton: 2
+        itsAdditionalMouseButton: 0
         itsResetRotationOnRelease: 0
       - itsAxisName: Horizontal
         itsAxisSensitivity: 2
@@ -10692,7 +10692,7 @@ MonoBehaviour:
         itsAdditionalMouseButton: 2
         itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 2
+        itsNumberOfTouches: 3
         itsSensitivity: 1
         itsInvertAxis: 0
     itsForwardBackward:
@@ -10721,7 +10721,7 @@ MonoBehaviour:
         itsAxisSensitivity: 2
         itsInvertAxis: 1
         itsAdditionalKey: 0
-        itsAdditionalMouseButton: 2
+        itsAdditionalMouseButton: 0
         itsResetRotationOnRelease: 0
       - itsAxisName: Vertical
         itsAxisSensitivity: 2
@@ -10736,7 +10736,7 @@ MonoBehaviour:
         itsAdditionalMouseButton: 2
         itsResetRotationOnRelease: 0
       itsControlTouch:
-        itsNumberOfTouches: 2
+        itsNumberOfTouches: 3
         itsSensitivity: 1
         itsInvertAxis: 0
   itsEnvironment:
@@ -10748,7 +10748,7 @@ MonoBehaviour:
     itsCollisionOffset: 0.1
   itsLookat:
     itsEnable: 0
-    itsLookatTarget: {fileID: 0}
+    itsLookatTarget: {fileID: 702697781}
     itsUpVectorSource: {fileID: 702697781}
     itsLookatSpeed: 2
     itsHardLinkToTarget: 0
@@ -10817,7 +10817,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guiskin: {fileID: 11400000, guid: 24f94b46d4b31f349b8f6e4905d18987, type: 2}
-  iconFontAsset: {fileID: 11400000, guid: ff7bb2eec5290d048979065e40d6e26b, type: 2}
 --- !u!1 &638029911
 GameObject:
   m_ObjectHideFlags: 0

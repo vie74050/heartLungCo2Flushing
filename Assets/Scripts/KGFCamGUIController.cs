@@ -54,7 +54,7 @@ public class KGFCamGUIController : MonoBehaviour
         {
             case CameraDirection.Left:
             case CameraDirection.Right:
-                rotationHorzAmt -= direction == CameraDirection.Left ? -sensitivity : direction == CameraDirection.Right ? sensitivity : 0;
+                rotationHorzAmt -= direction == CameraDirection.Left ? -10*sensitivity : direction == CameraDirection.Right ? 10*sensitivity : 0;
                 
                 camsettings.SetRotationHorizontal(rotationHorzAmt);
 
