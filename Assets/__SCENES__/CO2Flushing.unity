@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6203957}
   - component: {fileID: 6203959}
   - component: {fileID: 6203958}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Warning icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3303,7 +3303,7 @@ GameObject:
   - component: {fileID: 304010562}
   - component: {fileID: 304010564}
   - component: {fileID: 304010563}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10653,8 +10653,8 @@ MonoBehaviour:
       itsEnable: 1
       itsStartValue: 12
       itsUseLimits: 1
-      itsUpLimit: 50
-      itsDownLimit: 50
+      itsUpLimit: 40
+      itsDownLimit: 40
       itsControls:
       - itsAxisName: Mouse Y
         itsAxisSensitivity: 1
@@ -14030,6 +14030,11 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 940629656072206248, guid: 1f9a3423e9429b6488d9aefbea9e7758,
+        type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2058332621190841955, guid: 1f9a3423e9429b6488d9aefbea9e7758,
         type: 3}
       propertyPath: m_Layer
@@ -17207,8 +17212,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1650699934}
+  m_Children: []
   m_Father: {fileID: 630933617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1047601707
@@ -23660,6 +23664,11 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 940629656072206248, guid: 1f9a3423e9429b6488d9aefbea9e7758,
+        type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2058332621190841955, guid: 1f9a3423e9429b6488d9aefbea9e7758,
         type: 3}
       propertyPath: m_Layer
@@ -23814,6 +23823,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.x
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 940629656072206248, guid: 1f9a3423e9429b6488d9aefbea9e7758,
+        type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2058332621190841955, guid: 1f9a3423e9429b6488d9aefbea9e7758,
         type: 3}
@@ -24861,7 +24875,7 @@ GameObject:
   - component: {fileID: 1526445372}
   - component: {fileID: 1526445374}
   - component: {fileID: 1526445373}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27016,12 +27030,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650699930}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -52.09999, y: 0, z: 0.35863495}
+  m_LocalRotation: {x: -0, y: -0, z: 0.0000000037252903, w: 1}
+  m_LocalPosition: {x: -52.09996, y: 0, z: 0.35861206}
   m_LocalScale: {x: 40, y: 1, z: 35}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1037606017}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1650699935
 BoxCollider:
@@ -27038,12 +27052,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 18.36876, y: 200, z: 14.0769205}
-  m_Center: {x: 0.21694642, y: 110, z: 0.3054694}
+  m_Size: {x: 15, y: 400, z: 15}
+  m_Center: {x: 0, y: 150, z: 0}
 --- !u!1001 &1656281622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27479,7 +27493,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 21.35, y: 21.9}
+  m_AnchoredPosition: {x: 21.35, y: 14.64}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1673752846
@@ -28105,7 +28119,7 @@ GameObject:
   - component: {fileID: 1713281873}
   - component: {fileID: 1713281872}
   - component: {fileID: 1713281875}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Hand Hygiene Complete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28797,7 +28811,7 @@ GameObject:
   - component: {fileID: 1742144868}
   - component: {fileID: 1742144870}
   - component: {fileID: 1742144869}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Warning text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36245,6 +36259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.x
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 940629656072206248, guid: 1f9a3423e9429b6488d9aefbea9e7758,
+        type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2058332621190841955, guid: 1f9a3423e9429b6488d9aefbea9e7758,
         type: 3}
@@ -44243,6 +44262,7 @@ SceneRoots:
   - {fileID: 1846539709}
   - {fileID: 1916251895}
   - {fileID: 702697782}
+  - {fileID: 1650699934}
   - {fileID: 621419907}
   - {fileID: 630933617}
   - {fileID: 472779813}
