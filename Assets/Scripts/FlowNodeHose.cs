@@ -539,7 +539,7 @@ public class FlowNodeHose : FlowNode
         // if there are clamps attached, get SO_FlowNodeClamp component to call FollowHose
         foreach (var c in clamps)
         {
-            var soClamp = c.GetComponent<SO_FlowNodeClamp>();
+            var soClamp = c.GetComponent<FlowNodeClamp>();
             soClamp?.FollowHose();
         }
     }

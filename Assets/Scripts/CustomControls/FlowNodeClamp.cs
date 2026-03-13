@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 // - raycasting against the LineRenderer to find the closest point on the hose to drop position.
 // The clamp object is then positioned and oriented at that point.
 
-public class SO_FlowNodeClamp : MonoBehaviour
+public class FlowNodeClamp : MonoBehaviour
 {
     //public Color highlightColor = Color.yellow;
     private FlowNodeHose controlledHose;
@@ -147,26 +147,28 @@ public class SO_FlowNodeClamp : MonoBehaviour
         }
 
         // if not attached, reset position to initial position
-        if (Input.GetMouseButtonUp(0) )
+        if (Input.GetMouseButtonUp(0))
         {
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit) )
+            // Ignore "clamp" layer in raycast
+            int clampLayer = LayerMask.NameToLayer("clamp");
+            int layerMask = ~(1 << clampLayer);
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, layerMask))
             {
-                if (attachment.HasValue && hit.collider.gameObject.GetComponent<FlowNodeHose>() == attachment.Value.hose)
-                {
-                    // release from hose
-                    SetDragging(false);
-                }
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("dropzone"))
-                {
-                    // Return to initial - reset the position, rotation
-                    SetDragging(false); 
-                    transform.SetPositionAndRotation(initTn.position, initTn.rotation);
-                }
-                
+            if (attachment.HasValue && hit.collider.gameObject.GetComponent<FlowNodeHose>() == attachment.Value.hose)
+            {
+                // release from hose
+                SetDragging(false);
             }
-
-
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("dropzone"))
+            {
+                // Return to initial - reset the position, rotation
+                SetDragging(false); 
+                transform.SetPositionAndRotation(initTn.position, initTn.rotation);
+            }
+            }
         }
+               
     }
 
     public void FollowHose()

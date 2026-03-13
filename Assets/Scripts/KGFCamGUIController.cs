@@ -169,7 +169,7 @@ public class KGFCamGUIController : MonoBehaviour
             }
             GUILayout.EndHorizontal();
                    
-            GUILayout.Label(new GUIContent("Pan","Click and drag mouse wheel button, or use the buttons below"),"midbutton");
+            GUILayout.Label(new GUIContent("Pan","Click and left mouse button, or use the buttons below"),"leftbutton");
            
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("◀"))
