@@ -14,6 +14,7 @@ using UnityEngine.UI;
 
 public class KGFCamGUIController : MonoBehaviour
 {
+    public Camera Cam_FlowMeter;
     public GUISkin guiskin;
     private KGFOrbitCam camsettings;
     private float rotationVertAmt = 0;
@@ -44,6 +45,8 @@ public class KGFCamGUIController : MonoBehaviour
         rotationVertAmt = camsettings.GetRotationVerticalCurrent();
         panHorizontalAmt = camsettings.itsPanningOffset.x;
         panVerticalAmt = camsettings.itsPanningOffset.y;
+
+        Cam_FlowMeter.depth = -1;
     }
 
     void RotateCamera(CameraDirection direction)
@@ -142,11 +145,7 @@ public class KGFCamGUIController : MonoBehaviour
             GUILayout.EndVertical();
         } else
         {            
-            if (GUILayout.Button("Reset View"))
-            {
-                ResetView();
-            }
-            
+           
             GUILayout.Label(new GUIContent("Orbit","Click and drag right mouse button, or use the buttons below"),"rightbutton");
            
             GUILayout.BeginHorizontal();
@@ -201,8 +200,30 @@ public class KGFCamGUIController : MonoBehaviour
             {
                 ZoomCamera(1f);
             }
+            
             GUILayout.EndHorizontal();
             
+            if (Cam_FlowMeter != null)
+            {
+               
+                if (GUILayout.Button(new GUIContent("Flow Meter View","Toggle the flow meter view")))
+                {
+                    // togge the Cam_FlowMeter depth -1, 1
+                    if (Cam_FlowMeter.depth == -1)
+                    {
+                        Cam_FlowMeter.depth = 1;
+                    } else
+                    {
+                        Cam_FlowMeter.depth = -1;
+                    }
+                }
+            }   
+
+            if (GUILayout.Button("Reset View"))
+            {
+                ResetView();
+            }
+                  
             GUILayout.EndVertical();
         }
                 
