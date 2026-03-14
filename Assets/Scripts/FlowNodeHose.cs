@@ -477,17 +477,41 @@ public class FlowNodeHose : FlowNode
         {
             foreach (var hose in downstreamFlowNodes)
             {
-                // error check that hose's downstreamFlowNodes does not include this hose to avoid infinite loop, if it does, skip propogation and log error
-                if (hose.downstreamFlowNodes != null && System.Array.Exists(hose.downstreamFlowNodes, n => n == this))
+                // error check that hose's downstreamFlowNodes is not empty and does not include this hose to avoid infinite loop, if it does, skip propogation and log error
+                if (hose?.downstreamFlowNodes != null )
                 {
-                    Debug.LogError("FlowNodeHose SetFlow error: downstream hose " + hose.name + " has this hose as downstream, skipping propogation to avoid infinite loop.");
-                    continue;
+                    if(hose.downstreamFlowNodes.Length > 0 && System.Array.Exists(hose.downstreamFlowNodes, n => n == this))
+                    {
+                        Debug.LogError("FlowNodeHose SetFlow error: downstream hose " + hose.name + " has this hose as downstream, skipping propogation to avoid infinite loop.");
+                        continue;
+                    }
                 }
                 hose?.SetFlow(newFlow);
             }
         }
     }
 
+    public void SetMyFlowOnly(float newFlow)
+    {
+        // round to whole number for stability
+        newFlow = isClamped? 0f : Mathf.Round(newFlow * 100f) / 100f; 
+
+        if (newFlow <= 0.0f && normalizedFlowRate > 0f )
+        {
+            // start fade out
+            StartCoroutine(HandleFade(false));       
+        }
+        else if (newFlow > 0.0f && normalizedFlowRate == 0f)
+        {
+            // start fade in
+            StartCoroutine(HandleFade(true));       
+        }else {
+           /// Debug.Log("FlowNodeHose SetMyFlowOnly called. Flow: " + newFlow);
+        }
+        
+        // update flow rate
+        normalizedFlowRate = newFlow;
+    }
     public void ToggleReverse() => isReversed = !isReversed;
     public void SetReverse(bool reverse) => isReversed = reverse;
 
@@ -536,7 +560,7 @@ public class FlowNodeHose : FlowNode
         // if there are clamps attached, get SO_FlowNodeClamp component to call FollowHose
         foreach (var c in clamps)
         {
-            var soClamp = c.GetComponent<SO_FlowNodeClamp>();
+            var soClamp = c.GetComponent<FlowNodeClamp>();
             soClamp?.FollowHose();
         }
     }

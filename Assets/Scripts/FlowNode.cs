@@ -26,7 +26,7 @@ public abstract class FlowNode : MonoBehaviour
             }
         }
     }
-    protected void UpdateFlowSystem()
+    public void UpdateFlowSystem()
     {
         flowSystemController.UpdateFlowSystem();
     }

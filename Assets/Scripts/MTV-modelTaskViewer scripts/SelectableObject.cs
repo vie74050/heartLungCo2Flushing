@@ -50,6 +50,7 @@ public class SelectableObject : MonoBehaviour
 	private readonly string tag_drag = "Draggable";
 
 	private KGFOrbitCam camsettings;
+	private bool panningInitEnabled;
 	
 	protected void Start()
 	{
@@ -59,6 +60,11 @@ public class SelectableObject : MonoBehaviour
 	{
 		// get cam settings ref -- to override panning when dragging
 		camsettings = Camera.main.GetComponent<KGFOrbitCam>();
+		if (camsettings != null)
+		{
+			var p = camsettings.itsPanning;
+			panningInitEnabled = p.itsLeftRight.itsEnable || p.itsUpDown.itsEnable;
+		}
 	
 		// make sure transparent material is in the Resources/materials and shaders folder
 		mat_transparent = Resources.Load("materials and shaders/transparent") as Material;
@@ -291,7 +297,7 @@ public class SelectableObject : MonoBehaviour
 
 			SetFreezeRigidBody(true);
 		}
-		camsettings.SetPanningEnable(true);
+		camsettings.SetPanningEnable(panningInitEnabled);
 	}
 
 	private void SetOrigMaterials()
