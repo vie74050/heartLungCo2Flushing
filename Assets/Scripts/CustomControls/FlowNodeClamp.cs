@@ -114,10 +114,28 @@ public class FlowNodeClamp : MonoBehaviour
         }
     }
 
+    // Only allow one clamp dragged at a time by checking all FlowNodeClamps in scene for isDragging
+    private FlowNodeClamp GetIsDraggingClamp() 
+    {
+        // if any clamp in scene isDragging, return that clamp
+        foreach (var c in Object.FindObjectsOfType<FlowNodeClamp>())        {
+            if (c.isDragging)
+            {
+                return c;
+            }
+        }
+        return null;
+    }
     // when clicked, "pickup" clamp, hide it's collider and turn on find hose
     // isDragging until released attachment or dropped on dropzone
     private void OnMouseDown()
     {
+        var draggingClamp = GetIsDraggingClamp();
+        if (draggingClamp != null && draggingClamp != this)
+        {
+            return; // another clamp is already being dragged
+        }
+
         SetDragging(true);
     }
     private void OnDrag()
@@ -155,22 +173,43 @@ public class FlowNodeClamp : MonoBehaviour
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, layerMask))
             {
-            if (attachment.HasValue && hit.collider.gameObject.GetComponent<FlowNodeHose>() == attachment.Value.hose)
-            {
-                // release from hose
-                SetDragging(false);
+                // check if over a hose
+                if (attachment.HasValue && hit.collider.gameObject.GetComponent<FlowNodeHose>() == attachment.Value.hose)
+                {
+                    // stop dragging, release on hose
+                    SetDragging(false);
+                }else
+                {
+                    // check if over a dropzone
+                    if (hit.collider.gameObject.GetComponent<Dropzone>() != null)
+                    {
+                        // if the dropzone checklist is empty, return the isDragging clamp to initial position
+                        Dropzone dz = hit.collider.gameObject.GetComponent<Dropzone>();
+                        if (dz.checklist.Count == 0)
+                        {
+                            
+                            FlowNodeClamp draggingClamp = GetIsDraggingClamp();
+                            if (draggingClamp != null)
+                            {
+                                draggingClamp.ResetPosition();
+                            }
+                            SetDragging(false);
+                        }
+                    }
+                }
+                
             }
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("dropzone"))
-            {
-                // Return to initial - reset the position, rotation
-                SetDragging(false); 
-                transform.SetPositionAndRotation(initTn.position, initTn.rotation);
-            }
-            }
-        }
-               
+        }               
     }
-
+    public void ResetPosition()
+    {
+        transform.SetPositionAndRotation(initTn.position, initTn.rotation);
+        if (attachment.HasValue)
+        {
+            attachment.Value.hose.SetClamp(gameObject, false);
+            attachment = null;
+        }
+    }
     public void FollowHose()
     {
         if (!attachment.HasValue) return;
