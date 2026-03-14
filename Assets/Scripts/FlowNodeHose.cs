@@ -491,6 +491,27 @@ public class FlowNodeHose : FlowNode
         }
     }
 
+    public void SetMyFlowOnly(float newFlow)
+    {
+        // round to whole number for stability
+        newFlow = isClamped? 0f : Mathf.Round(newFlow * 100f) / 100f; 
+
+        if (newFlow <= 0.0f && normalizedFlowRate > 0f )
+        {
+            // start fade out
+            StartCoroutine(HandleFade(false));       
+        }
+        else if (newFlow > 0.0f && normalizedFlowRate == 0f)
+        {
+            // start fade in
+            StartCoroutine(HandleFade(true));       
+        }else {
+           /// Debug.Log("FlowNodeHose SetMyFlowOnly called. Flow: " + newFlow);
+        }
+        
+        // update flow rate
+        normalizedFlowRate = newFlow;
+    }
     public void ToggleReverse() => isReversed = !isReversed;
     public void SetReverse(bool reverse) => isReversed = reverse;
 
